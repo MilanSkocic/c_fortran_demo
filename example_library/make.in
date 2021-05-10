@@ -1,0 +1,16 @@
+CC = gcc
+FC = gfortran
+
+LIBNAME = examplelib
+
+LIB = ../lib/lib$(LIBNAME).a
+TESTS=runtests.out
+EXAMPLES=example1.out
+
+
+CFLAGS = -O3
+FFLAGS = -O3
+
+ARCH = ar
+ARCHFLAGS = cr
+RANLIB = ranlib
