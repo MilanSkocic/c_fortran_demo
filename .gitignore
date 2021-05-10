@@ -1,0 +1,17 @@
+# git log --pretty=format:"\`%h <https://www.github.com/MilanSkocic/C_extension_demo/commit/%h>\`_ - %an, %ad : %s" > out.txt
+
+*.o
+*.obj
+*.exe
+*.dll
+*.out
+*.so
+*.a
+*.lib
+
+.idea
+
+/example_library/docs/doxygen/html
+/example_library/docs/doxygen/xml/
+/example_library/docs/doxygen/latex/
+
