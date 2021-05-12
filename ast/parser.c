@@ -8,13 +8,15 @@ double complex capacitance(double *p, double w){
     return 1/(I*w*(*p));
 }
 
-AstNode *AstNode__init__(int type, AstNode * left, AstNode *right)
+AstNode *AstNode__init__(int type, AstNode *top, AstNode * left, AstNode *right)
 {
     AstNode *self = (AstNode *)calloc(1, sizeof(AstNode));
     self->type = type;
+    self->top = NULL;
     self->right = NULL;
     self->left = NULL;
     self->op = NULL;
+    self->eval = NULL;
 
     switch(self->type)
     {
@@ -24,10 +26,12 @@ AstNode *AstNode__init__(int type, AstNode * left, AstNode *right)
         case AST_C:
             self->eval = &capacitance;
             break;
-        default:
+        case AST_DIV:
+        case AST_ADD:
             self->eval = NULL;
+            self->left = left;
+            self->right = right;
             break;
-    
     }
 
     self->op = NULL;
@@ -41,6 +45,8 @@ void AstNode__del__(AstNode* self){
 Parser *Parser__init__(Lexer *lexer){
     Parser *self = (Parser *) calloc(1, sizeof(Parser));
     self->lexer = lexer;
+    self->root = AstNode__init__(TOKEN_ROOT, NULL, NULL, NULL);
+    self->sub->top = self->root;
     self->current_token = NULL;
     self->previous_token = NULL;
     return self;
@@ -55,35 +61,47 @@ AstNode *Parser_parse(Parser *self){
     
     do{
         Parser_eat(self);
-        
-        if (self->current_token->type == TOKEN_ID){
-           if (self->current_token->value[0] == 'R'){
-            printf("Resistance = %s \n", self->current_token->value); 
-            AstNode__init__(AST_R, NULL, NULL);
-           }  
-           if (self->current_token->value[0] == 'C'){
-            printf("Capacitance = %s \n", self->current_token->value); 
-            AstNode__init__(AST_C, NULL, NULL);
-           }  
-            if (self->current_token->value[0] == 'Q'){
-            printf("CPE = %s \n", self->current_token->value); 
-            AstNode__init__(AST_Q, NULL, NULL);
-           } 
-            if (self->current_token->value[0] == 'W'){
-                switch (self->current_token->value[1]){
+           switch (self->current_token->value[0]){
+            case 'R':
+                printf("Resistance = %s \n", self->current_token->value); 
+                self->sub = AstNode__init__(AST_R, self->sub, NULL, NULL);
+            break;
+             
+            case 'C':
+                printf("Capacitance = %s \n", self->current_token->value); 
+                self->sub = AstNode__init__(AST_C, self->sub, NULL, NULL);
+            break; 
+             
+            case 'Q':
+                printf("CPE = %s \n", self->current_token->value); 
+                self->sub = AstNode__init__(AST_Q, self->sub, NULL, NULL);
+                break;
+            
+            case 'W':
+                switch (self->current_token->value[1])
+                    {
                     case 'D':
                     case 'd':
                         printf("Wd = %s \n", self->current_token->value); 
-                        AstNode__init__(AST_WD,NULL, NULL);
+                        self->sub = AstNode__init__(AST_WD, self->sub, NULL, NULL);
                         break;
                     case 'M':
                     case 'm':
                         printf("Wm = %s \n", self->current_token->value); 
-                        AstNode__init__(AST_WM,NULL,NULL);
+                        self->sub = AstNode__init__(AST_WM, self->sub, NULL, NULL);
                         break;
-                }
+                    }
+                 break;
+             case '+': 
+                printf("+\n");
+                self->sub = AstNode__init__(AST_ADD, self->root, self->sub->left, self->sub->right);
+                break;
+             case '/': 
+                printf("/\n");
+                self->sub = AstNode__init__(AST_ADD, self->root, self->sub->left, self->sub->right);
+                break;
             }
-        }
+        
     }while (self->current_token->type != TOKEN_EOF);
 }
 

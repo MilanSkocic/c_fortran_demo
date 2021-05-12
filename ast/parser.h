@@ -20,6 +20,8 @@ enum ast_node_types{
 typedef struct ast_node_struct{
 
     enum ast_node_types type;
+    
+    struct ast_node_struct *top;
 
     struct ast_node_struct *right;
     
@@ -35,12 +37,14 @@ typedef struct ast_node_struct{
 typedef struct parser_struct{
 
    Lexer *lexer;
+   struct ast_node_struct *root;
+   struct ast_node_struct *sub;
    Token *current_token;
    Token *previous_token;
 
 }Parser;
 
-AstNode *AstNode__init__(int type, AstNode *left, AstNode *right);
+AstNode *AstNode__init__(int type, AstNode *top, AstNode *left, AstNode *right);
 
 void AstNode__del__(AstNode *self);
 
@@ -49,7 +53,6 @@ Parser *Parser__init__(Lexer *lexer);
 void Parser_eat(Parser *self);
 
 AstNode *Parser_parse(Parser *parser);
-
 
 double complex resistance(double *p, double w);
 

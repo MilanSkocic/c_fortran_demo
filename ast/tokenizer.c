@@ -15,6 +15,15 @@ Token *Token__init__(int type, char *value)
     new_token->type = type;
     new_token->value = value;
     new_token->__del__ = &Token__del__;
+    switch (new_token->type){
+        case TOKEN_ID: 
+            new_token->precedence = 1;
+            break;
+        case TOKEN_ADD:
+            new_token->precedence = 2;
+        case TOKEN_DIV:
+            new_token->precedence = 3;
+    }
 
     return new_token;
 
