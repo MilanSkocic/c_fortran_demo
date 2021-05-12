@@ -1,4 +1,5 @@
 #include "tokenizer.h"
+#include "parser.h"
 
 
 int main(int argc, char **argv){
@@ -12,7 +13,7 @@ int main(int argc, char **argv){
 
     Token *token = NULL;
     
-    do
+    /*do
     { 
         if (token != NULL){
             token->__del__(token);
@@ -20,8 +21,11 @@ int main(int argc, char **argv){
         token = Lexer_get_next_token(lexer);
         printf("TOKEN(%d, %s)\n", token->type, token->value);
     }
-    while (token->type != TOKEN_EOF);
+    while (token->type != TOKEN_EOF);*/
+
+    Parser *parser = Parser__init__(lexer);
     
+    Parser_parse(parser);
 
     lexer->__del__(lexer);
 

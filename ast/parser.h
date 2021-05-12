@@ -1,9 +1,10 @@
 #ifndef PARSER_H 
 #define PARSER_H
+#include <math.h>
+#include <complex.h>
 #include "tokenizer.h"
 
-enum ast_node_types
-{
+enum ast_node_types{
     AST_R,
     AST_C,
     AST_L,
@@ -15,8 +16,7 @@ enum ast_node_types
     AST_DIV,
 };
 
-typedef struct ast_node_struct
-{
+typedef struct ast_node_struct{
 
     enum ast_node_types type;
 
@@ -24,9 +24,9 @@ typedef struct ast_node_struct
     
     struct ast_node_struct *left;
 
-    void (*op)(struct ast_node_struct *left, struct ast_node_right *right);
+    void (*op)(struct ast_node_struct *left, struct ast_node_struct *right);
 
-    void (*eval)(struct ast_node_struct *self);
+    double complex (*eval)(double *p, double w);
 
 }AstNode;
 
@@ -39,20 +39,19 @@ typedef struct parser_struct{
 
 }Parser;
 
-AstNode *AstNode__init__(int type);
+AstNode *AstNode__init__(int type, AstNode *left, AstNode *right);
 
 void AstNode__del__(AstNode *self);
 
 Parser *Parser__init__(Lexer *lexer);
 
-void Parser_eat(Parser *self, int token_type);
+void Parser_eat(Parser *self);
 
 AstNode *Parser_parse(Parser *parser);
 
-AstNode *Parser_parse_statement(Parser *parser);
 
-AstNode *Parser_parse_statements(Parser *parser);
+double complex resistance(double *p, double w);
 
-
+double complex capacitance(double *p, double w);
 
 #endif
