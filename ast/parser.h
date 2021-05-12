@@ -14,6 +14,7 @@ enum ast_node_types{
     AST_WM,
     AST_ADD,
     AST_DIV,
+    AST_ROOT
 };
 
 typedef struct ast_node_struct{
