@@ -1,40 +1,10 @@
-#ifndef LEXER_H
-#define LEXER_H
-#include<stdlib.h>
+#ifndef LEXEROBJECT_H
+#define LEXEROBJECT_H
+
 #include<string.h>
 #include<ctype.h>
 #include<stdio.h>
-#define SPACECHAR 10
-
-enum token_types {
-    TOKEN_ID,
-    TOKEN_EQUALS,
-    TOKEN_STRING,
-    TOKEN_SEMI,
-    TOKEN_LPAREN,
-    TOKEN_RPAREN,
-    TOKEN_RBRACE,
-    TOKEN_LBRACE,
-    TOKEN_COMMA,
-    TOKEN_ADD,
-    TOKEN_DIV,
-    TOKEN_POW,
-    TOKEN_MUL,
-    TOKEN_ROOT,
-    TOKEN_EOF};
-
-/**
- * @brief Token 
- * @detail Tokens found in contents.
- */
-typedef struct token_struct{
-
-    enum token_types type; /**< Token type */
-    char *value; /**< Token value */
-    int precedence; /**< Priority */
-    char associative;
-    void (*__del__)(struct token_struct *); /**< Destructore*/
-}Token;
+#include"tokenobject.h"
 
 /**
  * @brief Lexer
@@ -56,12 +26,7 @@ typedef struct lexer_struct{
 
 }Lexer;
 
-
-/* TOKEN */
-Token *Token__init__(int type, char *value);
-void Token__del__(Token *self);
-
-/* LEXER */
+/* METHODS */
 Lexer *Lexer__init__(char *contents);
 void Lexer__del__(Lexer *self);
 void Lexer_advance(Lexer *self);

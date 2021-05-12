@@ -2,7 +2,7 @@
 #define PARSER_H
 #include <math.h>
 #include <complex.h>
-#include "tokenizer.h"
+#include "lexerobject.h"
 
 enum ast_node_types{
     AST_R,

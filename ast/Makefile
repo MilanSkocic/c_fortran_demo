@@ -4,7 +4,7 @@ CFLAGS= -Wall -std=c99 -g
 FFLAGS=-O3 -std=f90
 
 
-OBJ = tokenizer.o main.o parser.o
+OBJ = tokenobject.o lexerobject.o parser.o main.o
 
 all: prog.out
 
