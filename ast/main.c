@@ -4,6 +4,7 @@
 
 int main(int argc, char **argv){
 
+    int i, verbose;
     char *input = "Rel + (Rct+Wdox) / Qdl ";
 
     printf("Input=%s\n", input);
@@ -25,7 +26,24 @@ int main(int argc, char **argv){
 
     Parser *parser = Parser__init__(lexer);
     
-    Parser_parse(parser);
+    verbose = 1;
+    Parser_parse(parser, verbose);
+    
+    printf("nops=%d\n", parser->nops);
+    
+    for (i=0; i<parser->nops; i++){
+        printf("%s %d %c\n", parser->operators[i]->value,
+                                parser->operators[i]->precedence,
+                                parser->operators[i]->associative);
+       
+    }
+    
+    for (i=0; i<parser->nelmts; i++){
+        printf("%s %d %c\n", parser->elements[i]->value,
+                                parser->elements[i]->precedence,
+                                parser->elements[i]->associative);
+       
+    }
 
     lexer->__del__(lexer);
 

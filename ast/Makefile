@@ -1,6 +1,6 @@
 CC=gcc
 FC=gfortran
-CFLAGS=-O3 -Wall -std=c99 -g
+CFLAGS= -Wall -std=c99 -g
 FFLAGS=-O3 -std=f90
 
 

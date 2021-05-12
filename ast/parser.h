@@ -37,10 +37,18 @@ typedef struct ast_node_struct{
 typedef struct parser_struct{
 
    Lexer *lexer;
-   struct ast_node_struct *root;
-   struct ast_node_struct *sub;
+   Token **elements;
+   Token **operators;
+   int nelmts;
+   int nops;
    Token *current_token;
    Token *previous_token;
+   
+   /* METHODS */
+   void (*parse_elements)(struct parser_struct *self);
+   void (*parse_operators)(struct parser_struct *self);
+   void (*parse)(struct parser_struct *self, int verbose);
+   void (*__del__)(struct parser_struct *self);
 
 }Parser;
 
@@ -50,9 +58,15 @@ void AstNode__del__(AstNode *self);
 
 Parser *Parser__init__(Lexer *lexer);
 
+void Parser__del__(Parser *self);
+
 void Parser_eat(Parser *self);
 
-AstNode *Parser_parse(Parser *parser);
+void Parser_parse(Parser *parser, int verbose);
+
+void Parser_parse_operators(Parser *self);
+
+void Parser_parse_elements(Parser *self);
 
 double complex resistance(double *p, double w);
 

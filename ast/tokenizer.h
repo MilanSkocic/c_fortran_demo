@@ -18,6 +18,8 @@ enum token_types {
     TOKEN_COMMA,
     TOKEN_ADD,
     TOKEN_DIV,
+    TOKEN_POW,
+    TOKEN_MUL,
     TOKEN_ROOT,
     TOKEN_EOF};
 
@@ -30,6 +32,7 @@ typedef struct token_struct{
     enum token_types type; /**< Token type */
     char *value; /**< Token value */
     int precedence; /**< Priority */
+    char associative;
     void (*__del__)(struct token_struct *); /**< Destructore*/
 }Token;
 
