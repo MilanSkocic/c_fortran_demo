@@ -1,4 +1,5 @@
 #include "lexerobject.h"
+
 /**
  * @brief Lexer constructor
  * @param contents Content to tokenize

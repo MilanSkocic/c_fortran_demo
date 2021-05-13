@@ -29,7 +29,7 @@ int main(int argc, char **argv){
     Parser_parse(parser, verbose);
     
     printf("nops=%d\n", parser->nops);
-    
+    printf("OPERATORS\n"); 
     for (i=0; i<parser->nops; i++){
         printf("%s %d %c\n", parser->operators[i]->value,
                                 parser->operators[i]->precedence,
@@ -37,6 +37,7 @@ int main(int argc, char **argv){
        
     }
     
+    printf("ELEMENTS\n");
     for (i=0; i<parser->nelmts; i++){
         printf("%s %d %c\n", parser->elements[i]->value,
                                 parser->elements[i]->precedence,

@@ -10,8 +10,8 @@
  * @brief Lexer
  * @detail Lexer for tokenizing the content.
  */
-typedef struct lexer_struct{
-
+typedef struct lexer_struct 
+{
     char c; /**< Character */
     size_t i; /**< Character index */
     char *contents; /**< Content to tokenize */
@@ -23,8 +23,8 @@ typedef struct lexer_struct{
     struct token_struct *(*collect_id)(struct lexer_struct *self);
     struct token_struct *(*collect_string)(struct lexer_struct *self);
     char *(*get_current_char_as_string)(struct lexer_struct *self);
-
 }Lexer;
+
 
 /* METHODS */
 Lexer *Lexer__init__(char *contents);

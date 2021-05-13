@@ -17,20 +17,14 @@ enum ast_node_types{
     AST_ROOT
 };
 
-typedef struct ast_node_struct{
-
+typedef struct ast_node_struct
+{
     enum ast_node_types type;
-    
     struct ast_node_struct *top;
-
     struct ast_node_struct *right;
-    
     struct ast_node_struct *left;
-
     void (*op)(struct ast_node_struct *left, struct ast_node_struct *right);
-
     double complex (*eval)(double *p, double w);
-
 }AstNode;
 
 
@@ -48,6 +42,7 @@ typedef struct parser_struct{
    void (*parse_elements)(struct parser_struct *self);
    void (*parse_operators)(struct parser_struct *self);
    void (*parse)(struct parser_struct *self, int verbose);
+   void (*parse_pop_operator)(struct parser_struct *self);
    void (*__del__)(struct parser_struct *self);
 
 }Parser;
@@ -67,6 +62,8 @@ void Parser_parse(Parser *parser, int verbose);
 void Parser_parse_operators(Parser *self);
 
 void Parser_parse_elements(Parser *self);
+
+void Parser_parse_pop_operator(Parser *self);
 
 double complex resistance(double *p, double w);
 
