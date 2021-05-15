@@ -104,18 +104,19 @@ void Parser_parse(Parser *self, int verbose){
                 {
                     last_operator = self->operators[self->nops-1];
                 }else{
-                    last_operator = NULL;
+                    last_operator = self->current_token;
                 }
                 if (last_operator != NULL)
                 {
-                while((self->nops > 0) & ( (last_operator->precedence < self->current_token->precedence) | 
-                                           ((last_operator->precedence == self->current_token->precedence) & (self->current_token->associative == 'R')) ) 
-                                       & (last_operator->type != TOKEN_LPAREN))
-                { 
-                    self->parse_pop_operator(self);
+                    while((self->nops > 0) 
+                          &((last_operator->precedence > self->current_token->precedence)
+                           |((last_operator->precedence == self->current_token->precedence) & (self->current_token->associative == 'L'))) 
+                          & (last_operator->type != TOKEN_LPAREN))
+                    { 
+                        self->parse_pop_operator(self);
+                    }
+                    self->parse_operators(self);
                 }
-                }
-                self->parse_operators(self);
                 break;
             case TOKEN_LPAREN:
                 self->parse_operators(self);
@@ -136,12 +137,12 @@ void Parser_parse(Parser *self, int verbose){
                 }
                 break;
         }
+    int i;
+    for(i=0;i<self->nops; i++){printf("stack %s\n", self->operators[i]->value);}
     }while (self->current_token->type != TOKEN_EOF);
 
     while (self->nops >0){
-    
         self->parse_pop_operator(self);
-    
     }
 }
 

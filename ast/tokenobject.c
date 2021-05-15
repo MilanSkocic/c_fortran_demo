@@ -27,6 +27,9 @@ Token *Token__init__(int type, char *value)
         case TOKEN_DIV:
             new_token->precedence = 3;
             new_token->associative = 'L';
+        case TOKEN_MUL:
+            new_token->precedence = 3;
+            new_token->associative = 'L';
             break;
         case TOKEN_POW:
             new_token->precedence = 4;
