@@ -1,9 +1,13 @@
 #include "parser.h"
+#include "version.h"
 
 
 int main(int argc, char **argv){
 
     int i, verbose;
+
+    printf("VERSION = %s\n", progcmake_VERSION_MAJOR);
+
     char *input = "Rel + (Rct+Wdox) / Qdl ";
 
     printf("Input=%s\n", input);
@@ -12,7 +16,6 @@ int main(int argc, char **argv){
     Lexer *lexer = Lexer__init__(input);
 
     Token *token = NULL;
-    
     /*do
     { 
         if (token != NULL){
