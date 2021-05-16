@@ -6,7 +6,7 @@ int main(int argc, char **argv){
 
     int i, verbose;
 
-    printf("VERSION = %s\n", progcmake_VERSION_MAJOR);
+    printf("VERSION = %d\n", progcmake_VERSION_MAJOR);
 
     char *input = "Rel + (Rct+Wdox) / Qdl ";
 

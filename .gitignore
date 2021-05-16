@@ -8,11 +8,14 @@
 *.so
 *.a
 *.lib
+*.cmake
 
 .idea
 
 /example_library/docs/doxygen/html
 /example_library/docs/doxygen/xml/
 /example_library/docs/doxygen/latex/
+/ast/CMakeFiles/
+
 
 [Bb][Uu][Ii][Ll][Dd]

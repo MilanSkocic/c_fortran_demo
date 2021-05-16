@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/progcmake.dir/main.c.o CMakeFiles/progcmake.dir/tokenobject.c.o CMakeFiles/progcmake.dir/lexerobject.c.o CMakeFiles/progcmake.dir/parser.c.o  -o progcmake 
