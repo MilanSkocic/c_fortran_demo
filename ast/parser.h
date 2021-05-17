@@ -4,27 +4,16 @@
 #include <complex.h>
 #include "lexerobject.h"
 
-enum ast_node_types{
-    AST_R,
-    AST_C,
-    AST_L,
-    AST_Q,
-    AST_W,
-    AST_WD,
-    AST_WM,
-    AST_ADD,
-    AST_DIV,
-    AST_ROOT
-};
 
 typedef struct ast_node_struct
 {
-    enum ast_node_types type;
+    enum token_types type;
     struct ast_node_struct *top;
     struct ast_node_struct *right;
     struct ast_node_struct *left;
     void (*op)(struct ast_node_struct *left, struct ast_node_struct *right);
     double complex (*eval)(double *p, double w);
+    short int leaf;
 }AstNode;
 
 
@@ -68,5 +57,7 @@ void Parser_parse_pop_operator(Parser *self);
 double complex resistance(double *p, double w);
 
 double complex capacitance(double *p, double w);
+
+double complex eval(AstNode *left, AstNode *right, char op);
 
 #endif

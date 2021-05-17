@@ -9,28 +9,49 @@ double complex capacitance(double *p, double w){
     return 1/(I*w*(*p));
 }
 
+double complex eval(AstNode *left, AstNode *right, char op){
 
+    double complex result;
+    result = 0.0;
+
+    if (left->leaf & right->leaf){
+        switch(op){
+            case '-':
+                break;
+            case '+':
+                break;
+            case '*':
+                break;
+            case '/':
+                break;
+        }
+    }
+
+    return result;
+
+}
 
 AstNode *AstNode__init__(int type, AstNode *top, AstNode * left, AstNode *right)
 {
     AstNode *self = (AstNode *)calloc(1, sizeof(AstNode));
+
+    if (left == NULL & right == NULL){
+        self->leaf = 1;
+    }
+
     self->type = type;
     self->top = NULL;
     self->right = NULL;
     self->left = NULL;
     self->op = NULL;
     self->eval = NULL;
+    self->leaf = 0; 
 
     switch(self->type)
     {
-        case AST_R:
-            self->eval =  &resistance;
-            break;
-        case AST_C:
-            self->eval = &capacitance;
-            break;
-        case AST_DIV:
-        case AST_ADD:
+        case TOKEN_MUL:
+        case TOKEN_DIV:
+        case TOKEN_ADD:
             self->eval = NULL;
             self->left = left;
             self->right = right;
