@@ -123,6 +123,60 @@ progcmake/fast:
 	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/build
 .PHONY : progcmake/fast
 
+astobject.o: astobject.c.o
+
+.PHONY : astobject.o
+
+# target to build an object file
+astobject.c.o:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/astobject.c.o
+.PHONY : astobject.c.o
+
+astobject.i: astobject.c.i
+
+.PHONY : astobject.i
+
+# target to preprocess a source file
+astobject.c.i:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/astobject.c.i
+.PHONY : astobject.c.i
+
+astobject.s: astobject.c.s
+
+.PHONY : astobject.s
+
+# target to generate assembly for a file
+astobject.c.s:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/astobject.c.s
+.PHONY : astobject.c.s
+
+eis.o: eis.c.o
+
+.PHONY : eis.o
+
+# target to build an object file
+eis.c.o:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/eis.c.o
+.PHONY : eis.c.o
+
+eis.i: eis.c.i
+
+.PHONY : eis.i
+
+# target to preprocess a source file
+eis.c.i:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/eis.c.i
+.PHONY : eis.c.i
+
+eis.s: eis.c.s
+
+.PHONY : eis.s
+
+# target to generate assembly for a file
+eis.c.s:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/eis.c.s
+.PHONY : eis.c.s
+
 lexerobject.o: lexerobject.c.o
 
 .PHONY : lexerobject.o
@@ -177,32 +231,32 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/main.c.s
 .PHONY : main.c.s
 
-parser.o: parser.c.o
+parserobject.o: parserobject.c.o
 
-.PHONY : parser.o
+.PHONY : parserobject.o
 
 # target to build an object file
-parser.c.o:
-	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parser.c.o
-.PHONY : parser.c.o
+parserobject.c.o:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parserobject.c.o
+.PHONY : parserobject.c.o
 
-parser.i: parser.c.i
+parserobject.i: parserobject.c.i
 
-.PHONY : parser.i
+.PHONY : parserobject.i
 
 # target to preprocess a source file
-parser.c.i:
-	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parser.c.i
-.PHONY : parser.c.i
+parserobject.c.i:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parserobject.c.i
+.PHONY : parserobject.c.i
 
-parser.s: parser.c.s
+parserobject.s: parserobject.c.s
 
-.PHONY : parser.s
+.PHONY : parserobject.s
 
 # target to generate assembly for a file
-parser.c.s:
-	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parser.c.s
-.PHONY : parser.c.s
+parserobject.c.s:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/parserobject.c.s
+.PHONY : parserobject.c.s
 
 tokenobject.o: tokenobject.c.o
 
@@ -240,15 +294,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... progcmake"
 	@echo "... edit_cache"
+	@echo "... astobject.o"
+	@echo "... astobject.i"
+	@echo "... astobject.s"
+	@echo "... eis.o"
+	@echo "... eis.i"
+	@echo "... eis.s"
 	@echo "... lexerobject.o"
 	@echo "... lexerobject.i"
 	@echo "... lexerobject.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... parser.o"
-	@echo "... parser.i"
-	@echo "... parser.s"
+	@echo "... parserobject.o"
+	@echo "... parserobject.i"
+	@echo "... parserobject.s"
 	@echo "... tokenobject.o"
 	@echo "... tokenobject.i"
 	@echo "... tokenobject.s"

@@ -14,9 +14,9 @@ Token *Token__init__(int type, char *value)
     new_token->precedence = 0;
     new_token->associative = 'L';
     new_token->__del__ = &Token__del__;
-    
+
     switch (new_token->type){
-        case TOKEN_ID: 
+        case TOKEN_ELEMENT:
             new_token->precedence = 1;
             new_token->associative = 'L';
             break;

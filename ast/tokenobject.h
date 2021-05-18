@@ -9,20 +9,13 @@
  * @brief Token types
  */
 enum token_types {
-    TOKEN_ID,
-    TOKEN_EQUALS,
-    TOKEN_STRING,
-    TOKEN_SEMI,
+    TOKEN_ELEMENT,
     TOKEN_LPAREN,
     TOKEN_RPAREN,
-    TOKEN_RBRACE,
-    TOKEN_LBRACE,
-    TOKEN_COMMA,
     TOKEN_ADD,
     TOKEN_DIV,
     TOKEN_POW,
     TOKEN_MUL,
-    TOKEN_ROOT,
     TOKEN_EOF};
 
 /**
@@ -44,4 +37,4 @@ Token *Token__init__(int type, char *value);
 void Token__del__(Token *self);
 
 
-#endif 
+#endif

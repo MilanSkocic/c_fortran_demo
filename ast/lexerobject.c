@@ -6,20 +6,19 @@
  */
 Lexer *Lexer__init__(char *contents)
 {
-    Lexer *new_lexer = (Lexer *)calloc(1, sizeof(Lexer));
-    new_lexer->contents = contents;
-    new_lexer->i = 0;
-    new_lexer->c = contents[new_lexer->i];
+    Lexer *self = (Lexer *)calloc(1, sizeof(Lexer));
+    self->contents = contents;
+    self->i = 0;
+    self->c = contents[self->i];
 
-    new_lexer->advance = &Lexer_advance;
-    new_lexer->__del__ = &Lexer__del__;
-    new_lexer->get_next_token = &Lexer_get_next_token;
-    new_lexer->skip_whitespace = &Lexer_skip_whitespace;
-    new_lexer->collect_id = &Lexer_collect_id;
-    new_lexer->collect_string = &Lexer_collect_string;
-    new_lexer->get_current_char_as_string = &Lexer_get_current_char_as_string;
+    self->advance = &Lexer_advance;
+    self->__del__ = &Lexer__del__;
+    self->get_next_token = &Lexer_get_next_token;
+    self->skip_whitespace = &Lexer_skip_whitespace;
+    self->collect_id = &Lexer_collect_id;
+    self->get_current_char_as_string = &Lexer_get_current_char_as_string;
 
-    return new_lexer;
+    return self;
 }
 /**
  * @brief Lexer destructor
@@ -33,7 +32,7 @@ void Lexer__del__(Lexer *self){
  * @brief Advance method
  * @details Go the next character
  * @param self Pointer to a Lexer
- */ 
+ */
 void Lexer_advance(Lexer *self)
 {
     if (self->c != '\0' && self->i < strlen(self->contents))
@@ -67,47 +66,41 @@ Token *Lexer_get_next_token(Lexer *lexer)
         lexer->skip_whitespace(lexer);
 
         if (isalnum(lexer->c))
-        {   
+        {
             token = lexer->collect_id(lexer);
             flag = 0;
         }
-        if (lexer->c == '"')
+        /*if (lexer->c == '"')
         {
             token = lexer->collect_string(lexer);
             flag = 0;
-        }
+        }*/
 
         if (flag){
             switch (lexer->c)
             {
-                case '=': token = Token__init__(TOKEN_EQUALS, Lexer_get_current_char_as_string(lexer)); 
-                          lexer->advance(lexer);
-                          break;
-                case ';': token = Token__init__(TOKEN_SEMI, Lexer_get_current_char_as_string(lexer));
-                          lexer->advance(lexer);
-                          break;
-                case '(': token = Token__init__(TOKEN_LPAREN, Lexer_get_current_char_as_string(lexer)); 
+                case '(': token = Token__init__(TOKEN_LPAREN, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
                 case ')': token = Token__init__(TOKEN_RPAREN, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case '{': token = Token__init__(TOKEN_LBRACE, Lexer_get_current_char_as_string(lexer));
+                case '{': token = Token__init__(TOKEN_LPAREN, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case '}': token = Token__init__(TOKEN_RBRACE, Lexer_get_current_char_as_string(lexer)); 
+                case '}': token = Token__init__(TOKEN_RPAREN, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case ',': token = Token__init__(TOKEN_COMMA, Lexer_get_current_char_as_string(lexer));
+                case '+': token = Token__init__(TOKEN_ADD, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case '+': token = Token__init__(TOKEN_ADD, Lexer_get_current_char_as_string(lexer)); 
+                case '/': token = Token__init__(TOKEN_DIV, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case '/': token = Token__init__(TOKEN_DIV, Lexer_get_current_char_as_string(lexer)); 
+                case '-': token = Token__init__(TOKEN_ADD, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-                case '-': token = Token__init__(TOKEN_ADD, Lexer_get_current_char_as_string(lexer)); 
+                case '*': token = Token__init__(TOKEN_MUL, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
 
@@ -119,27 +112,6 @@ Token *Lexer_get_next_token(Lexer *lexer)
     return token;
 }
 
-Token* Lexer_collect_string(Lexer* lexer)
-{
-    Lexer_advance(lexer);
-
-    char* value = calloc(1, sizeof(char));
-    value[0] = '\0';
-
-    while (lexer->c != '"')
-    {
-        char* s = Lexer_get_current_char_as_string(lexer);
-        value = realloc(value, (strlen(value) + strlen(s) + 1) * sizeof(char));
-        strcat(value, s);
-        free(s);
-
-        Lexer_advance(lexer);
-    }
-
-    Lexer_advance(lexer);
-
-    return Token__init__(TOKEN_STRING, value);
-}
 
 
 Token *Lexer_collect_id(Lexer *self)
@@ -157,7 +129,7 @@ Token *Lexer_collect_id(Lexer *self)
         self->advance(self);
     }
 
-    return Token__init__(TOKEN_ID, value);
+    return Token__init__(TOKEN_ELEMENT, value);
 }
 
 

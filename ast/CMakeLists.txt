@@ -25,7 +25,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/build/release)
 add_executable(${PROJECT_NAME} main.c 
 	tokenobject.c 
 	lexerobject.c 
-	parser.c)
+	parserobject.c
+	astobject.c
+	eis.c)
 
 # target properties
 set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".out")

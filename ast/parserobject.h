@@ -3,42 +3,33 @@
 #include <math.h>
 #include <complex.h>
 #include "lexerobject.h"
+#include "astobject.h"
 
 
-typedef struct ast_node_struct
-{
-    enum token_types type;
-    struct ast_node_struct *top;
-    struct ast_node_struct *right;
-    struct ast_node_struct *left;
-    void (*op)(struct ast_node_struct *left, struct ast_node_struct *right);
-    double complex (*eval)(double *p, double w);
-    short int leaf;
-}AstNode;
 
 
 typedef struct parser_struct{
 
    Lexer *lexer;
-   Token **elements;
+   Token **queue;
    Token **operators;
-   int nelmts;
+   AstNode **nodes;
+   AstNode *ast;
+   int nqueue;
    int nops;
+   int nnodes;
    Token *current_token;
    Token *previous_token;
    
    /* METHODS */
    void (*parse_elements)(struct parser_struct *self);
    void (*parse_operators)(struct parser_struct *self);
-   void (*parse)(struct parser_struct *self, int verbose);
+   void (*parse)(struct parser_struct *self);
    void (*parse_pop_operator)(struct parser_struct *self);
    void (*__del__)(struct parser_struct *self);
 
 }Parser;
 
-AstNode *AstNode__init__(int type, AstNode *top, AstNode *left, AstNode *right);
-
-void AstNode__del__(AstNode *self);
 
 Parser *Parser__init__(Lexer *lexer);
 
@@ -46,18 +37,17 @@ void Parser__del__(Parser *self);
 
 void Parser_eat(Parser *self);
 
-void Parser_parse(Parser *parser, int verbose);
+void Parser_parse(Parser *parser);
 
 void Parser_parse_operators(Parser *self);
 
 void Parser_parse_elements(Parser *self);
 
-void Parser_parse_pop_operator(Parser *self);
+void Parser_pop_operator(Parser *self);
 
 double complex resistance(double *p, double w);
 
 double complex capacitance(double *p, double w);
 
-double complex eval(AstNode *left, AstNode *right, char op);
 
 #endif

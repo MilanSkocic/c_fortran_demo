@@ -1,10 +1,10 @@
-#include "parser.h"
+#include "parserobject.h"
 #include "version.h"
 
 
 int main(int argc, char **argv){
 
-    int i, verbose;
+    int i;
 
     printf("VERSION = %d\n", progcmake_VERSION_MAJOR);
 
@@ -15,7 +15,7 @@ int main(int argc, char **argv){
     
     Lexer *lexer = Lexer__init__(input);
 
-    Token *token = NULL;
+    // Token *token = NULL;
     /*do
     { 
         if (token != NULL){
@@ -28,23 +28,13 @@ int main(int argc, char **argv){
 
     Parser *parser = Parser__init__(lexer);
     
-    verbose = 1;
-    Parser_parse(parser, verbose);
+    Parser_parse(parser);
     
-    printf("nops=%d\n", parser->nops);
-    printf("OPERATORS\n"); 
-    for (i=0; i<parser->nops; i++){
-        printf("%s %d %c\n", parser->operators[i]->value,
-                                parser->operators[i]->precedence,
-                                parser->operators[i]->associative);
-       
-    }
-    
-    printf("ELEMENTS\n");
-    for (i=0; i<parser->nelmts; i++){
-        printf("%s %d %c\n", parser->elements[i]->value,
-                                parser->elements[i]->precedence,
-                                parser->elements[i]->associative);
+    printf("QUEUE\n");
+    for (i=0; i<parser->nqueue; i++){
+        printf("%s %d %c\n", parser->queue[i]->value,
+                                parser->queue[i]->precedence,
+                                parser->queue[i]->associative);
        
     }
 
