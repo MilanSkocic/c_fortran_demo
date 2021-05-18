@@ -1,5 +1,8 @@
 #include"tokenobject.h"
 
+char *ELEMENTS[] = {"R", "C", "L", "Q", "W", "Wd", "Wm"};
+
+
 /**
  * @brief Token constructor
  * @param type Type of token
@@ -8,38 +11,38 @@
 Token *Token__init__(int type, char *value)
 {
 
-    Token *new_token = (Token *)calloc(1, sizeof(Token));
-    new_token->type = type;
-    new_token->value = value;
-    new_token->precedence = 0;
-    new_token->associative = 'L';
-    new_token->__del__ = &Token__del__;
+    Token *self = (Token *)calloc(1, sizeof(Token));
+    self->type = type;
+    self->value = value;
+    self->set_eval = &Token_set_eval;
+    self->set_eval(self);
+    self->__del__ = &Token__del__;
 
-    switch (new_token->type){
+    switch (self->type){
         case TOKEN_ELEMENT:
-            new_token->precedence = 1;
-            new_token->associative = 'L';
-            break;
+            self->precedence = 1;
+            self->associative = 'L';
+	    break;
         case TOKEN_ADD:
-            new_token->precedence = 2;
-            new_token->associative = 'L';
+            self->precedence = 2;
+            self->associative = 'L';
             break;
         case TOKEN_DIV:
-            new_token->precedence = 3;
-            new_token->associative = 'L';
+            self->precedence = 3;
+            self->associative = 'L';
         case TOKEN_MUL:
-            new_token->precedence = 3;
-            new_token->associative = 'L';
+            self->precedence = 3;
+            self->associative = 'L';
             break;
         case TOKEN_POW:
-            new_token->precedence = 4;
-            new_token->associative = 'R';
+            self->precedence = 4;
+            self->associative = 'R';
             break;
         default:
-            new_token->precedence = 0;
-            new_token->associative = 'L';
+            self->precedence = 0;
+            self->associative = 'L';
     }
-    return new_token;
+    return self;
 
 }
 
@@ -52,3 +55,16 @@ void Token__del__(Token *self){
 
 }
 
+void Token_set_eval(Token *self){
+
+	switch (self->value[0]){
+	
+		case 'R':
+			self->eval = &resistance;
+		case 'C':
+			self->eval = &capacitance;
+		default:
+			self->eval = NULL;
+	}
+
+}

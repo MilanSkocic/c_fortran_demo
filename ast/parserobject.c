@@ -20,7 +20,8 @@ Parser *Parser__init__(Lexer *lexer){
     self->parse_elements = &Parser_parse_elements;
     self->parse_operators = &Parser_parse_operators;
     self->parse = &Parser_parse;
-    self->parse_pop_operator = &Parser_pop_operator;
+    self->pop_operator = &Parser_pop_operator;
+    self->discard_lparen = &Parser_discard_lparen;
     self->__del__ = &Parser__del__;
 
     return self;
@@ -49,6 +50,8 @@ void Parser_parse(Parser *self){
 
             case TOKEN_ADD:
 
+	    case TOKEN_SUB: 
+
             case TOKEN_POW:
 
             case TOKEN_MUL:
@@ -65,7 +68,7 @@ void Parser_parse(Parser *self){
                            |((last_operator->precedence == self->current_token->precedence) & (self->current_token->associative == 'L')))
                           & (last_operator->type != TOKEN_LPAREN))
                     {
-                        self->parse_pop_operator(self);
+                        self->pop_operator(self);
                     }
                     self->parse_operators(self);
                 }
@@ -78,21 +81,18 @@ void Parser_parse(Parser *self){
                 while ((self->operators[self->nops-1]->type != TOKEN_LPAREN) & (self->nops>0))
                 {
 
-                    self->parse_pop_operator(self);
+                    self->pop_operator(self);
 
                 }
                 if(self->operators[self->nops-1]->type == TOKEN_LPAREN){
-                    self->operators[self->nops-1]->__del__(self->operators[self->nops-1]);
-                    self->nops -= 1;
-                    self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
-                    self->current_token->__del__(self->current_token);
+			self->discard_lparen(self);
                 }
                 break;
         }
     }while (self->current_token->type != TOKEN_EOF);
 
     while (self->nops > 0){
-        self->parse_pop_operator(self);
+        self->pop_operator(self);
     }
 }
 
@@ -117,6 +117,13 @@ void Parser_parse_elements(Parser *self){
     self->queue[self->nqueue-1] = self->current_token;
 }
 
+void Parser_discard_lparen(Parser *self){
+
+    self->operators[self->nops-1]->__del__(self->operators[self->nops-1]);
+    self->nops -= 1;
+    self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
+    self->current_token->__del__(self->current_token);
+}
 
 void Parser__del__(Parser *self){
 

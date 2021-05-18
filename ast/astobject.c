@@ -1,35 +1,32 @@
-#ifndef ASTOBJECT_H
-#define ASTOBJECT_H
-
 #include "astobject.h"
 
 
 
-AstNode *AstNode__init__(int type, AstNode *top, AstNode * left, AstNode *right)
+AstNode *AstNode__init__(Token *token, AstNode *top, AstNode * left, AstNode *right)
 {
     AstNode *self = (AstNode *)calloc(1, sizeof(AstNode));
 
-    if (left == NULL & right == NULL){
-        self->leaf = 1;
-    }
-    self->type = type;
-    self->right = NULL;
-    self->left = NULL;
-    self->leaf = 0;
+    self->token = token;
 
-    switch(self->type)
+    switch(self->token->type)
     {
-        case AST_R:
-        case AST_C:
-        case AST_L:
-        case AST_Q:
-        case AST_W:
-        case AST_Wd:
-        case AST_Wm:
-        case AST_OP:
-            self->left = left;
-            self->right = right;
-            break;
+    	case TOKEN_ELEMENT:
+		self->left = NULL;
+		self->right = NULL;
+		self->leaf = 1;
+
+	case TOKEN_ADD:
+	case TOKEN_MUL:
+	case TOKEN_DIV:
+	case TOKEN_SUB:
+		self->left = left;
+		self->right = right;
+		self->leaf = 0;
+
+	default:
+		self->left = NULL; 
+		self->right = NULL;
+		self->leaf = 0;
     }
 
     return self;
@@ -39,4 +36,5 @@ void AstNode__del__(AstNode* self){
     free(self);
 }
 
-#endif
+
+

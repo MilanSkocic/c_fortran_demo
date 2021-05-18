@@ -1,7 +1,5 @@
 #ifndef PARSER_H 
 #define PARSER_H
-#include <math.h>
-#include <complex.h>
 #include "lexerobject.h"
 #include "astobject.h"
 
@@ -25,7 +23,8 @@ typedef struct parser_struct{
    void (*parse_elements)(struct parser_struct *self);
    void (*parse_operators)(struct parser_struct *self);
    void (*parse)(struct parser_struct *self);
-   void (*parse_pop_operator)(struct parser_struct *self);
+   void (*pop_operator)(struct parser_struct *self);
+   void (*discard_lparen)(struct parser_struct *self);
    void (*__del__)(struct parser_struct *self);
 
 }Parser;
@@ -45,9 +44,5 @@ void Parser_parse_elements(Parser *self);
 
 void Parser_pop_operator(Parser *self);
 
-double complex resistance(double *p, double w);
-
-double complex capacitance(double *p, double w);
-
-
+void Parser_discard_lparen(Parser *self);
 #endif
