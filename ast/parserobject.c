@@ -7,16 +7,16 @@ Parser *Parser__init__(Lexer *lexer){
     self->queue = NULL;
     self->nqueue = 0;
     self->operators = NULL;
+    self->nodes = NULL;
     self->nops = 0;
     self->nnodes = 0;
-    self->nodes = NULL;
     self->ast = NULL;
     self->current_token = NULL;
     self->previous_token = NULL;
 
     /* METHODS */
-    self->parse_elements = &Parser_parse_elements;
-    self->parse_operators = &Parser_parse_operators;
+    self->push_element = &Parser_push_element;
+    self->push_operator = &Parser_push_operator;
     self->parse = &Parser_parse;
     self->pop_operator = &Parser_pop_operator;
     self->discard_lparen = &Parser_discard_lparen;
@@ -48,8 +48,9 @@ void Parser_eat(Parser *self){
 }
 
 void Parser_parse(Parser *self){
-
-    Token *last_operator=NULL;
+    
+    size_t i;
+    Token *last=NULL;
 
     do{
         Parser_eat(self);
@@ -57,7 +58,7 @@ void Parser_parse(Parser *self){
         switch(self->current_token->type){
 
             case TOKEN_ELEMENT:
-                self->parse_elements(self);
+                self->push_element(self);
                 break;
             case TOKEN_EOF:
                 break;
@@ -65,31 +66,31 @@ void Parser_parse(Parser *self){
 
             case TOKEN_ADD:
 
-	    case TOKEN_SUB: 
+	        case TOKEN_SUB: 
 
             case TOKEN_POW:
 
             case TOKEN_MUL:
                 if (self->nops > 0)
                 {
-                    last_operator = self->operators[self->nops-1];
+                    last = self->operators[self->nops-1];
                 }else{
-                    last_operator = self->current_token;
+                    last = self->current_token;
                 }
-                if (last_operator != NULL)
+                if (last != NULL)
                 {
                     while((self->nops > 0)
-                          &((last_operator->precedence > self->current_token->precedence)
-                           |((last_operator->precedence == self->current_token->precedence) & (self->current_token->associative == 'L')))
-                          & (last_operator->type != TOKEN_LPAREN))
+                          &((last->precedence > self->current_token->precedence)
+                           |((last->precedence == self->current_token->precedence) & (self->current_token->associative == 'L')))
+                          & (last->type != TOKEN_LPAREN))
                     {
                         self->pop_operator(self);
                     }
-                    self->parse_operators(self);
+                    self->push_operator(self);
                 }
                 break;
             case TOKEN_LPAREN:
-                self->parse_operators(self);
+                self->push_operator(self);
                 break;
 
             case TOKEN_RPAREN:
@@ -109,6 +110,15 @@ void Parser_parse(Parser *self){
     while (self->nops > 0){
         self->pop_operator(self);
     }
+    i = 0;
+    while(self->nqueue>0){
+        while(self->queue[i]->type == TOKEN_ELEMENT){
+            self->current_token = self->queue[i];
+            self->push_element(self);
+            i += 1;
+        }
+        
+    }
 }
 
 void Parser_pop_operator(Parser *self){
@@ -119,16 +129,22 @@ void Parser_pop_operator(Parser *self){
         self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
 }
 
-void Parser_parse_operators(Parser *self){
+void Parser_push_operator(Parser *self){
         self->nops += 1;
         self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
         self->operators[self->nops-1] = self->current_token;
 }
 
-void Parser_parse_elements(Parser *self){
+void Parser_push_element(Parser *self){
     self->nqueue += 1;
     self->queue = (Token **) realloc(self->queue, self->nqueue * sizeof(Token *));
     self->queue[self->nqueue-1] = self->current_token;
+}
+
+void Parser_push_node(Parser *self){
+    self->nnodes += 1;
+    self->nodes = (AstNode **) realloc(self->nodes, self->nnodes * sizeof(AstNode *));
+    self->nodes[self->nnodes-1] = self->current_token;
 }
 
 void Parser_discard_lparen(Parser *self){

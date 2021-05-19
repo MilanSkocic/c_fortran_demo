@@ -6,16 +6,14 @@
 
 typedef struct ast_node_struct{
     /* enum ast_types type; */
-    struct token_struct *token; 
+    struct token_struct *token;
     struct ast_node_struct *right;
     struct ast_node_struct *left;
-    short int leaf;
 }AstNode;
 
 
 /* METHODS */
-AstNode *AstNode__init__(Token *token, AstNode *top, AstNode *left, AstNode *right);
+AstNode *AstNode__init__(Token *token, AstNode *left, AstNode *right);
 void AstNode__del__(AstNode *self);
-
 
 #endif
