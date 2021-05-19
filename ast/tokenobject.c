@@ -23,6 +23,9 @@ Token *Token__init__(int type, char *value)
             self->precedence = 1;
             self->associative = 'L';
 	    break;
+        case TOKEN_SUB:
+            self->precedence = 2;
+            self->associative = 'L';
         case TOKEN_ADD:
             self->precedence = 2;
             self->associative = 'L';
@@ -61,10 +64,32 @@ void Token_set_eval(Token *self){
 	
 		case 'R':
 			self->eval = &resistance;
+            break;
 		case 'C':
 			self->eval = &capacitance;
+            break;
+        case 'Q':
+            self->eval = &cpe;
+            break;
+        case 'L':
+            self->eval = &inductance;
+            break;
+        case 'W':
+            switch(self->value[1]){
+                case 'd':
+                    self->eval = &finite_length_warburg;
+                    break;
+                case 'm':
+                    self->eval = &finite_space_warburg;
+                    break;
+                default:
+                    self->eval = &warburg;
+                    break;
+            }
+            break;
 		default:
 			self->eval = NULL;
+            break;
 	}
 
 }

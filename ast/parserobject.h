@@ -29,20 +29,15 @@ typedef struct parser_struct{
 
 }Parser;
 
-
+/* METHODS */
 Parser *Parser__init__(Lexer *lexer);
-
 void Parser__del__(Parser *self);
 
 void Parser_eat(Parser *self);
-
 void Parser_parse(Parser *parser);
-
 void Parser_parse_operators(Parser *self);
-
 void Parser_parse_elements(Parser *self);
-
 void Parser_pop_operator(Parser *self);
-
 void Parser_discard_lparen(Parser *self);
+
 #endif

@@ -32,6 +32,8 @@ add_executable(${PROJECT_NAME} main.c
 # target properties
 set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".out")
 
+target_link_libraries(${PROJECT_NAME} m)
+
 # configuration header
 configure_file(version.h.in version.h)
 

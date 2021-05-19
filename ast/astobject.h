@@ -17,4 +17,5 @@ typedef struct ast_node_struct{
 AstNode *AstNode__init__(Token *token, AstNode *top, AstNode *left, AstNode *right);
 void AstNode__del__(AstNode *self);
 
+
 #endif

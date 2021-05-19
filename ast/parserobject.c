@@ -1,8 +1,6 @@
 #include "parserobject.h"
 
 
-
-
 Parser *Parser__init__(Lexer *lexer){
     Parser *self = (Parser *) calloc(1, sizeof(Parser));
     self->lexer = lexer;
@@ -25,6 +23,23 @@ Parser *Parser__init__(Lexer *lexer){
     self->__del__ = &Parser__del__;
 
     return self;
+}
+
+void Parser__del__(Parser *self){
+
+    int i;
+
+    for (i=0;i<self->nops; i++){
+        self->operators[i]->__del__(self->operators[i]);
+    }
+
+    for (i=0; i<self->nqueue; i++){
+        self->queue[i]->__del__(self->queue[i]);
+    }
+
+    free(self->operators);
+    free(self->queue);
+
 }
 
 void Parser_eat(Parser *self){
@@ -110,7 +125,6 @@ void Parser_parse_operators(Parser *self){
         self->operators[self->nops-1] = self->current_token;
 }
 
-
 void Parser_parse_elements(Parser *self){
     self->nqueue += 1;
     self->queue = (Token **) realloc(self->queue, self->nqueue * sizeof(Token *));
@@ -123,23 +137,6 @@ void Parser_discard_lparen(Parser *self){
     self->nops -= 1;
     self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
     self->current_token->__del__(self->current_token);
-}
-
-void Parser__del__(Parser *self){
-
-    int i;
-
-    for (i=0;i<self->nops; i++){
-        self->operators[i]->__del__(self->operators[i]);
-    }
-
-    for (i=0; i<self->nqueue; i++){
-        self->queue[i]->__del__(self->queue[i]);
-    }
-
-    free(self->operators);
-    free(self->queue);
-
 }
 
 /* This implementation does not implement composite functions,functions with variable number of arguments, and unary operators.
