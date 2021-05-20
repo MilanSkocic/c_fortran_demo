@@ -27,3 +27,11 @@ double complex finite_length_warburg(double *p, double w){
 double complex finite_space_warburg(double *p, double w){
     return p[0]/(ctanh(cpow(I*p[1]*w, p[2])) * cpow(I*p[1]*w, p[2]));
 }
+
+
+char *eval_test(char *value){
+
+    /* printf("TOKEN EVAL VALUE = %s\n", value); */
+    return value;
+
+}

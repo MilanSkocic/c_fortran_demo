@@ -16,4 +16,17 @@ typedef struct ast_node_struct{
 AstNode *AstNode__init__(Token *token, AstNode *left, AstNode *right);
 void AstNode__del__(AstNode *self);
 
+
+typedef struct ast_visitor_struct{
+
+    char *value;
+    AstNode *root;
+    void (*visit)(struct ast_visitor_struct *self);
+
+
+}AstVisitor;
+
+AstVisitor *AstVisitor__init__(AstNode *root);
+void AstVisitor_visit(AstVisitor *self);
+
 #endif

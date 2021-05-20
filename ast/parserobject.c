@@ -21,6 +21,7 @@ Parser *Parser__init__(Lexer *lexer){
     self->pop_operator = &Parser_pop_operator;
     self->discard_lparen = &Parser_discard_lparen;
     self->push_node = &Parser_push_node;
+    self->pop_node = &Parser_pop_node;
     self->__del__ = &Parser__del__;
 
     return self;
@@ -51,7 +52,9 @@ void Parser_eat(Parser *self){
 void Parser_parse(Parser *self){
     
     size_t i;
-    Token *last=NULL;
+    Token *last;
+    AstNode *left;
+    AstNode *right;
 
     do{
         Parser_eat(self);
@@ -111,16 +114,29 @@ void Parser_parse(Parser *self){
     while (self->nops > 0){
         self->pop_operator(self);
     }
-    i = 0;
-    while(self->queue[i]->type == TOKEN_ELEMENT){
-	self->current_token = self->queue[i];
-	self->push_node(self);
-	i += 1;
+    for(i=0; i<self->nqueue; i++){
+        self->current_token = self->queue[i];
+    	switch(self->current_token->type){
+            case TOKEN_ELEMENT:
+                left = NULL;
+                right = NULL;
+                self->push_node(self, left, right);
+                break;
+            case TOKEN_ADD:
+            case TOKEN_SUB:
+            case TOKEN_DIV:
+            case TOKEN_MUL:
+            case TOKEN_POW:
+                left = self->nodes[self->nnodes-2];
+                right = self->nodes[self->nnodes - 1];
+                self->ast = AstNode__init__(self->current_token, left, right);
+                self->pop_node(self);
+                break;
+            default:
+                break;
+		
 	}
-    for(i=i; i<self->nqueue; i++){
-    	printf("QUEUE[%ld] = %s\n", i, self->queue[i]->value);
     }
-
 }
 
 void Parser_pop_operator(Parser *self){
@@ -143,11 +159,16 @@ void Parser_push_element(Parser *self){
     self->queue[self->nqueue-1] = self->current_token;
 }
 
-void Parser_push_node(Parser *self){
+void Parser_push_node(Parser *self, AstNode *left, AstNode *right){
     self->nnodes += 1;
-    printf("parser->nnodes = %d\n", self->nnodes);
     self->nodes = (AstNode **) realloc(self->nodes, self->nnodes * sizeof(AstNode *));
-    self->nodes[self->nnodes-1] = AstNode__init__(self->queue[0], NULL, NULL);
+    self->nodes[self->nnodes-1] = AstNode__init__(self->current_token, left, right);
+}
+
+void Parser_pop_node(Parser *self){
+    self->nnodes -= 1;
+    self->nodes = (AstNode **) realloc(self->nodes, self->nnodes * sizeof(AstNode *));
+    self->nodes[self->nnodes-1] = self->ast;
 }
 
 void Parser_discard_lparen(Parser *self){

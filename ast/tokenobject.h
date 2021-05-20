@@ -2,6 +2,7 @@
 #define TOKENOBJECT_H
 
 #include<stdlib.h>
+#include<string.h>
 #include"eis.h"
 
 #define SPACECHAR 10
@@ -31,7 +32,7 @@ typedef struct token_struct{
     int precedence; /**< Priority */
     char associative;
     void (*__del__)(struct token_struct *); /**< Destructore*/
-    double complex (*eval)(double *, double );
+    char *(*eval)(char *value);
     void (*set_eval)(struct token_struct *);
 }Token;
 

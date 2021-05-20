@@ -60,7 +60,7 @@ void Token__del__(Token *self){
 
 void Token_set_eval(Token *self){
 
-	switch (self->value[0]){
+	/*switch (self->value[0]){
 	
 		case 'R':
 			self->eval = &resistance;
@@ -90,6 +90,8 @@ void Token_set_eval(Token *self){
 		default:
 			self->eval = NULL;
             break;
-	}
+	}*/
+
+    self->eval = &eval_test;
 
 }
