@@ -1,4 +1,5 @@
 #include "parserobject.h"
+#include "visitorobject.h"
 #include "version.h"
 
 
@@ -38,13 +39,11 @@ int main(int argc, char **argv){
        
     }
 
-    AstVisitor *visitor = AstVisitor__init__(parser->ast);
-    visitor->visit(visitor);
+    AstVisitor *visitor = AstVisitor__init__();
+    parser->ast->eval(parser->ast, visitor);
 
-    printf("value = %s", visitor->value);
 
     lexer->__del__(lexer);
 
     return 0;
-
 }

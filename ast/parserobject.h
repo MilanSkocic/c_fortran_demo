@@ -1,5 +1,5 @@
-#ifndef PARSER_H 
-#define PARSER_H
+#ifndef PARSEROBJECT_H 
+#define PARSEROBJECT_H
 #include "lexerobject.h"
 #include "astobject.h"
 

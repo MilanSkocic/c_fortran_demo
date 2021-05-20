@@ -1,16 +1,6 @@
 #include "astobject.h"
+#include "visitorobject.h"
 
-AstVisitor *AstVisitor__init__(AstNode *root){
-
-    AstVisitor *self = (AstVisitor *)calloc(1, sizeof(AstVisitor));
-
-    self->value = (char *)calloc(0, sizeof(char));
-    self->root = root;
-    self->visit = &AstVisitor_visit;
-
-    return self;
-
-}
 
 AstNode *AstNode__init__(Token *token, AstNode * left, AstNode *right)
 {
@@ -19,6 +9,7 @@ AstNode *AstNode__init__(Token *token, AstNode * left, AstNode *right)
     self->token = token;
     self->left = left;
     self->right = right;
+    self->eval = &AstNode_eval;
     return self;
 }
 
@@ -26,41 +17,15 @@ void AstNode__del__(AstNode* self){
     free(self);
 }
 
-
-
-void AstVisitor_visit(AstVisitor *self){
-
-    printf("CURRENT NODE TOKEN = %s\n", self->root->token->value);
-    char *result;
-    if ((self->root->left == NULL) & (self->root->right == NULL)){
-        result = self->root->token->eval(self->root->token->value);
-        self->value = (char *)realloc(self->value, strlen(result) + strlen(self->value) + 1 * sizeof(char));
-        strcat(self->value, result);
-        printf("value = %s \n", self->value);
-
+void AstNode_eval(AstNode *self, AstVisitor *visitor){
+    if((self->left == NULL) & (self->right == NULL)){
+        visitor->visit(visitor, self->token);
     }
-
-    if(self->root->left != NULL){
-        printf("LEFT NOT NULL %s\n", self->root->left->token->value);
-        result = self->root->token->value;
-        self->value = (char *)realloc(self->value, strlen(result) + strlen(self->value) + 1 * sizeof(char));
-        strcat(self->value, result);
-        printf("value = %s \n", self->value);
-        self->root = self->root->left;
-        self->visit(self);
-    }
-
+    if(self->left != NULL){
+        self->eval(self->left, visitor);
         
-    if(self->root->right != NULL){
-        printf("RIGHT NOT NULL %s\n", self->root->right->token->value);
-        result = self->root->right->token->value;
-        self->value = (char *)realloc(self->value, strlen(result) + strlen(self->value) + 1 * sizeof(char));
-        strcat(self->value, result);
-        printf("value = %s \n", self->value);
-        self->root = self->root->right;
-        self->visit(self);
     }
-
-
-
+    if(self->right != NULL){
+        self->eval(self->right, visitor);
+    }
 }

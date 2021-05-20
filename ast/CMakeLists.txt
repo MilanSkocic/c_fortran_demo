@@ -27,7 +27,8 @@ add_executable(${PROJECT_NAME} main.c
 	lexerobject.c 
 	parserobject.c
 	astobject.c
-	eis.c)
+	eis.c
+    visitorobject.c)
 
 # target properties
 set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".out")

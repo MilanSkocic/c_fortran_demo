@@ -285,6 +285,33 @@ tokenobject.c.s:
 	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/tokenobject.c.s
 .PHONY : tokenobject.c.s
 
+visitorobject.o: visitorobject.c.o
+
+.PHONY : visitorobject.o
+
+# target to build an object file
+visitorobject.c.o:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/visitorobject.c.o
+.PHONY : visitorobject.c.o
+
+visitorobject.i: visitorobject.c.i
+
+.PHONY : visitorobject.i
+
+# target to preprocess a source file
+visitorobject.c.i:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/visitorobject.c.i
+.PHONY : visitorobject.c.i
+
+visitorobject.s: visitorobject.c.s
+
+.PHONY : visitorobject.s
+
+# target to generate assembly for a file
+visitorobject.c.s:
+	$(MAKE) -f CMakeFiles/progcmake.dir/build.make CMakeFiles/progcmake.dir/visitorobject.c.s
+.PHONY : visitorobject.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -312,6 +339,9 @@ help:
 	@echo "... tokenobject.o"
 	@echo "... tokenobject.i"
 	@echo "... tokenobject.s"
+	@echo "... visitorobject.o"
+	@echo "... visitorobject.i"
+	@echo "... visitorobject.s"
 .PHONY : help
 
 
