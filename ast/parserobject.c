@@ -20,6 +20,7 @@ Parser *Parser__init__(Lexer *lexer){
     self->parse = &Parser_parse;
     self->pop_operator = &Parser_pop_operator;
     self->discard_lparen = &Parser_discard_lparen;
+    self->push_node = &Parser_push_node;
     self->__del__ = &Parser__del__;
 
     return self;
@@ -110,14 +111,21 @@ void Parser_parse(Parser *self){
     while (self->nops > 0){
         self->pop_operator(self);
     }
-    i = 0;
     while(self->nqueue>0){
-        while(self->queue[i]->type == TOKEN_ELEMENT){
-            self->current_token = self->queue[i];
-            self->push_element(self);
-            i += 1;
+        if(self->queue[0]->type == TOKEN_ELEMENT){
+            self->push_node(self);
         }
-        
+        if((self->queue[0]->type == TOKEN_ADD)
+                | (self->queue[0]->type == TOKEN_SUB)
+                | (self->queue[0]->type == TOKEN_MUL)
+                | (self->queue[0]->type == TOKEN_DIV)){
+            self->ast = AstNode__init__(self->current_token, 
+                                        self->nodes[self->nnodes-2], 
+                                        self->nodes[self->nnodes-1]);
+            self->nnodes -= 1;
+            self->nodes = (AstNode **)realloc(self->nodes, self->nnodes * sizeof(AstNode *));
+            self->nodes[self->nnodes-1] = self->ast;
+        }
     }
 }
 
@@ -143,8 +151,11 @@ void Parser_push_element(Parser *self){
 
 void Parser_push_node(Parser *self){
     self->nnodes += 1;
+    printf("parser->nnodes = %d", self->nnodes);
     self->nodes = (AstNode **) realloc(self->nodes, self->nnodes * sizeof(AstNode *));
-    self->nodes[self->nnodes-1] = self->current_token;
+    self->nodes[self->nnodes-1] = AstNode__init__(self->queue[0], NULL, NULL);
+    self->nqueue -= 1;
+    self->queue = (Token **) realloc(self->queue, self->nqueue * sizeof(Token *));
 }
 
 void Parser_discard_lparen(Parser *self){

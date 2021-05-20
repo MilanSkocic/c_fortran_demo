@@ -25,6 +25,7 @@ typedef struct parser_struct{
    void (*parse)(struct parser_struct *self);
    void (*pop_operator)(struct parser_struct *self);
    void (*discard_lparen)(struct parser_struct *self);
+   void (*push_node)(struct parser_struct *self);
    void (*__del__)(struct parser_struct *self);
 
 }Parser;
@@ -39,5 +40,6 @@ void Parser_push_operator(Parser *self);
 void Parser_push_element(Parser *self);
 void Parser_pop_operator(Parser *self);
 void Parser_discard_lparen(Parser *self);
+void Parser_push_node(Parser *self);
 
 #endif
