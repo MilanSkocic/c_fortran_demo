@@ -1,7 +1,6 @@
 #ifndef TOKENOBJECT_H
 #define TOKENOBJECT_H
 
-#include<stdlib.h>
 #include<string.h>
 #include"eis.h"
 
@@ -32,15 +31,11 @@ typedef struct token_struct{
     int precedence; /**< Priority */
     char associative;
     void (*__del__)(struct token_struct *); /**< Destructore*/
-    char *(*eval)(char *value);
-    void (*set_eval)(struct token_struct *);
 }Token;
 
 
 /* METHODS */
 Token *Token__init__(int type, char *value);
 void Token__del__(Token *self);
-void Token_set_eval(Token *self);
-
 
 #endif

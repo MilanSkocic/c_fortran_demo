@@ -40,8 +40,11 @@ int main(int argc, char **argv){
     }
 
     AstVisitor *visitor = AstVisitor__init__();
-    parser->ast->eval(parser->ast, visitor);
+    
+    char *result;
+    result = visitor->visit(visitor, parser->ast);
 
+    printf("Result=%s", result);
 
     lexer->__del__(lexer);
 

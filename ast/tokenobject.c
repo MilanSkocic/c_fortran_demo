@@ -1,3 +1,4 @@
+#include<stdlib.h>
 #include"tokenobject.h"
 
 char *ELEMENTS[] = {"R", "C", "L", "Q", "W", "Wd", "Wm"};
@@ -14,8 +15,6 @@ Token *Token__init__(int type, char *value)
     Token *self = (Token *)calloc(1, sizeof(Token));
     self->type = type;
     self->value = value;
-    self->set_eval = &Token_set_eval;
-    self->set_eval(self);
     self->__del__ = &Token__del__;
 
     switch (self->type){
@@ -55,43 +54,5 @@ Token *Token__init__(int type, char *value)
 void Token__del__(Token *self){
     free(self->value);
     free(self);
-
-}
-
-void Token_set_eval(Token *self){
-
-	/*switch (self->value[0]){
-	
-		case 'R':
-			self->eval = &resistance;
-            break;
-		case 'C':
-			self->eval = &capacitance;
-            break;
-        case 'Q':
-            self->eval = &cpe;
-            break;
-        case 'L':
-            self->eval = &inductance;
-            break;
-        case 'W':
-            switch(self->value[1]){
-                case 'd':
-                    self->eval = &finite_length_warburg;
-                    break;
-                case 'm':
-                    self->eval = &finite_space_warburg;
-                    break;
-                default:
-                    self->eval = &warburg;
-                    break;
-            }
-            break;
-		default:
-			self->eval = NULL;
-            break;
-	}*/
-
-    self->eval = &eval_test;
 
 }
