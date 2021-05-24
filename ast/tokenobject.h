@@ -1,7 +1,6 @@
 #ifndef TOKENOBJECT_H
 #define TOKENOBJECT_H
 
-#include<string.h>
 #include"eis.h"
 
 #define SPACECHAR 10

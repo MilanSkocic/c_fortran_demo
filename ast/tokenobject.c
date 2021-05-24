@@ -1,4 +1,5 @@
 #include<stdlib.h>
+#include<string.h>
 #include"tokenobject.h"
 
 char *ELEMENTS[] = {"R", "C", "L", "Q", "W", "Wd", "Wm"};

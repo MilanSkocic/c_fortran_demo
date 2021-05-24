@@ -1,4 +1,5 @@
 #include"eis.h"
+#include<stdio.h>
 
 double complex resistance(double *p, double w){
     return (double complex) p[0];

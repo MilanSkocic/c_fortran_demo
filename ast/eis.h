@@ -1,9 +1,8 @@
 #ifndef EIS_H
 #define EIS_H
-#include<stdio.h>
+
 #include<math.h>
 #include<complex.h>
-
 
 double complex resistance(double *p, double w);
 

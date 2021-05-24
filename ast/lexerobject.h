@@ -1,9 +1,6 @@
 #ifndef LEXEROBJECT_H
 #define LEXEROBJECT_H
 
-#include<string.h>
-#include<ctype.h>
-#include<stdio.h>
 #include"tokenobject.h"
 
 /**

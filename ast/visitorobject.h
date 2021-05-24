@@ -5,9 +5,9 @@
 #include"astobject.h"
 
 typedef struct ast_visitor_struct{
-
+    
     char *value;
-    char*(*visit)(struct ast_visitor_struct *self, AstNode *node);
+    char *(*visit)(struct ast_visitor_struct *self, AstNode *node);
 
 
 }AstVisitor;
