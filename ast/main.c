@@ -1,4 +1,5 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "parserobject.h"
 #include "visitorobject.h"
 #include "version.h"
@@ -29,8 +30,8 @@ int main(int argc, char **argv){
     while (token->type != TOKEN_EOF);*/
 
     Parser *parser = Parser__init__(lexer);
+    AstNode *ast = parser->parse(parser);
     
-    Parser_parse(parser);
     
     printf("QUEUE\n");
     for (i=0; i<parser->nqueue; i++){
@@ -42,11 +43,14 @@ int main(int argc, char **argv){
 
     AstVisitor *visitor = AstVisitor__init__();
     
-    visitor->visit(visitor, parser->ast);
+    char *infix ;
+    infix = visitor->get_infix(visitor, ast);
 
-    printf("Result=%s", visitor->value);
+    printf("Result=%s\n", infix);
 
-    lexer->__del__(lexer);
+    lexer->__del__(lexer); /*  */
+    ast->__del__(ast); /* delete all nodes and tokens */
+    visitor->__del__(visitor); /* delete visitor */
 
     return 0;
 }

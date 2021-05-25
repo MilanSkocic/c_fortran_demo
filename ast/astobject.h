@@ -9,6 +9,9 @@ typedef struct ast_node_struct{
     struct token_struct *token;
     struct ast_node_struct *right;
     struct ast_node_struct *left;
+
+    void (*__del__)(struct ast_node_struct *self);
+
 }AstNode;
 
 

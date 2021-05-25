@@ -7,13 +7,15 @@
 typedef struct ast_visitor_struct{
     
     char *value;
-    char *(*visit)(struct ast_visitor_struct *self, AstNode *node);
+    char *(*get_infix)(struct ast_visitor_struct *self, AstNode *node);
+    void (*__del__)(struct ast_visitor_struct *self);
 
 
 }AstVisitor;
 
 /* METHODS */
 AstVisitor *AstVisitor__init__(void);
-char *AstVisitor_visit(AstVisitor *self, AstNode *node);
+char *AstVisitor_get_infix(AstVisitor *self, AstNode *node);
+void AstVisitor__del__(AstVisitor *self);
 
 #endif

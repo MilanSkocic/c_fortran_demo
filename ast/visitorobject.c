@@ -6,20 +6,21 @@
 AstVisitor *AstVisitor__init__(){
 
     AstVisitor *self = (AstVisitor *)calloc(1, sizeof(AstVisitor));
-    self->value = calloc(1, sizeof(char));
-    self->value[0] = '\0';
-    self->visit = &AstVisitor_visit;
+    self->value = NULL;
+    self->get_infix = &AstVisitor_get_infix;
+    self->__del__ = &AstVisitor__del__;
 
     return self;
 
 }
 
 
-char *AstVisitor_visit(AstVisitor *self, AstNode *node){
+char *AstVisitor_get_infix(AstVisitor *self, AstNode *node){
 
     char *left;
     char *right;
-    char *value = NULL;
+    char *value = (char *)calloc(1, sizeof(char));
+    value[0]  = '\0';
     size_t size;
 
 
@@ -29,23 +30,35 @@ char *AstVisitor_visit(AstVisitor *self, AstNode *node){
         case TOKEN_POW:
         case TOKEN_DIV:
         case TOKEN_MUL:
-            left = self->visit(self, node->left);
-            right = self->visit(self, node->right);
-            size = strlen(self->value) + strlen(left) + strlen(right) + strlen(node->token->value) + 3;
-            self->value = (char *)realloc(self->value, size*sizeof(char));
-            strcat(self->value, "(");
-            strcat(self->value, left);
-            strcat(self->value, node->token->value);
-            strcat(self->value, right);
-            strcat(self->value, ")");
-            value = self->value;
+            left = self->get_infix(self, node->left);
+            right = self->get_infix(self, node->right);
+            size = strlen(left) + strlen(right) + strlen(node->token->value) + 3;
+            value = (char *)realloc(value, size*sizeof(char));
+            strcat(value, "(");
+            strcat(value, left);
+            strcat(value, node->token->value);
+            strcat(value, right);
+            strcat(value, ")");
+            free(left);
+            free(right);
+            self->value = value;
             break;
         case TOKEN_ELEMENT:
-            value = node->token->value;
+            size = strlen(node->token->value) + 1;
+            value = (char *)realloc(value, size*sizeof(char));
+            strcpy(value, node->token->value);
+            self->value = value;
             break;
         default:
-            value = self->value;
             break;
     }
     return value;
+}
+
+
+void AstVisitor__del__(AstVisitor *self){
+    
+    free(self->value);
+    free(self);
+
 }

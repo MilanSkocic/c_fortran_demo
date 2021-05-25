@@ -51,7 +51,7 @@ void Parser_eat(Parser *self){
     self->current_token = self->lexer->get_next_token(self->lexer);
 }
 
-void Parser_parse(Parser *self){
+AstNode *Parser_parse(Parser *self){
     
     size_t i;
     Token *last;
@@ -139,6 +139,7 @@ void Parser_parse(Parser *self){
 		
 	}
     }
+    return self->ast;
 }
 
 void Parser_pop_operator(Parser *self){

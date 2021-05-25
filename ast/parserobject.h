@@ -22,7 +22,7 @@ typedef struct parser_struct{
    /* METHODS */
    void (*push_element)(struct parser_struct *self);
    void (*push_operator)(struct parser_struct *self);
-   void (*parse)(struct parser_struct *self);
+   AstNode *(*parse)(struct parser_struct *self);
    void (*pop_operator)(struct parser_struct *self);
    void (*discard_lparen)(struct parser_struct *self);
    void (*push_node)(struct parser_struct *self, AstNode *left, AstNode *right);
@@ -36,7 +36,7 @@ Parser *Parser__init__(Lexer *lexer);
 void Parser__del__(Parser *self);
 
 void Parser_eat(Parser *self);
-void Parser_parse(Parser *parser);
+AstNode *Parser_parse(Parser *parser);
 void Parser_push_operator(Parser *self);
 void Parser_push_element(Parser *self);
 void Parser_pop_operator(Parser *self);
