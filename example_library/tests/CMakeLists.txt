@@ -1,4 +1,4 @@
-link_directories(${CMAKE_BINARY_DIR}/src)
+link_directories(${LIB_DIRS})
 
 add_executable(runtests runtests.c)
 target_include_directories(runtests PRIVATE ../include)
