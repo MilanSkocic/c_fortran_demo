@@ -48,7 +48,7 @@ int main(int argc, char **argv){
 
     printf("Result=%s\n", infix);
 
-    lexer->__del__(lexer); /*  */
+    lexer->__del__(lexer); /* delete lexer */
     ast->__del__(ast); /* delete all nodes and tokens */
     visitor->__del__(visitor); /* delete visitor */
 

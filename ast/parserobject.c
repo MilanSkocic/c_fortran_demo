@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include "parserobject.h"
 
-
+/**
+ * @brief Parser constructor
+ * param[in] lexer Lexer object
+ */
 Parser *Parser__init__(Lexer *lexer){
     Parser *self = (Parser *) calloc(1, sizeof(Parser));
     self->lexer = lexer;
@@ -60,7 +63,6 @@ AstNode *Parser_parse(Parser *self){
 
     do{
         Parser_eat(self);
-
         switch(self->current_token->type){
 
             case TOKEN_ELEMENT:
@@ -69,22 +71,16 @@ AstNode *Parser_parse(Parser *self){
             case TOKEN_EOF:
                 break;
             case TOKEN_DIV:
-
             case TOKEN_ADD:
-
 	        case TOKEN_SUB: 
-
             case TOKEN_POW:
-
             case TOKEN_MUL:
-                if (self->nops > 0)
-                {
+                if (self->nops > 0){
                     last = self->operators[self->nops-1];
                 }else{
                     last = self->current_token;
                 }
-                if (last != NULL)
-                {
+                if (last != NULL){
                     while((self->nops > 0)
                           &((last->precedence > self->current_token->precedence)
                            |((last->precedence == self->current_token->precedence) & (self->current_token->associative == 'L')))
@@ -102,12 +98,10 @@ AstNode *Parser_parse(Parser *self){
             case TOKEN_RPAREN:
                 while ((self->operators[self->nops-1]->type != TOKEN_LPAREN) & (self->nops>0))
                 {
-
                     self->pop_operator(self);
-
                 }
                 if(self->operators[self->nops-1]->type == TOKEN_LPAREN){
-			self->discard_lparen(self);
+                    self->discard_lparen(self);
                 }
                 break;
         }
