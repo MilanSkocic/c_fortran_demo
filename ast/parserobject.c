@@ -18,6 +18,9 @@ Parser *Parser__init__(Lexer *lexer){
     self->ast = NULL;
     self->current_token = NULL;
     self->previous_token = NULL;
+    self->status = NO_ERROR;
+    self->parameters = NULL;
+    self->nparameters = 0;
 
     /* METHODS */
     self->push_element = &Parser_push_element;
@@ -34,7 +37,7 @@ Parser *Parser__init__(Lexer *lexer){
 
 void Parser__del__(Parser *self){
 
-    int i;
+    /*int i;
 
     for (i=0;i<self->nops; i++){
         self->operators[i]->__del__(self->operators[i]);
@@ -42,10 +45,11 @@ void Parser__del__(Parser *self){
 
     for (i=0; i<self->nqueue; i++){
         self->queue[i]->__del__(self->queue[i]);
-    }
+    }*/
 
     free(self->operators);
     free(self->queue);
+    free(self->parameters);
 
 }
 
@@ -102,6 +106,8 @@ AstNode *Parser_parse(Parser *self){
                 }
                 if(self->operators[self->nops-1]->type == TOKEN_LPAREN){
                     self->discard_lparen(self);
+                }else{
+                    self->status = BRACKET_MISMATCH;
                 }
                 break;
         }
@@ -110,6 +116,11 @@ AstNode *Parser_parse(Parser *self){
     while (self->nops > 0){
         self->pop_operator(self);
     }
+    /* walk through the queue and build up the nodes of the asbtract syntax
+     * tree 
+     * Build the parameter array
+     */
+    self->nparameters = 1;
     for(i=0; i<self->nqueue; i++){
         self->current_token = self->queue[i];
     	switch(self->current_token->type){
@@ -117,6 +128,31 @@ AstNode *Parser_parse(Parser *self){
                 left = NULL;
                 right = NULL;
                 self->push_node(self, left, right);
+                switch(self->current_token->value[0]){
+                    case 'R':
+                    case 'C':
+                    case 'L':
+                        self->nparameters += 1;
+                        break;
+                    case 'Q':
+                        self->nparameters += 2;
+                        break;
+                    case 'W':
+                        switch(self->current_token->value[1]){
+                            case 'd':
+                            case 'D':
+                            case 'm':
+                            case 'M':
+                                self->nparameters += 3;
+                                break;
+                            default:
+                                self->nparameters += 1;
+                                break;
+                        }
+                    default:
+                        break;
+                }
+                self->parameters = (double *)realloc(self->parameters, self->nparameters * sizeof(double));
                 break;
             case TOKEN_ADD:
             case TOKEN_SUB:
@@ -131,7 +167,7 @@ AstNode *Parser_parse(Parser *self){
             default:
                 break;
 		
-	}
+	    }
     }
     return self->ast;
 }

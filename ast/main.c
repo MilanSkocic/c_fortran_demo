@@ -13,7 +13,7 @@ int main(int argc, char **argv){
 
     printf("VERSION = %d\n", progcmake_VERSION_MAJOR);
 
-    char *input = "Rel + (Rct+Wdox) / Qdl ";
+    char *input = "Rel + (Rct+Wdox) / Qdl + Rox ";
 
     printf("Input=%s\n", input);
 
@@ -49,14 +49,20 @@ int main(int argc, char **argv){
     infix = visitor->get_infix(visitor, ast);
     
     double complex result;
-    for(i=0; i<1000; i++){
+    for(i=0; i<1; i++){
         result = visitor->eval(visitor, ast, NULL, NULL);
         printf("%.1f %.1f\n", creal(result), cimag(result));
     }
 
     printf("Result=%s\n", infix);
 
+    printf("nparameters = %d\n", parser->nparameters);
+    for(i=0; i<parser->nparameters; i++){
+        printf("p[%d]=%.1f\n", i, parser->parameters[i]);
+    }
+
     lexer->__del__(lexer); /* delete lexer */
+    parser->__del__(parser); /* delete queue and operators */
     ast->__del__(ast); /* delete all nodes and tokens */
     visitor->__del__(visitor); /* delete visitor */
 

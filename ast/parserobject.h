@@ -3,7 +3,9 @@
 #include "lexerobject.h"
 #include "astobject.h"
 
-
+enum parser_status {NO_ERROR,
+                    BRACKET_MISMATCH,
+                    UNKNOWN_ELEMENT};
 
 
 typedef struct parser_struct{
@@ -18,6 +20,9 @@ typedef struct parser_struct{
    int nnodes;
    Token *current_token;
    Token *previous_token;
+   enum parser_status status; 
+   double *parameters;
+   int nparameters;
    
    /* METHODS */
    void (*push_element)(struct parser_struct *self);
