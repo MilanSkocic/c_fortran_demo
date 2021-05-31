@@ -8,6 +8,7 @@ typedef struct ast_visitor_struct{
     
     char *value;
     char *(*get_infix)(struct ast_visitor_struct *self, AstNode *node);
+    double complex (*eval)(struct ast_visitor_struct *self, AstNode *node, double *p, double *w);
     void (*__del__)(struct ast_visitor_struct *self);
 
 
@@ -16,6 +17,7 @@ typedef struct ast_visitor_struct{
 /* METHODS */
 AstVisitor *AstVisitor__init__(void);
 char *AstVisitor_get_infix(AstVisitor *self, AstNode *node);
+double complex AstVisitor_eval(AstVisitor *self, AstNode *node, double *p, double *w);
 void AstVisitor__del__(AstVisitor *self);
 
 #endif
