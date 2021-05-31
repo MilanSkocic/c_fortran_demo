@@ -91,25 +91,25 @@ double complex AstVisitor_eval(AstVisitor *self, AstNode *node, double *p, doubl
                 case 'C':
                 case 'L':
                 case 'Q':
-                    value = 2+I*2;
+                    value = 2;
                 case 'W':
                     switch(node->token->value[2]){
                         case 'd':
                         case 'D':
-                            value = 0;
+                            value = 1;
                             break;
                         case 'm':
                         case 'M':
-                            value = 0.0;
+                            value = 1.0;
                             break;
                         default:
-                            value = 0.0;
+                            value = 1.0;
                     }
             
             }
         
         default:
-            value = 0.0 +I*0.0;
+            value = 1.0 ;
             break;
     }
 

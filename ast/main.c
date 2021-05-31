@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <complex.h>
 #include "parserobject.h"
 #include "visitorobject.h"
 #include "version.h"
@@ -45,6 +47,12 @@ int main(int argc, char **argv){
     
     char *infix ;
     infix = visitor->get_infix(visitor, ast);
+    
+    double complex result;
+    for(i=0; i<1000; i++){
+        result = visitor->eval(visitor, ast, NULL, NULL);
+        printf("%.1f %.1f\n", creal(result), cimag(result));
+    }
 
     printf("Result=%s\n", infix);
 
