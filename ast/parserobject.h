@@ -21,8 +21,6 @@ typedef struct parser_struct{
    Token *current_token;
    Token *previous_token;
    enum parser_status status; 
-   double *parameters;
-   int nparameters;
    
    /* METHODS */
    void (*push_element)(struct parser_struct *self);
