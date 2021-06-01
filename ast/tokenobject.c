@@ -1,8 +1,9 @@
 #include<stdlib.h>
+#include<stdio.h>
 #include<string.h>
 #include"tokenobject.h"
 
-char *ELEMENTS[] = {"R", "C", "L", "Q", "W", "Wd", "Wm"};
+static char *ELEMENTS = {'R', 'C', 'L', 'Q', 'W'};
 
 
 /**
@@ -16,6 +17,7 @@ Token *Token__init__(int type, char *value)
     Token *self = (Token *)calloc(1, sizeof(Token));
     self->type = type;
     self->value = value;
+    self->print = &Token_print;
     self->__del__ = &Token__del__;
 
     switch (self->type){
@@ -56,4 +58,8 @@ void Token__del__(Token *self){
     free(self->value);
     free(self);
 
+}
+
+void Token_print(Token *self){
+    printf("Token: value, type = %s - %d\n", self->value, self->type);
 }

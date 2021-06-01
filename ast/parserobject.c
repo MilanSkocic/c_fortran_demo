@@ -6,7 +6,7 @@
  * @brief Parser constructor
  * param[in] lexer Lexer object
  */
-Parser *Parser__init__(Lexer *lexer){
+Parser *Parser__init__(Lexer *lexer, int verbose){
     Parser *self = (Parser *) calloc(1, sizeof(Parser));
     self->lexer = lexer;
     self->queue = NULL;
@@ -18,6 +18,7 @@ Parser *Parser__init__(Lexer *lexer){
     self->ast = NULL;
     self->current_token = NULL;
     self->previous_token = NULL;
+    self->verbose = verbose;
     self->status = NO_ERROR;
 
     /* METHODS */
@@ -34,16 +35,6 @@ Parser *Parser__init__(Lexer *lexer){
 }
 
 void Parser__del__(Parser *self){
-
-    /*int i;
-
-    for (i=0;i<self->nops; i++){
-        self->operators[i]->__del__(self->operators[i]);
-    }
-
-    for (i=0; i<self->nqueue; i++){
-        self->queue[i]->__del__(self->queue[i]);
-    }*/
 
     free(self->operators);
     free(self->queue);
@@ -64,8 +55,10 @@ AstNode *Parser_parse(Parser *self){
 
     do{
         Parser_eat(self);
+        if(self->verbose){
+            self->current_token->print(self->current_token);
+        }
         switch(self->current_token->type){
-
             case TOKEN_ELEMENT:
                 self->push_element(self);
                 break;
@@ -130,14 +123,16 @@ AstNode *Parser_parse(Parser *self){
             case TOKEN_MUL:
             case TOKEN_POW:
                 left = self->nodes[self->nnodes-2];
-                right = self->nodes[self->nnodes - 1];
+                right = self->nodes[self->nnodes-1];
                 self->ast = AstNode__init__(self->current_token, left, right);
                 self->pop_node(self);
                 break;
             default:
                 break;
-		
 	    }
+        if((self->verbose)&(self->ast != NULL)){
+            self->ast->print(self->ast);
+        }
     }
     return self->ast;
 }
@@ -181,20 +176,6 @@ void Parser_discard_lparen(Parser *self){
     self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
     self->current_token->__del__(self->current_token);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -29,12 +29,14 @@ typedef struct token_struct{
     char *value; /**< Token value */
     int precedence; /**< Priority */
     char associative;
-    void (*__del__)(struct token_struct *); /**< Destructore*/
+    void (*print)(struct token_struct *self); /* print in verbose = 1 */
+    void (*__del__)(struct token_struct *self); /**< Destructore*/
 }Token;
 
 
 /* METHODS */
 Token *Token__init__(int type, char *value);
 void Token__del__(Token *self);
+void Token_print(Token *self);
 
 #endif

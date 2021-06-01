@@ -10,6 +10,7 @@ typedef struct ast_node_struct{
     struct ast_node_struct *right;
     struct ast_node_struct *left;
 
+    void (*print)(struct ast_node_struct *self);
     void (*__del__)(struct ast_node_struct *self);
 
 }AstNode;
@@ -17,5 +18,6 @@ typedef struct ast_node_struct{
 
 /* METHODS */
 AstNode *AstNode__init__(Token *token, AstNode *left, AstNode *right);
+void AstNode_print(AstNode *self);
 void AstNode__del__(AstNode *self);
 #endif

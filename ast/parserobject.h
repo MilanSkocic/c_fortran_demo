@@ -18,6 +18,7 @@ typedef struct parser_struct{
    int nqueue;
    int nops;
    int nnodes;
+   int verbose;
    Token *current_token;
    Token *previous_token;
    enum parser_status status; 
@@ -35,7 +36,7 @@ typedef struct parser_struct{
 }Parser;
 
 /* METHODS */
-Parser *Parser__init__(Lexer *lexer);
+Parser *Parser__init__(Lexer *lexer, int verbose);
 void Parser__del__(Parser *self);
 
 void Parser_eat(Parser *self);

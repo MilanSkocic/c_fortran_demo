@@ -27,8 +27,6 @@ void AstVisitor__del__(AstVisitor *self){
 }
 
 void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
->>>>>>> 5da561d3b16b8f53c342c23876f7feeaed65508f
-
     switch(node->token->type){
         case TOKEN_ADD:
         case TOKEN_SUB:
@@ -133,22 +131,25 @@ double complex AstVisitor_eval(AstVisitor *self, AstNode *node, double *p, doubl
                     value = resistance(self->p, *w);
                     break;
                 case 'C':
+                    value = capacitance(self->p, *w);
+                    break;
                 case 'L':
+                    value = inductance(self->p, *w);
                 case 'Q':
-                    value = 2.2;
+                    value = cpe(self->p, *w);
                     break;
                 case 'W':
                     switch(node->token->value[1]){
                         case 'd':
                         case 'D':
-                            value = warburg(self->p+3, *w);
+                            value = finite_length_warburg(self->p, *w);
                             break;
                         case 'm':
                         case 'M':
-                            value = 1.0;
+                            value = finite_space_warburg(self->p, *w);
                             break;
                         default:
-                            value = 0.0;
+                            value = warburg(self->p, *w);
                             break;
                     }
                 }

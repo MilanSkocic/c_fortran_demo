@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "astobject.h"
 #include "visitorobject.h"
 
@@ -11,6 +12,7 @@ AstNode *AstNode__init__(Token *token, AstNode * left, AstNode *right)
     self->left = left;
     self->right = right;
     self->__del__ = &AstNode__del__;
+    self->print = &AstNode_print;
     return self;
 }
 
@@ -24,4 +26,10 @@ void AstNode__del__(AstNode* self){
     };
 
     free(self);
+}
+
+void AstNode_print(AstNode *self){
+    printf("Node: token=%s, left=%s, right=%s\n", self->token->value, 
+                                                self->left->token->value, 
+                                                self->right->token->value);
 }

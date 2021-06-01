@@ -64,22 +64,14 @@ Token *Lexer_get_next_token(Lexer *lexer)
 {
     Token *token;
     short int flag = 1;
-
     if(lexer->c != '\0' && lexer->i < strlen(lexer->contents))
     {
         lexer->skip_whitespace(lexer);
-
         if (isalnum(lexer->c))
         {
             token = lexer->collect_id(lexer);
             flag = 0;
         }
-        /*if (lexer->c == '"')
-        {
-            token = lexer->collect_string(lexer);
-            flag = 0;
-        }*/
-
         if (flag){
             switch (lexer->c)
             {
@@ -107,12 +99,14 @@ Token *Lexer_get_next_token(Lexer *lexer)
                 case '*': token = Token__init__(TOKEN_MUL, Lexer_get_current_char_as_string(lexer));
                           lexer->advance(lexer);
                           break;
-
                 default:
                     token = Token__init__(TOKEN_EOF, "\0");
+            }
         }
-        }
+    }else{
+        token = Token__init__(TOKEN_EOF, "\0");
     }
+    
     return token;
 }
 
