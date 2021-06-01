@@ -13,7 +13,7 @@ int main(int argc, char **argv){
 
     printf("VERSION = %d\n", progcmake_VERSION_MAJOR);
 
-    char *input = "Rel + (Rct+Wdox) / Qdl + Rox ";
+    char *input = "Rel + (Rct+Wdox) / Rox ";
 
     printf("Input=%s\n", input);
 
@@ -47,14 +47,26 @@ int main(int argc, char **argv){
     
     char *infix ;
     infix = visitor->get_infix(visitor, ast);
+    printf("Result=%s\n", infix);
     
+    visitor->init_parameters(visitor, ast);
+    printf("visitor->n = %d\n", visitor->n);
+    visitor->p[0] = 150.0;
+    visitor->p[1] = 10.0;
+    visitor->p[2] = 1.0;
+    visitor->p[3] = 12.0;
+    visitor->p[4] = 551.0;
+    visitor->p[5] = 4551.0;
+    for(i=0; i<visitor->n; i++){
+        printf("p[%d]=%.1f\n", i, visitor->p[i]);
+    }
+    
+    double w = 1.0;
     double complex result;
     for(i=0; i<1; i++){
-        result = visitor->eval(visitor, ast, NULL, NULL);
-        printf("%.1f %.1f\n", creal(result), cimag(result));
+        result = visitor->eval(visitor, ast, NULL, &w);
+        printf("Final %.1f %.1f\n", creal(result), cimag(result));
     }
-
-    printf("Result=%s\n", infix);
 
 
     lexer->__del__(lexer); /* delete lexer */
