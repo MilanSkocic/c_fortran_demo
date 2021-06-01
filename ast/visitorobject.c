@@ -22,6 +22,39 @@ void AstVisitor__del__(AstVisitor *self){
 
 }
 
+char *AstVisitor_get_parameters(AstVisitor *self, AstNode *node){
+
+    size_t size;
+    char *value = calloc(1, sizeof(char));
+    value[0] = '\0';
+
+    switch(node->token->type){
+        case TOKEN_ADD:
+        case TOKEN_SUB:
+        case TOKEN_POW:
+        case TOKEN_DIV:
+        case TOKEN_MUL:
+            break;
+        case TOKEN_ELEMENT:
+            switch(node->token->value[0]){
+                case 'R':
+                case 'C':
+                case 'L':
+                    size = strlen(node->token->value) + 1;
+                    value = realloc(value, size * sizeof(char));
+                    strcpy(value, node->token->value);
+                case 'Q':
+                    size = strlen(node->token->value) + 1;
+                    value = realloc(value, size * sizeof(char));
+                    strcpy(value, node->token->value);
+            }
+            break;
+        default:
+            break;
+    }
+    return value;
+}
+
 char *AstVisitor_get_infix(AstVisitor *self, AstNode *node){
 
     char *left;

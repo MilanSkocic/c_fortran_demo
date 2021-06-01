@@ -56,10 +56,6 @@ int main(int argc, char **argv){
 
     printf("Result=%s\n", infix);
 
-    printf("nparameters = %d\n", parser->nparameters);
-    for(i=0; i<parser->nparameters; i++){
-        printf("p[%d]=%.1f\n", i, parser->parameters[i]);
-    }
 
     lexer->__del__(lexer); /* delete lexer */
     parser->__del__(parser); /* delete queue and operators */

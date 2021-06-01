@@ -19,8 +19,6 @@ Parser *Parser__init__(Lexer *lexer){
     self->current_token = NULL;
     self->previous_token = NULL;
     self->status = NO_ERROR;
-    self->parameters = NULL;
-    self->nparameters = 0;
 
     /* METHODS */
     self->push_element = &Parser_push_element;
@@ -49,7 +47,6 @@ void Parser__del__(Parser *self){
 
     free(self->operators);
     free(self->queue);
-    free(self->parameters);
 
 }
 
@@ -118,9 +115,7 @@ AstNode *Parser_parse(Parser *self){
     }
     /* walk through the queue and build up the nodes of the asbtract syntax
      * tree 
-     * Build the parameter array
      */
-    self->nparameters = 1;
     for(i=0; i<self->nqueue; i++){
         self->current_token = self->queue[i];
     	switch(self->current_token->type){
@@ -128,31 +123,6 @@ AstNode *Parser_parse(Parser *self){
                 left = NULL;
                 right = NULL;
                 self->push_node(self, left, right);
-                switch(self->current_token->value[0]){
-                    case 'R':
-                    case 'C':
-                    case 'L':
-                        self->nparameters += 1;
-                        break;
-                    case 'Q':
-                        self->nparameters += 2;
-                        break;
-                    case 'W':
-                        switch(self->current_token->value[1]){
-                            case 'd':
-                            case 'D':
-                            case 'm':
-                            case 'M':
-                                self->nparameters += 3;
-                                break;
-                            default:
-                                self->nparameters += 1;
-                                break;
-                        }
-                    default:
-                        break;
-                }
-                self->parameters = (double *)realloc(self->parameters, self->nparameters * sizeof(double));
                 break;
             case TOKEN_ADD:
             case TOKEN_SUB:
@@ -211,6 +181,25 @@ void Parser_discard_lparen(Parser *self){
     self->operators = (Token **) realloc(self->operators, self->nops * sizeof(Token *));
     self->current_token->__del__(self->current_token);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* This implementation does not implement composite functions,functions with variable number of arguments, and unary operators.
 
