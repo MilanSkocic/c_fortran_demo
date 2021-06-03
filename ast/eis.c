@@ -4,6 +4,7 @@
 #include "eis.h"
 
 double complex resistance(double *p, double w){
+    printf("R - *p=%.1f\n", *p);
     return (double complex) p[0];
 }
 

@@ -8,8 +8,10 @@ AstVisitor *AstVisitor__init__(){
     AstVisitor *self = (AstVisitor *)calloc(1, sizeof(AstVisitor));
     self->value = NULL;
     self->p = NULL;
+    self->pnames = NULL;
     self->n = 0;
     self->init_parameters = &AstVisitor_init_parameters;
+    self->k = 0 ;
     self->get_infix = &AstVisitor_get_infix;
     self->eval = &AstVisitor_eval;
     self->__del__ = &AstVisitor__del__;
@@ -20,13 +22,21 @@ AstVisitor *AstVisitor__init__(){
 
 void AstVisitor__del__(AstVisitor *self){
     
+    int i;
     free(self->value);
     free(self->p);
+    for(i=0; i<self->n; i++){
+        free(self->pnames[i]);
+    }
+    free(self->pnames);
     free(self);
 
 }
 
 void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
+    int k, i;
+    k = 0;
+    i = 0;
     switch(node->token->type){
         case TOKEN_ADD:
         case TOKEN_SUB:
@@ -40,10 +50,10 @@ void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
             switch(node->token->value[0]){ 
                 case 'R': 
                 case 'L': case 'C':
-                    self->n += 1;
+                    k = 1;
                     break;
                 case 'Q':
-                    self->n += 2;
+                    k = 2;
                     break;
                 case 'W':
                     switch(node->token->value[1]){
@@ -51,14 +61,20 @@ void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
                         case 'D':
                         case 'm':
                         case 'M':
-                            self->n += 3;
+                            k = 3;
                             break;
                         default:
-                            self->n += 1;
+                            k = 1;
                             break;
                     }
             }
+            self->n += k;
             self->p = (double *)realloc(self->p, self->n * sizeof(double));
+            self->pnames = (char **)realloc(self->pnames, self->n * sizeof(char *));
+            for(i=k; i>0; i--){
+                self->pnames[self->n-k] = calloc(strlen(node->token->value)+1, sizeof(char));
+                strcpy(self->pnames[self->n-k], node->token->value);
+            }
             break;
         default:
             break;
@@ -128,28 +144,35 @@ double complex AstVisitor_eval(AstVisitor *self, AstNode *node, double *p, doubl
         case TOKEN_ELEMENT:
             switch(node->token->value[0]){
                 case 'R':
-                    value = resistance(self->p, *w);
+                    value = resistance(self->p+self->k, *w);
+                    self->k += 1;
                     break;
                 case 'C':
-                    value = capacitance(self->p, *w);
+                    value = capacitance(self->p+self->k, *w);
+                    self->k += 1;
                     break;
                 case 'L':
-                    value = inductance(self->p, *w);
+                    value = inductance(self->p+self->k, *w);
+                    self->k += 1;
                 case 'Q':
-                    value = cpe(self->p, *w);
+                    value = cpe(self->p+self->k, *w);
+                    self->k +=2 ;
                     break;
                 case 'W':
                     switch(node->token->value[1]){
                         case 'd':
                         case 'D':
-                            value = finite_length_warburg(self->p, *w);
+                            value = finite_length_warburg(self->p+self->k, *w);
+                            self->k += 3;
                             break;
                         case 'm':
                         case 'M':
-                            value = finite_space_warburg(self->p, *w);
+                            value = finite_space_warburg(self->p+self->k, *w);
+                            self->k += 3;
                             break;
                         default:
-                            value = warburg(self->p, *w);
+                            value = warburg(self->p+self->k, *w);
+                            self->k += 1;
                             break;
                     }
                 }

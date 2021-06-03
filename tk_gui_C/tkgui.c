@@ -9,14 +9,7 @@ char *invar = "invar";
 char *suffvar = "suffvar";
 char *gasvar = "gasvar";
 
-// Pure C function
-double add(double a, double b);
-
-// function for interfacing with the Tcl interpreter
-// basically the arguments are always strings
-int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv);
-
-// function implementations
+// C function implementations
 double add(double a, double b){
     return a+b;
 }
@@ -28,14 +21,15 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     double entry=0.0;
     int suff = 0;
     char str[80];
-    char format[4] = "%.0f";
+    char format[4] = "%.1f";
 
     if (Tcl_GetVar(interp, suffvar, 4) == NULL){
         printf("Error in GetVar: %s", Tcl_GetStringResult(interp));
     }else
     {
-        if (strlen(Tcl_GetVar(interp, suffvar, 4)) >0){
-        format[2] = *(char *) Tcl_GetVar(interp, suffvar, 4);}
+        if (strlen(Tcl_GetVar(interp, suffvar, 4)) > 0){
+            format[2] = *(char *) Tcl_GetVar(interp, suffvar, 4);
+        }
         printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
     };
 
@@ -99,12 +93,4 @@ int main(int argc, char **argv){
     else{
         printf("Tcl_Eval NOK %s\n", Tcl_GetStringResult(interp));
     };
-
-
-
-
-
-
-
-
 }

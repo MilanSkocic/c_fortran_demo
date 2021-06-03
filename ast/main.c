@@ -32,8 +32,10 @@ int main(int argc, char **argv){
     visitor->init_parameters(visitor, ast);
     printf("visitor->n = %d\n", visitor->n);
     visitor->p[0] = 150.0;
+    visitor->p[1] = 250.0;
+    visitor->p[2] = 33.3;
     for(i=0; i<visitor->n; i++){
-        printf("p[%d]=%.1f\n", i, visitor->p[i]);
+        printf("%s=%.1f\n", visitor->pnames[i], visitor->p[i]);
     }
     
     double w = 1.0;

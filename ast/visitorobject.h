@@ -8,7 +8,9 @@ typedef struct ast_visitor_struct{
     
     char *value;
     double *p;
+    char **pnames;
     int n;
+    int k;
     char *(*get_infix)(struct ast_visitor_struct *self, AstNode *node);
     void (*init_parameters)(struct ast_visitor_struct *self, AstNode *node);
     double complex (*eval)(struct ast_visitor_struct *self, AstNode *node, double *p, double *w);
