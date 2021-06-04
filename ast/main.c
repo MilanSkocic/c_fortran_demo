@@ -13,7 +13,7 @@ int main(int argc, char **argv){
 
     printf("VERSION = %d\n", progcmake_VERSION_MAJOR);
 
-    char *input = "Rel + (Rox / Wdox) + Rox";
+    char *input = "Wdox";
 
     printf("Input=%s\n", input);
     
@@ -30,19 +30,20 @@ int main(int argc, char **argv){
     printf("Result=%s\n", infix);
     
     visitor->init_parameters(visitor, ast);
+    visitor->rename_parameters(visitor);
     printf("visitor->n = %d\n", visitor->n);
-    visitor->p[0] = 150.0;
-    visitor->p[1] = 250.0;
-    visitor->p[2] = 33.3;
+    visitor->p[0] = 30.0;
+    visitor->p[1] = 1.0;
+    visitor->p[2] = 0.5;
     for(i=0; i<visitor->n; i++){
-        printf("%s=%.1f\n", visitor->pnames[i], visitor->p[i]);
+        printf("%s=%.6f\n", visitor->pnames[i], visitor->p[i]);
     }
     
     double w = 1.0;
     double complex result;
     for(i=0; i<1; i++){
         result = visitor->eval(visitor, ast, NULL, &w);
-        printf("Final %.1f %.1f\n", creal(result), cimag(result));
+        printf("Final %.6f %.6f\n", creal(result), cimag(result));
     }
 
 

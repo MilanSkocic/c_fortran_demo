@@ -4,7 +4,6 @@
 #include "eis.h"
 
 double complex resistance(double *p, double w){
-    printf("R - *p=%.1f\n", *p);
     return (double complex) p[0];
 }
 
@@ -25,7 +24,7 @@ double complex warburg(double *p, double w){
 }
 
 double complex finite_length_warburg(double *p, double w){
-    return p[0]*ctanh(cpow(I*p[1]*w, p[2])) / cpow(I*p[2]*w, p[2]);
+    return p[0]*ctanh(cpow(I*p[1]*w, p[2])) / cpow(I*p[1]*w, p[2]);
 }
 
 double complex finite_space_warburg(double *p, double w){

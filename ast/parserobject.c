@@ -102,7 +102,6 @@ AstNode *Parser_parse(Parser *self){
                 break;
         }
     }while (self->current_token->type != TOKEN_EOF);
-
     while (self->nops > 0){
         self->pop_operator(self);
     }
@@ -161,6 +160,7 @@ void Parser_push_node(Parser *self, AstNode *left, AstNode *right){
     self->nnodes += 1;
     self->nodes = (AstNode **) realloc(self->nodes, self->nnodes * sizeof(AstNode *));
     self->nodes[self->nnodes-1] = AstNode__init__(self->current_token, left, right);
+    self->ast = self->nodes[self->nnodes-1];
 }
 
 void Parser_pop_node(Parser *self){

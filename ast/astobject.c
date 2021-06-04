@@ -29,7 +29,20 @@ void AstNode__del__(AstNode* self){
 }
 
 void AstNode_print(AstNode *self){
+
+    if ((self->left != NULL) & (self->right != NULL)){
     printf("Node: token=%s, left=%s, right=%s\n", self->token->value, 
                                                 self->left->token->value, 
                                                 self->right->token->value);
+    }
+
+    if ((self->left != NULL) & (self->right == NULL)){
+        printf("Node: token=%s, left=%s, right=NULL\n", self->token->value, 
+                                                self->left->token->value); 
+    
+    }
+    
+    if ((self->left == NULL) & (self->right == NULL)){
+        printf("Node: token=%s, left=NULL, right=NULL\n", self->token->value); 
+    }
 }

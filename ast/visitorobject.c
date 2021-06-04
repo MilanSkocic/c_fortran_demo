@@ -12,6 +12,7 @@ AstVisitor *AstVisitor__init__(){
     self->n = 0;
     self->init_parameters = &AstVisitor_init_parameters;
     self->k = 0 ;
+    self->rename_parameters = &AstVisitor_rename_parameters;
     self->get_infix = &AstVisitor_get_infix;
     self->eval = &AstVisitor_eval;
     self->__del__ = &AstVisitor__del__;
@@ -79,6 +80,50 @@ void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
         default:
             break;
     }
+}
+
+void AstVisitor_rename_parameters(AstVisitor *self){
+    
+    int i = 0;
+    char *name;
+    while(i<self->n){
+        name = self->pnames[i];
+        switch(name[0]){
+            case 'R':
+            case 'C':
+            case 'L':
+                i += 1;
+               break;
+            case 'Q':
+               name = self->pnames[i+1];
+               name[0] = 'a';
+               i += 2;
+               break;
+            case 'W':
+               name = self->pnames[i];
+               switch(name[1]){
+                   case 'd':
+                   case 'D':
+                   case 'm':
+                   case 'M':
+                      name = self->pnames[i+1];
+                      name[0] = 'T';
+                      name = self->pnames[i+2];
+                      name[0] = 'n';
+                      i += 3;    
+                      break;
+                   default:
+                     break; 
+               }
+               break;
+            default:
+                i += 1;
+              break;  
+        
+        }
+            
+    }
+
 }
 
 char *AstVisitor_get_infix(AstVisitor *self, AstNode *node){
