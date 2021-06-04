@@ -72,8 +72,8 @@ void AstVisitor_init_parameters(AstVisitor *self, AstNode *node){
             self->p = (double *)realloc(self->p, self->n * sizeof(double));
             self->pnames = (char **)realloc(self->pnames, self->n * sizeof(char *));
             for(i=k; i>0; i--){
-                self->pnames[self->n-k] = calloc(strlen(node->token->value)+1, sizeof(char));
-                strcpy(self->pnames[self->n-k], node->token->value);
+                self->pnames[self->n-i] = calloc(strlen(node->token->value)+1, sizeof(char));
+                strcpy(self->pnames[self->n-i], node->token->value);
             }
             break;
         default:
