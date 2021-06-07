@@ -32,21 +32,20 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
             format[2] = *(char *) Tcl_GetVar(interp, format_var, 4);
         }
         printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
-    };
+    }
     
     // pass arguments in Tcl script through argv variable
-    for (i=0; i<argc; i++){
+    /*for (i=0; i<argc; i++){
         if (Tcl_GetDouble(interp, argv[i], &value) == TCL_OK){
             Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 0), &entry);
             sprintf(label_buffer, format, add(value, entry));
             Tcl_SetVar(interp, labelvar, label_buffer, 0);
-        };
-    }
+        };*/
 
-    Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 4), &value);
-
-    sprintf(label_buffer, format, add(value, value));
-    Tcl_SetVar(interp, labelvar, label_buffer, 0);
+    if(Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 4), &value) == TCL_OK){
+        sprintf(label_buffer, format, add(value, value));
+        Tcl_SetVar(interp, labelvar, label_buffer, 0);}
+    else{TCL_ERROR;}
 
     return TCL_OK;
 }
@@ -85,11 +84,12 @@ int main(int argc, char **argv){
     "ttk::label .fr.value -text \"LABEL\" -textvariable label_var -anchor center\n"
     "grid .fr.value -row 1 -column 0 -columnspan 2 -sticky nswe\n"
     "ttk::entry .fr.in -textvariable entry_var\n"
+    "set entry_var 0\n"
     "grid .fr.in -row 2\n"
     "bind .fr.in <Return> \"func\"\n"
     "ttk::entry .fr.suff -textvariable format_var\n"
     "grid .fr.suff -row 2 -column 1\n"
-    "set format_var 0\n"
+    "set format_var 1\n"
     "ttk::combobox .fr.combo -values { \"O2\" \"N2\"} -textvariable gas_var\n"
     "grid .fr.combo -row 3 -column 0 -columnspan 2 -sticky nsew\n"
     "set gas_var \"O2\"";
