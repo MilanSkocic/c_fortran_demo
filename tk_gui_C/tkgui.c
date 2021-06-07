@@ -6,7 +6,7 @@
 
 char *labelvar = "label_var";
 char *invar = "entry_var";
-char *suffvar = "format_var";
+char *format_var = "format_var";
 char *gasvar = "gas_var";
 
 // C function implementations
@@ -23,13 +23,13 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     int suff = 0;
     char label_buffer[80];
     char format[] = "%.1f";
-
-    if (Tcl_GetVar(interp, suffvar, 4) == NULL){
+    
+    if (Tcl_GetVar(interp, format_var, 4) == NULL){
         printf("Error: Tcl_GetVar %s", Tcl_GetStringResult(interp));
     }else
     {
-        if (strlen(Tcl_GetVar(interp, suffvar, 4)) > 0){
-            format[2] = *(char *) Tcl_GetVar(interp, suffvar, 4);
+        if (strlen(Tcl_GetVar(interp, format_var, 4)) > 0){
+            format[2] = *(char *) Tcl_GetVar(interp, format_var, 4);
         }
         printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
     };
@@ -67,24 +67,24 @@ int main(int argc, char **argv){
     int major, minor, patch;
     Tcl_GetVersion(&major, &minor, &patch, NULL);
 
-    sprintf(version, "Tcl/Tk %d.%d.%d\n", major, minor, patch);
+    sprintf(version, "Tcl/Tk %d.%d\n", major, minor);
 
     // Run sequentially the Tk commands for creating the GUI
     char *pchFile = 
     "wm title . \"version\"\n"
     "wm geometry . 800x300\n"
-    "frame .fr\n"
+    "ttk::frame .fr\n"
     "pack .fr -fill both -expand TRUE\n"
     "grid columnconfigure .fr 0 -weight 1\n"
     "grid columnconfigure .fr 1 -weight 1\n"
     "grid rowconfigure .fr 0 -weight 1\n"
     "grid rowconfigure .fr 1 -weight 1\n"
     "grid rowconfigure .fr 2 -weight 1\n"
-    "button .fr.but -text \"test\" -command \"func\"\n"
+    "ttk::button .fr.but -text \"test\" -command \"func\"\n"
     "grid .fr.but -row 0 -column 0 -columnspan 2 -sticky nswe\n"
-    "label .fr.value -text \"LABEL\" -textvariable label_var\n"
+    "ttk::label .fr.value -text \"LABEL\" -textvariable label_var -anchor center\n"
     "grid .fr.value -row 1 -column 0 -columnspan 2 -sticky nswe\n"
-    "entry .fr.in -textvariable entry_var\n"
+    "ttk::entry .fr.in -textvariable entry_var\n"
     "grid .fr.in -row 2\n"
     "bind .fr.in <Return> \"func\"\n"
     "ttk::entry .fr.suff -textvariable format_var\n"
