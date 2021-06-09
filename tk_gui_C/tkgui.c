@@ -8,6 +8,8 @@ char *labelvar = "label_var";
 char *invar = "entry_var";
 char *format_var = "format_var";
 char *gasvar = "gas_var";
+char *color = "col";
+char *fpath = "fpath";
 
 // C function implementations
 double add(double a, double b){
@@ -23,7 +25,7 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     int suff = 0;
     char label_buffer[80];
     char format[] = "%.1f";
-    
+
     if (Tcl_GetVar(interp, format_var, 4) == NULL){
         printf("Error: Tcl_GetVar %s", Tcl_GetStringResult(interp));
     }else
@@ -45,9 +47,21 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     if(Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 4), &value) == TCL_OK){
         sprintf(label_buffer, format, add(value, value));
         Tcl_SetVar(interp, labelvar, label_buffer, 0);}
-    else{TCL_ERROR;}
+    else{return TCL_ERROR;}
 
     return TCL_OK;
+}
+
+int about_call(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
+    
+    Tcl_Eval(interp, "set fpath [tk_getOpenFile -parent .];");
+
+    char *file_path = (char *)Tcl_GetVar(interp, fpath, 4);
+
+    printf("%d %s\n",strlen(file_path), file_path);
+
+    return TCL_OK;
+
 }
 
 
@@ -92,10 +106,13 @@ int main(int argc, char **argv){
     "set format_var 1\n"
     "ttk::combobox .fr.combo -values { \"O2\" \"N2\"} -textvariable gas_var\n"
     "grid .fr.combo -row 3 -column 0 -columnspan 2 -sticky nsew\n"
-    "set gas_var \"O2\"";
+    "set gas_var \"O2\";"
+    "ttk::button .fr.ok_but -text \"OK\" -command \"about_call\";"
+    "grid .fr.ok_but -row 4 -column 0 -sticky nswe";
 
     // link the interfacing function to Tcl interpreter
     Tcl_CreateCommand(interp, "func", func, NULL, NULL);
+    Tcl_CreateCommand(interp, "about_call", about_call, NULL, NULL);
 
     // Start GUI and check if any errors
     if (Tcl_Eval(interp, pchFile) == TCL_OK){

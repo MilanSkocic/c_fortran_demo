@@ -52,6 +52,6 @@ add_executable(tkgui)
 target_sources(tkgui PRIVATE tkgui.c)
 target_include_directories(tkgui PRIVATE ${INC_DIR})
 target_link_directories(tkgui PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(tkgui PRIVATE X11 tk8.6 tcl8.6)
+target_link_libraries(tkgui PRIVATE X11 tk tcl)
 
 #configure_file(${CMAKE_SOURCE_DIR}/test.tcl ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test.tcl COPYONLY)
