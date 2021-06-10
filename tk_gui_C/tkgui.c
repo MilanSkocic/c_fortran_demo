@@ -70,10 +70,19 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
                 "wm geometry .top \"1000x600+400+400\";"
                 "canvas .top.can -bg white;"
                 "pack .top.can -fill both -expand true;"
+                "bind .top.can <Button-1> \"draw_line_tk_cb\";" 
                 ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
     
     Tcl_Eval(interp, cmd );
 
+    return TCL_OK;
+
+}
+
+int draw_line_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
+    
+    printf("event %s\n");
+    //
     return TCL_OK;
 
 }
@@ -132,6 +141,7 @@ int main(int argc, char **argv){
     Tcl_CreateCommand(interp, "func", func, NULL, NULL);
     Tcl_CreateCommand(interp, "about_call", about_call, NULL, NULL);
     Tcl_CreateCommand(interp, "draw_tk_cb", draw_tk_cb, NULL, NULL);
+    Tcl_CreateCommand(interp, "draw_line_tk_cb", draw_line_tk_cb, NULL, NULL);
 
     // Start GUI and check if any errors
     if (Tcl_Eval(interp, pchFile) == TCL_OK){
