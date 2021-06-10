@@ -64,6 +64,20 @@ int about_call(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
 
 }
 
+int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
+
+    char *cmd = "toplevel .top;"
+                "wm geometry .top \"1000x600+400+400\";"
+                "canvas .top.can -bg white;"
+                "pack .top.can -fill both -expand true;"
+                ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
+    
+    Tcl_Eval(interp, cmd );
+
+    return TCL_OK;
+
+}
+
 
 
 int main(int argc, char **argv){
@@ -85,7 +99,7 @@ int main(int argc, char **argv){
     // Run sequentially the Tk commands for creating the GUI
     char *pchFile = 
     "wm title . \"version\"\n"
-    "wm geometry . 800x300\n"
+    "wm geometry . \"800x300+0+0\"\n"
     "ttk::frame .fr\n"
     "pack .fr -fill both -expand TRUE\n"
     "grid columnconfigure .fr 0 -weight 1\n"
@@ -108,11 +122,16 @@ int main(int argc, char **argv){
     "grid .fr.combo -row 3 -column 0 -columnspan 2 -sticky nsew\n"
     "set gas_var \"O2\";"
     "ttk::button .fr.ok_but -text \"OK\" -command \"about_call\";"
-    "grid .fr.ok_but -row 4 -column 0 -sticky nswe";
+    "grid .fr.ok_but -row 4 -column 0 -sticky nswe;"
+    
+    "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;"
+
+    "canvas .fr.can -bg yellow;grid .fr.can -row 5 -column 0 -sticky nswe";
 
     // link the interfacing function to Tcl interpreter
     Tcl_CreateCommand(interp, "func", func, NULL, NULL);
     Tcl_CreateCommand(interp, "about_call", about_call, NULL, NULL);
+    Tcl_CreateCommand(interp, "draw_tk_cb", draw_tk_cb, NULL, NULL);
 
     // Start GUI and check if any errors
     if (Tcl_Eval(interp, pchFile) == TCL_OK){
