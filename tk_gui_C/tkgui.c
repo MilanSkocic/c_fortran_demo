@@ -70,7 +70,7 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
                 "wm geometry .top \"1000x600+400+400\";"
                 "canvas .top.can -bg white;"
                 "pack .top.can -fill both -expand true;"
-                "bind .top.can <Button-1> \"draw_line_tk_cb\";" 
+                "bind .top.can <Button-1> \"draw_line_tk_cb %w %x %y\";" 
                 ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
     
     Tcl_Eval(interp, cmd );
@@ -81,7 +81,7 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
 
 int draw_line_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     
-    printf("event %s\n");
+    printf("event %d func=%s w=%s x=%d y=%d\n", argc, argv[0], argv[1], argv[2], argv[3]);
     //
     return TCL_OK;
 
@@ -133,9 +133,7 @@ int main(int argc, char **argv){
     "ttk::button .fr.ok_but -text \"OK\" -command \"about_call\";"
     "grid .fr.ok_but -row 4 -column 0 -sticky nswe;"
     
-    "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;"
-
-    "canvas .fr.can -bg yellow;grid .fr.can -row 5 -column 0 -sticky nswe";
+    "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;";
 
     // link the interfacing function to Tcl interpreter
     Tcl_CreateCommand(interp, "func", func, NULL, NULL);
