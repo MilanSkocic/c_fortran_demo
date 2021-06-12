@@ -10,6 +10,7 @@ char *format_var = "format_var";
 char *gasvar = "gas_var";
 char *color = "col";
 char *fpath = "fpath";
+char *oval_radius = "oval_radius";
 
 // C function implementations
 double add(double a, double b){
@@ -33,7 +34,7 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
         if (strlen(Tcl_GetVar(interp, format_var, 4)) > 0){
             format[2] = *(char *) Tcl_GetVar(interp, format_var, 4);
         }
-        printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
+        // printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
     }
     
     // pass arguments in Tcl script through argv variable
@@ -46,8 +47,13 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
 
     if(Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 4), &value) == TCL_OK){
         sprintf(label_buffer, format, add(value, value));
-        Tcl_SetVar(interp, labelvar, label_buffer, 0);}
-    else{return TCL_ERROR;}
+        Tcl_SetVar(interp, labelvar, label_buffer, 0);
+        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+    }
+    else{
+        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+        return TCL_ERROR;
+    }
 
     return TCL_OK;
 }
@@ -55,10 +61,12 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
 int about_call(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     
     Tcl_Eval(interp, "set fpath [tk_getOpenFile -parent .];");
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
     char *file_path = (char *)Tcl_GetVar(interp, fpath, 4);
 
-    printf("%d %s\n",strlen(file_path), file_path);
+    Tcl_SetVar(interp, labelvar, file_path, 0);
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
     return TCL_OK;
 
@@ -70,10 +78,11 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
                 "wm geometry .top \"1000x600+400+400\";"
                 "canvas .top.can -bg white;"
                 "pack .top.can -fill both -expand true;"
-                "bind .top.can <Button-1> \"draw_line_tk_cb %w %x %y\";" 
+                "bind .top.can <Button-1> {draw_line_tk_cb %x %y};" 
                 ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
     
     Tcl_Eval(interp, cmd );
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
     return TCL_OK;
 
@@ -81,8 +90,21 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
 
 int draw_line_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     
-    printf("event %d func=%s w=%s x=%d y=%d\n", argc, argv[0], argv[1], argv[2], argv[3]);
-    //
+    int x, y;
+    char tcl_cmd[256];
+
+    
+    Tcl_GetInt(interp, argv[1], &x);
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+    Tcl_GetInt(interp, argv[2], &y);
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+
+    sprintf(tcl_cmd, ".top.can create oval [expr %d-$oval_radius] [expr %d-$oval_radius] [expr %d+$oval_radius] [expr %d+$oval_radius];", x, y, x, y);
+
+    Tcl_Eval(interp, tcl_cmd);
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+
+
     return TCL_OK;
 
 }
@@ -102,6 +124,7 @@ int main(int argc, char **argv){
 
     int major, minor, patch;
     Tcl_GetVersion(&major, &minor, &patch, NULL);
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
     sprintf(version, "Tcl/Tk %d.%d\n", major, minor);
 
@@ -133,7 +156,9 @@ int main(int argc, char **argv){
     "ttk::button .fr.ok_but -text \"OK\" -command \"about_call\";"
     "grid .fr.ok_but -row 4 -column 0 -sticky nswe;"
     
-    "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;";
+    "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;"
+    
+    "set oval_radius 10;";
 
     // link the interfacing function to Tcl interpreter
     Tcl_CreateCommand(interp, "func", func, NULL, NULL);
@@ -143,10 +168,10 @@ int main(int argc, char **argv){
 
     // Start GUI and check if any errors
     if (Tcl_Eval(interp, pchFile) == TCL_OK){
-        printf("Tcl_Eval main OK %s\n", Tcl_GetStringResult(interp));
+        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
         Tk_MainLoop();
     }
     else{
-        printf("Tcl_Eval NOK %s\n", Tcl_GetStringResult(interp));
+        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
     };
 }
