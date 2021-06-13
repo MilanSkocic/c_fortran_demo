@@ -1,25 +1,40 @@
+/**
+ * @file tkgui.c
+ * Example of how implement a GUI with TK in a C application.
+ * The principle is to send command to the Tcl interpreter to generate the GUI
+ * and connect with the widgets with the corresponding callbacks.
+ * The callbacks are implemented using the standard method for creating Tcl
+ * commands in C.
+ */
 #include <stdio.h>
 #include <string.h>
 #include "tk.h"
 #include "tcl.h"
-#define TK_SILENCE_DEPRECATION 1
+#define TK_SILENCE_DEPRECATION 1 /**< Define silence TK */
 
-char *labelvar = "label_var";
-char *invar = "entry_var";
-char *format_var = "format_var";
-char *gasvar = "gas_var";
-char *color = "col";
-char *fpath = "fpath";
-char *oval_radius = "oval_radius";
+static char *labelvar = "label_var"; /**< Tcl var for the main label. */
+static char *invar = "entry_var";
+static char *format_var = "format_var";
+static char *gasvar = "gas_var";
+static char *color = "col";
+static char *fpath = "fpath";
+static char *oval_radius = "oval_radius";
 
-// C function implementations
+/**
+ * @brief C implementation of the tk wrapper
+ */
 double add(double a, double b){
     return a+b;
 }
 
-// Tcl vars must be converted to C types using the Tcl C API
+/**
+ * @brief Tcl wrapper
+ * Tcl vars must be converted to C types using thr Tcl C API
+ * Tcl_GetVar(interp, varname, errorcode)
+ * Tcl_GetDouble(interp , varname, *c_variable)
+ */
 int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
-    
+
     int i;
     double value=0.0;
     double entry=0.0;
@@ -36,7 +51,7 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
         }
         // printf("GAS = %s", (char *) Tcl_GetVar(interp, gasvar, 4));
     }
-    
+
     // pass arguments in Tcl script through argv variable
     /*for (i=0; i<argc; i++){
         if (Tcl_GetDouble(interp, argv[i], &value) == TCL_OK){
@@ -59,7 +74,7 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
 }
 
 int about_call(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
-    
+
     Tcl_Eval(interp, "set fpath [tk_getOpenFile -parent .];");
     printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
@@ -78,9 +93,9 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
                 "wm geometry .top \"1000x600+400+400\";"
                 "canvas .top.can -bg white;"
                 "pack .top.can -fill both -expand true;"
-                "bind .top.can <Button-1> {draw_line_tk_cb %x %y};" 
+                "bind .top.can <Button-1> {draw_line_tk_cb %x %y};"
                 ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
-    
+
     Tcl_Eval(interp, cmd );
     printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
 
@@ -89,11 +104,11 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
 }
 
 int draw_line_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
-    
+
     int x, y;
     char tcl_cmd[256];
 
-    
+
     Tcl_GetInt(interp, argv[1], &x);
     printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
     Tcl_GetInt(interp, argv[2], &y);
@@ -128,8 +143,8 @@ int main(int argc, char **argv){
 
     sprintf(version, "Tcl/Tk %d.%d\n", major, minor);
 
-    // Run sequentially the Tk commands for creating the GUI
-    char *pchFile = 
+    /* add sequentially the Tk commands for creating the GUI */
+    char *pchFile =
     "wm title . \"version\"\n"
     "wm geometry . \"800x300+0+0\"\n"
     "ttk::frame .fr\n"
@@ -155,9 +170,9 @@ int main(int argc, char **argv){
     "set gas_var \"O2\";"
     "ttk::button .fr.ok_but -text \"OK\" -command \"about_call\";"
     "grid .fr.ok_but -row 4 -column 0 -sticky nswe;"
-    
+
     "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;"
-    
+
     "set oval_radius 10;";
 
     // link the interfacing function to Tcl interpreter
