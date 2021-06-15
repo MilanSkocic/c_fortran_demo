@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(tkgui C)
 
+set(CMAKE_C_STANDARD 99)
+
 
 set(LIB_MSYS C:/Users/mskocic/LocalApps/Miniconda3/Library/lib/tcl86t.lib C:/Users/mskocic/LocalApps/Miniconda3/Library/lib/tk86t.lib)
 set(INC_MSYS C:/Users/mskocic/LocalApps/Miniconda3/Library/include)
