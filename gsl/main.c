@@ -121,7 +121,6 @@ void gsl_print_vector(gsl_vector *x){
 
 int example_multifit_linear(const int n, const int k){
 
-
     double xi, yi, ei, chisq;
     int i;
     struct data data;
@@ -139,8 +138,6 @@ int example_multifit_linear(const int n, const int k){
 
     gsl_vector_set_all(w, 1.0);
 
-    gsl_print_vector(x);
-
     X = get_vandermonde(x, p);
 
     data.n = n;
@@ -155,8 +152,6 @@ int example_multifit_linear(const int n, const int k){
     gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (n, k);
     gsl_multifit_wlinear (X, w, y, p, cov, &chisq, work);
     gsl_multifit_linear_free(work);
-
-
   
     printf ("# best fit: Y = %.3f + %.3f X + %.3f X^2\n", P(0), P(1), P(2));
 
@@ -165,7 +160,6 @@ int example_multifit_linear(const int n, const int k){
     printf ("  %+.5e, %+.5e, %+.5e  \n", COV(1,0), COV(1,1), COV(1,2));
     printf ("  %+.5e, %+.5e, %+.5e ]\n", COV(2,0), COV(2,1), COV(2,2));
     printf ("# chisq = %g\n", chisq);
-
 
     gsl_matrix_free(X);
     gsl_vector_free(x);
@@ -191,7 +185,7 @@ int example_multifit_nonlinear(const int n, const int k){
     gsl_vector *x, *p, *y, *f, *w;
     gsl_matrix *J, *covar;
     
-    x = gsl_vector_alloc(n);
+    x = gsl_vector_linspace(0, 5, n);
     w = gsl_vector_alloc(n);
     p = gsl_vector_alloc(k);
     y = gsl_vector_alloc(n);
@@ -236,7 +230,6 @@ int example_multifit_nonlinear(const int n, const int k){
     gsl_rng_env_setup();
     r = gsl_rng_alloc(gsl_rng_default);
 
-
     /* define the function to be minimized */
     fdf.f = gsl_residuals;
     fdf.df = NULL;   /* set to NULL for finite-difference Jacobian */
@@ -265,8 +258,6 @@ int example_multifit_nonlinear(const int n, const int k){
     /* compute final cost */
     f = gsl_multifit_nlinear_residual(work_nlin);
     gsl_blas_ddot(f, f, &chisq);
-
-
 
     fprintf(stderr, "summary from method '%s/%s'\n", gsl_multifit_nlinear_name(work_nlin), gsl_multifit_nlinear_trs_name(work_nlin));
     fprintf(stderr, "number of iterations: %zu\n", gsl_multifit_nlinear_niter(work_nlin));
@@ -297,6 +288,4 @@ int main(int argc, char **argv){
     example_multifit_nonlinear(10, 3);
     
     return EXIT_SUCCESS;
-
-
 }
