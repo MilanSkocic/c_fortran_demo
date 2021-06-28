@@ -37,7 +37,7 @@ double model(double *p, double x){
 /**
  * @brief 
  */
-int wrapper_model(const gsl_vector *p, void *data, gsl_vector *f){
+int gsl_model(const gsl_vector *p, void *data, gsl_vector *f){
     
     size_t N, i;
     double *x;
@@ -52,7 +52,7 @@ int wrapper_model(const gsl_vector *p, void *data, gsl_vector *f){
     return GSL_SUCCESS;
 }
 
-int residuals(const gsl_vector *p, void *data, gsl_vector *f){
+int gsl_residuals(const gsl_vector *p, void *data, gsl_vector *f){
 
     size_t N, i;
     double *x, *y;
@@ -74,20 +74,48 @@ int residuals(const gsl_vector *p, void *data, gsl_vector *f){
 
 }
 
-gsl_matrix *get_vandermonde(size_t n, size_t k){
+gsl_matrix *get_vandermonde(gsl_vector *x, gsl_vector *p){
 
-    size_t i, j;
-    gsl_matrix *x;
-    x = gsl_matrix_alloc(n,k);
+    size_t i, j, n, k;
 
+    n = x->size;
+    k = p->size;
+    gsl_matrix *X =  gsl_matrix_alloc(n,k);
 
     for(i=0;i<n;i++){
         for(j=0;j<k;j++){
-            gsl_matrix_set(x, i, j, 1.0*pow(i, j));
+            gsl_matrix_set(X, i, j, 1.0*pow(gsl_vector_get(x, i), j));
         }
     }
     
+    return X;
+}
+
+
+gsl_vector *gsl_vector_linspace(double start, double end, const size_t n){
+
+    double d, amp;
+    size_t i;
+    gsl_vector *x = gsl_vector_alloc(n);
+
+    d = (end - start) / (n-1);
+    
+    for(i=0;i<n;i++){
+        gsl_vector_set(x, i,  start + i*d);
+    }
+
     return x;
+}
+
+
+void gsl_print_vector(gsl_vector *x){
+
+    size_t i;
+
+    for(i=0; i<x->size; i++){
+        printf("x[%d]=%f\n", i, gsl_vector_get(x, i));
+    }
+
 }
 
 
@@ -100,7 +128,7 @@ int example_multifit_linear(const int n, const int k){
 
     gsl_matrix *X = gsl_matrix_alloc(n, k);
     gsl_matrix *cov = gsl_matrix_alloc(k,k);
-    gsl_vector *x = gsl_vector_alloc(n);
+    gsl_vector *x = gsl_vector_linspace(0, 5, n);
     gsl_vector *y = gsl_vector_alloc(n);
     gsl_vector *w = gsl_vector_alloc(n);
     gsl_vector *p = gsl_vector_alloc(k);
@@ -111,18 +139,16 @@ int example_multifit_linear(const int n, const int k){
 
     gsl_vector_set_all(w, 1.0);
 
-    for(i=0; i<n; i++){
-        gsl_vector_set(x, i, i);
-    }
+    gsl_print_vector(x);
 
-    X = get_vandermonde(n,k);
+    X = get_vandermonde(x, p);
 
     data.n = n;
     data.x = x->data;
     data.y = NULL;
     data.model = &model;
 
-    wrapper_model(p, (void *) &data, y);
+    gsl_model(p, (void *) &data, y);
     
     data.y = y->data;
     
@@ -190,7 +216,7 @@ int example_multifit_nonlinear(const int n, const int k){
     data.model = &model;
 
     // compute data to fit
-    wrapper_model(p, (void *) &data, y);
+    gsl_model(p, (void *) &data, y);
     
     // update data struct
     data.y = y->data;
@@ -212,7 +238,7 @@ int example_multifit_nonlinear(const int n, const int k){
 
 
     /* define the function to be minimized */
-    fdf.f = residuals;
+    fdf.f = gsl_residuals;
     fdf.df = NULL;   /* set to NULL for finite-difference Jacobian */
     fdf.fvv = NULL;     /* not using geodesic acceleration */
     fdf.n = n; /**< number of points */
