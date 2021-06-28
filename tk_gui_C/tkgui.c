@@ -173,6 +173,8 @@ int main(int argc, char **argv){
 
     "ttk::button .fr.draw_but -text \"draw\" -command \"draw_tk_cb\"; grid .fr.draw_but -row 4 -column 1 -sticky nswe;"
 
+    "ttk::button .fr.quit_but -text \"quit\" -command {destroy .}; grid .fr.quit_but -row 5 -column 0 -sticky nswe;"
+
     "set oval_radius 10;";
 
     // link the interfacing function to Tcl interpreter
