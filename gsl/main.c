@@ -37,21 +37,29 @@ double model(double *p, double x){
 /**
  * @brief 
  */
-int gsl_model(const gsl_vector *p, void *data, gsl_vector *f){
+int gsl_model(const gsl_vector *p, void *data){
     
     size_t N, i;
-    double *x;
+    double *x, *y;
     
     N = ((struct data *) data)->n;
     x = ((struct data *) data)->x;
+    y = ((struct data *) data)->y;
+    
     double (*model)(double *p, double x) = ((struct data *) data)->model;
 
     for(i=0;i<N; i++){
-        gsl_vector_set(f, i, model(p->data, x[i]));
+        y[i] = model(p->data, x[i]);
     }
     return GSL_SUCCESS;
 }
 
+/**
+ * @brief Function to be fitted by the Non Linear Least Square Algorithm
+ * @param p pointer to a gsl vector
+ * @param data pointer to a data structure
+ * @param f pointer to a gsl vector for the output
+ */
 int gsl_residuals(const gsl_vector *p, void *data, gsl_vector *f){
 
     size_t N, i;
@@ -142,12 +150,11 @@ int example_multifit_linear(const int n, const int k){
 
     data.n = n;
     data.x = x->data;
-    data.y = NULL;
+    data.y = y->data;
     data.model = &model;
 
-    gsl_model(p, (void *) &data, y);
+    gsl_model(p, (void *) &data);
     
-    data.y = y->data;
     
     gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (n, k);
     gsl_multifit_wlinear (X, w, y, p, cov, &chisq, work);
@@ -206,14 +213,12 @@ int example_multifit_nonlinear(const int n, const int k){
 
     data.n = n;
     data.x = x->data;
-    data.y = NULL;
+    data.y = y->data;
     data.model = &model;
 
     // compute data to fit
-    gsl_model(p, (void *) &data, y);
+    gsl_model(p, (void *) &data);
     
-    // update data struct
-    data.y = y->data;
 
     //set fit workspace
     const gsl_multifit_nlinear_type *T = gsl_multifit_nlinear_trust;
