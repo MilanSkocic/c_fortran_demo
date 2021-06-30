@@ -11,8 +11,6 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_multifit_nlinear.h>
-#define P(i) (gsl_vector_get(p,(i)))
-#define COV(i,j) (gsl_matrix_get(cov,(i),(j)))
 
 /**
  * @brief Data structure
@@ -21,21 +19,25 @@ struct data {
     int n; /**< Number of points */
     double *x; /**< x values memory block */
     double *y; /**< y values memory block */
-    double (*model)(double *p, double x); /**< model to use for computing y values */
+    double (*model)(double *p, double x); /**< model to use for computing y value */
 };
 
 /**
  * @brief Model to be used.
- * @param p memory block for parameters
+ * @param p Pointer to the parameter array
  * @param x x value
- * @return y value
+ * @return y=f(p,x)
  */
 double model(double *p, double x){
     return p[0] + p[1]*x + p[2]*pow(x, 2);
 }
 
 /**
- * @brief 
+ * @brief Model to be used using gsl vector for the parameter array
+ * @details yi = f(p, xi) for i=0 to N.
+ * @param p Pointer to a gsl vector
+ * @param data Pointer to a void structure of data that has to be cast down
+ * @return status either GSL_SUCCESS or GSL_FAILURE
  */
 int gsl_model(const gsl_vector *p, void *data){
     
@@ -116,14 +118,33 @@ gsl_vector *gsl_vector_linspace(double start, double end, const size_t n){
 }
 
 
-void gsl_print_vector(gsl_vector *x){
+void gsl_print_vector(gsl_vector *x, char *fmt){
 
     size_t i;
 
-    for(i=0; i<x->size; i++){
-        printf("x[%d]=%f\n", i, gsl_vector_get(x, i));
-    }
+    char str[256];
 
+    for(i=0; i<x->size; i++){
+        sprintf(str, fmt, gsl_vector_get(x, i)); 
+        printf("x[%d]=%s\t", i, str);
+    }
+    printf("\n");
+
+}
+
+void gsl_print_matrix(gsl_matrix *m, char *fmt){
+
+    size_t i, j;
+
+    char str[256];
+
+    for(i=0; i<m->size1; i++){
+        for(j=0; j<m->size2; j++){
+            sprintf(str, fmt, gsl_matrix_get(m, i, j)); 
+            printf("%s\t", str);    
+        }
+        printf("\n");
+    }
 }
 
 
@@ -160,12 +181,11 @@ int example_multifit_linear(const int n, const int k){
     gsl_multifit_wlinear (X, w, y, p, cov, &chisq, work);
     gsl_multifit_linear_free(work);
   
-    printf ("# best fit: Y = %.3f + %.3f X + %.3f X^2\n", P(0), P(1), P(2));
+    printf ("# best fit:\n");
+    gsl_print_vector(p, "%.3f");
 
     printf ("# covariance matrix:\n");
-    printf ("[ %+.5e, %+.5e, %+.5e  \n", COV(0,0), COV(0,1), COV(0,2));
-    printf ("  %+.5e, %+.5e, %+.5e  \n", COV(1,0), COV(1,1), COV(1,2));
-    printf ("  %+.5e, %+.5e, %+.5e ]\n", COV(2,0), COV(2,1), COV(2,2));
+    gsl_print_matrix(cov, "%.3f");
     printf ("# chisq = %g\n", chisq);
 
     gsl_matrix_free(X);
@@ -274,7 +294,12 @@ int example_multifit_nonlinear(const int n, const int k){
     fprintf(stderr, "final   X2/v = %f\n", sqrt(chisq/(n-k)));
 
 
-    printf ("# best fit: Y = %.3f + %.3f X + %.3f X^2\n", gsl_vector_get(work_nlin->x, 0), gsl_vector_get(work_nlin->x, 1), gsl_vector_get(work_nlin->x, 2));
+    printf ("# best fit: \n");
+    gsl_print_vector(work_nlin->x, "%.3f");
+    printf ("# covariance matrix:\n");
+    gsl_print_matrix(covar, "%.3f");
+
+
     gsl_multifit_nlinear_free (work_nlin);
     gsl_matrix_free (covar);
     gsl_rng_free (r);
