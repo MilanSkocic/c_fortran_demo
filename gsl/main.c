@@ -84,6 +84,11 @@ int gsl_residuals(const gsl_vector *p, void *data, gsl_vector *f){
 
 }
 
+/**
+ * @brief Create a new vandermonde matrix
+ * @param x Pointer to a gsl vector of the x values
+ * @param p Pointer to a gsl vector of the parameters
+ */
 gsl_matrix *get_vandermonde(gsl_vector *x, gsl_vector *p){
 
     size_t i, j, n, k;
@@ -101,7 +106,12 @@ gsl_matrix *get_vandermonde(gsl_vector *x, gsl_vector *p){
     return X;
 }
 
-
+/**
+ * @brief Create a x value vector with linearly spaced
+ * @param start Scalar value of the start
+ * @param end Scalar value of the end
+ * @param n Number of points in the x value vector
+ */
 gsl_vector *gsl_vector_linspace(double start, double end, const size_t n){
 
     double d, amp;
@@ -117,7 +127,11 @@ gsl_vector *gsl_vector_linspace(double start, double end, const size_t n){
     return x;
 }
 
-
+/**
+ * @brief Print gsl vector
+ * @param x Pointer to a x gsl vector
+ * @param fmt Pointer to char array
+ */
 void gsl_print_vector(gsl_vector *x, char *fmt){
 
     size_t i;
@@ -132,6 +146,11 @@ void gsl_print_vector(gsl_vector *x, char *fmt){
 
 }
 
+/**
+ * @brief Print gsl matrix 
+ * @param x Pointer to a m gsl matrix 
+ * @param fmt Pointer to char array
+ */
 void gsl_print_matrix(gsl_matrix *m, char *fmt){
 
     size_t i, j;
@@ -147,7 +166,11 @@ void gsl_print_matrix(gsl_matrix *m, char *fmt){
     }
 }
 
-
+/**
+ * @brief Example of linear multifit with gsl
+ * @param n Number of points
+ * @param k Number of parameters
+ */
 int example_multifit_linear(const int n, const int k){
 
     double xi, yi, ei, chisq;
@@ -198,6 +221,11 @@ int example_multifit_linear(const int n, const int k){
     return GSL_SUCCESS;
 }
 
+/**
+ * @brief Example of nonlinear multifit with gsl
+ * @param n Number of points
+ * @param k Number of parameters
+ */
 int example_multifit_nonlinear(const int n, const int k){
 
     double xi, yi, ei, chisq;
