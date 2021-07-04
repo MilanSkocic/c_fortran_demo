@@ -45,12 +45,13 @@ int main()
     double d=0.0;
     int incX = 1;
     int incY = 1;
-    double *X, *Y;
+    double * restrict X;
+    double * restrict Y;
     X = (double *) calloc(N, sizeof(double));
     Y = (double *) calloc(N, sizeof(double));
-    double *A = (double *) malloc(sizeof(double)*m*k);
-    double *B = (double *) malloc(sizeof(double)*k*n);
-    double *C = (double *) malloc(sizeof(double)*m*n);
+    double * restrict A = (double *) malloc(sizeof(double)*m*k);
+    double * restrict B = (double *) malloc(sizeof(double)*k*n);
+    double * restrict C = (double *) malloc(sizeof(double)*m*n);
 
     for (i=0; i<N; i++)
     {
