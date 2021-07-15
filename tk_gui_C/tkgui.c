@@ -8,8 +8,8 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include "tk.h"
-#include "tcl.h"
+#include <tk/tk.h>
+#include <tcl/tcl.h>
 #define TK_SILENCE_DEPRECATION 1 /**< Define silence TK */
 
 static char *labelvar = "label_var"; /**< Tcl var for the main label. */
