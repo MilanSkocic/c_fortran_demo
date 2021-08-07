@@ -21,6 +21,14 @@ static char *fpath = "fpath";
 static char *oval_radius = "oval_radius";
 
 /**
+ * @brief print out the tcl interp status.
+ * @param interp Tcl interpreter
+ */
+void print_tcl_eval_msg(Tcl_Interp *interp){
+    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+}
+
+/**
  * @brief C implementation of the tk wrapper
  */
 double add(double a, double b){
@@ -43,7 +51,7 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     char format[] = "%.1f";
 
     if (Tcl_GetVar(interp, format_var, 4) == NULL){
-        printf("Error: Tcl_GetVar %s", Tcl_GetStringResult(interp));
+        print_tcl_eval_msg(interp);
     }else
     {
         if (strlen(Tcl_GetVar(interp, format_var, 4)) > 0){
@@ -63,10 +71,10 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
     if(Tcl_GetDouble(interp, Tcl_GetVar(interp, invar, 4), &value) == TCL_OK){
         sprintf(label_buffer, format, add(value, value));
         Tcl_SetVar(interp, labelvar, label_buffer, 0);
-        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+        print_tcl_eval_msg(interp);
     }
     else{
-        printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+        print_tcl_eval_msg(interp);
         return TCL_ERROR;
     }
 
@@ -97,7 +105,7 @@ int draw_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **argv)
                 ".top.can create line 0 0 400 400 -fill blue -width 1 -arrow last;";
 
     Tcl_Eval(interp, cmd );
-    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+    print_tcl_eval_msg(interp);
 
     return TCL_OK;
 
@@ -110,20 +118,19 @@ int draw_line_tk_cb(ClientData data, Tcl_Interp *interp, int argc, const char **
 
 
     Tcl_GetInt(interp, argv[1], &x);
-    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+    print_tcl_eval_msg(interp);
+    
     Tcl_GetInt(interp, argv[2], &y);
-    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
+    print_tcl_eval_msg(interp);
 
     sprintf(tcl_cmd, ".top.can create oval [expr %d-$oval_radius] [expr %d-$oval_radius] [expr %d+$oval_radius] [expr %d+$oval_radius];", x, y, x, y);
 
     Tcl_Eval(interp, tcl_cmd);
-    printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
-
+    print_tcl_eval_msg(interp);
 
     return TCL_OK;
 
 }
-
 
 
 int main(int argc, char **argv){
