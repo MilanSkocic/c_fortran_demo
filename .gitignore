@@ -11,6 +11,7 @@
 *.cmake
 
 .idea
+.vscode
 
 /example_library/docs/doxygen/html
 /example_library/docs/doxygen/xml/
