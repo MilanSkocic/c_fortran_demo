@@ -3,7 +3,7 @@
 #include<string.h>
 #include"tokenobject.h"
 
-static char *ELEMENTS = {'R', 'C', 'L', 'Q', 'W'};
+/* static char ELEMENTS[5] = {'R', 'C', 'L', 'Q', 'W'}; */
 
 
 /**
