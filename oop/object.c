@@ -1,5 +1,8 @@
 #include "object.h"
 
+extern void fibf90_(double *x, size_t *n);
+extern void dscal_(double *a, double *X, size_t *n);
+
 
 struct object_t{
     size_t n;
@@ -42,7 +45,15 @@ Object *Object_create(size_t n){
 
 int main(int argc, char **argv){
 
-    Object *obj = Object_create(10);
+
+    double a = 2.0;
+
+    Object *obj = Object_create(100);
+    obj->print(obj);
+
+    fibf90_(obj->data, &(obj->n));
+    obj->print(obj);
+    dscal_(&a, obj->data, &(obj->n));
     obj->print(obj);
     obj->destroy(obj);
 
