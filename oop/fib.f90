@@ -21,6 +21,9 @@ SUBROUTINE FIBF90(A,N)
     ENDDO
 END
 
+!> @brief Scale an array.
+!! @param A Pointer to the array to perform the computation on
+!! @param N Array size
 subroutine dscal(a, X, N)
    integer, intent(in) :: N
    real(8), dimension(N), intent(out) :: X
