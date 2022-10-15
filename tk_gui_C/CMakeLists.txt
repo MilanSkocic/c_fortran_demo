@@ -50,6 +50,11 @@ if(UNIX)
 	endif(MSYS)
 endif(UNIX)
 
+if(APPLE)
+	include_directories(AFTER "/opt/X11/include")
+	link_directories(AFTER "/opt/X11/lib")
+endif()
+
 add_executable(tkgui)
 target_sources(tkgui PRIVATE tkgui.c)
 target_include_directories(tkgui PRIVATE ${INC_DIR})
