@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
+enable_language("Fortran")
 
 set(LIB_MSYS C:/msys64/mingw64/lib)
 set(INC_MSYS C:/msys64/mingw64/include/OpenBLAS)
@@ -54,3 +55,7 @@ target_link_libraries(array PRIVATE openblas)
 add_executable(test_blas)
 target_sources(test_blas PRIVATE test_blas.c)
 target_link_libraries(test_blas PRIVATE openblas)
+
+add_executable(ftest_blas)
+target_sources(ftest_blas PRIVATE test_blas.f90)
+target_link_libraries(ftest_blas PRIVATE openblas)
