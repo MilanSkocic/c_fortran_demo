@@ -1,7 +1,14 @@
 program main
     implicit none
     external dgemm
-    external c_func
+
+    interface
+        subroutine c_func(C, m, n)
+            integer(4), intent(in) :: m
+            integer(4), intent(in) :: N
+            real(8), intent(in), dimension(m, n) :: C
+        end subroutine
+    end interface
 
     integer(kind=4) :: i, j
     integer(kind=4), parameter :: m = 5
