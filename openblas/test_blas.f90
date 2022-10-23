@@ -1,6 +1,7 @@
 program main
     implicit none
     external dgemm
+    external c_func
 
     integer(kind=4) :: i, j
     integer(kind=4), parameter :: m = 5
@@ -42,9 +43,10 @@ program main
 
     call dgemm(TRANSA, TRANSB, m, n, k, alpha, A, LDA, B, LDB, BETA, C, LDC)
     
+    call c_func(C, m, n)
     
     do i=1, m
-           print "(2F10.5)", C(i,:) 
+           print "(2F10.5, A)", C(i,:)
     end do
     
 
