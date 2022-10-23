@@ -42,7 +42,6 @@ int main()
     int k = 5;
     int n = 2;
     double alpha=1.0;
-    double d=0.0;
     int incX = 1;
     int incY = 1;
     double * restrict X;
