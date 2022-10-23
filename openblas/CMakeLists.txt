@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.10)
 
 enable_language("Fortran")
 
+
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=c99 -Wall")
+set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=f95 -Wall")
+
+message("C DEBUG FLAGS= " ${CMAKE_C_FLAGS_DEBUG})
+message("C RELEASE FLAGS= " ${CMAKE_C_FLAGS_RELEASE})
+message("F DEBUG FLAGS= " ${CMAKE_Fortran_FLAGS_DEBUG})
+message("F RELEASE FLAGS= " ${CMAKE_Fortran_FLAGS_RELEASE})
+
 set(LIB_MSYS C:/msys64/mingw64/lib)
 set(INC_MSYS C:/msys64/mingw64/include/OpenBLAS)
 
@@ -57,5 +66,5 @@ target_sources(test_blas PRIVATE test_blas.c)
 target_link_libraries(test_blas PRIVATE openblas)
 
 add_executable(ftest_blas)
-target_sources(ftest_blas PRIVATE test_blas.f90)
+target_sources(ftest_blas PRIVATE test_blas.f90 c_func.c)
 target_link_libraries(ftest_blas PRIVATE openblas)
