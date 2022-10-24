@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-void c_func_(double *C, int *M, int *N){
+void c_func(double *C, int *M, int *N){
     // print C
     printf("In C func\n");
     printf("\n");
@@ -20,7 +20,7 @@ void c_func_(double *C, int *M, int *N){
 }
 
 // transform Column Major to row_major
-void colmajor_to_rowmajor_(double *farray, int *row, int *col, double *carray){
+void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
     size_t i, j;
     int m = *row;
     int n = *col;
@@ -34,7 +34,7 @@ void colmajor_to_rowmajor_(double *farray, int *row, int *col, double *carray){
 }
 
 // transform Row Major to Column major
-void rowmajor_to_colmajor_(double *carray, int *row, int *col, double *farray){
+void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
     size_t i, j;
     int m = *row;
     int n = *col;

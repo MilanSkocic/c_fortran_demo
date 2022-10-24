@@ -4,7 +4,7 @@ enable_language("Fortran")
 
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=c99 -Wall")
-set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=f95 -Wall")
+set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=f2003 -Wall")
 
 message("C DEBUG FLAGS= " ${CMAKE_C_FLAGS_DEBUG})
 message("C RELEASE FLAGS= " ${CMAKE_C_FLAGS_RELEASE})
