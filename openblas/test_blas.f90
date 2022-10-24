@@ -5,9 +5,16 @@ program main
     interface
         subroutine c_func(C, m, n)
             integer(4), intent(in) :: m
-            integer(4), intent(in) :: N
+            integer(4), intent(in) :: n
             real(8), intent(in), dimension(m, n) :: C
         end subroutine
+        subroutine colmajor_to_rowmajor(C, m, n, R)
+            integer(4), intent(in) :: m
+            integer(4), intent(in) :: n
+            real(8), intent(in), dimension(m, n) :: C
+            real(8), intent(out), dimension(m, n) :: R
+        end subroutine
+
     end interface
 
     integer(kind=4) :: i, j
@@ -18,6 +25,7 @@ program main
     real(kind=8), dimension(m, k) :: A
     real(kind=8), dimension(k, n) :: B
     real(kind=8), dimension(m, n) :: C
+    real(kind=8), dimension(m, n) :: R
 
     CHARACTER :: TRANSA = 'N'
     CHARACTER :: TRANSB = 'N'
@@ -44,13 +52,15 @@ program main
     do i=1, m
         do j=1, n
             C(i,j) = i+j-2
+            R(i,j) = 0.0
         end do
     end do
     
 
     call dgemm(TRANSA, TRANSB, m, n, k, alpha, A, LDA, B, LDB, BETA, C, LDC)
     
-    call c_func(C, m, n)
+    call colmajor_to_rowmajor(C, m, n, R)
+    call c_func(R, m, n)
     
     do i=1, m
            print "(2F10.5, A)", C(i,:)
