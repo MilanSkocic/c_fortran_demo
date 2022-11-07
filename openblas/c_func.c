@@ -12,7 +12,7 @@ void c_func(double *C, int *M, int *N){
     {
         for (j=0;j<n; j++)
         {
-            printf("%10.5f\t", *(C+i+n*j));
+            printf("%10.5f\t", *(C+j+n*i));
         }
         printf("\n");
     }
@@ -28,7 +28,7 @@ void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
     {
         for (j=0;j<n; j++)
         {
-            *(carray+i+n*j) =  *(farray+i+m*j);
+            *(carray+j+n*i) =  *(farray+i+m*j);
         }
     }
 }
@@ -42,7 +42,7 @@ void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
     {
         for (j=0;j<n; j++)
         {
-            *(farray+i+m*j) =  *(carray+i+n*j);
+            *(farray+i+m*j) =  *(carray+j+n*i);
         }
     }
 }

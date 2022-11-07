@@ -3,12 +3,12 @@ program main
     external dgemm
 
     interface
-        subroutine c_func(C, m, n)
+        subroutine c_func(C, m, n) bind(C)
             integer(4), intent(in) :: m
             integer(4), intent(in) :: n
             real(8), intent(in), dimension(m, n) :: C
         end subroutine
-        subroutine colmajor_to_rowmajor(C, m, n, R)
+        subroutine colmajor_to_rowmajor(C, m, n, R) bind(C)
             integer(4), intent(in) :: m
             integer(4), intent(in) :: n
             real(8), intent(in), dimension(m, n) :: C
