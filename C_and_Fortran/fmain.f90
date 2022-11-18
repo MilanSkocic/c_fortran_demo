@@ -1,21 +1,8 @@
 program main
+    use f_func
+    use iso_c_binding, only : c_char
     implicit none
     external dgemm
-
-    interface
-        subroutine c_func(C, m, n) bind(C)
-            integer(4), intent(in) :: m
-            integer(4), intent(in) :: n
-            real(8), intent(in), dimension(m, n) :: C
-        end subroutine
-        subroutine colmajor_to_rowmajor(C, m, n, R) bind(C)
-            integer(4), intent(in) :: m
-            integer(4), intent(in) :: n
-            real(8), intent(in), dimension(m, n) :: C
-            real(8), intent(out), dimension(m, n) :: R
-        end subroutine
-
-    end interface
 
     integer(kind=4) :: i, j
     integer(kind=4), parameter :: m = 5
@@ -37,6 +24,8 @@ program main
     real(kind=8) :: alpha = 0.1
     real(kind=8) :: BETA = 2.21
 
+    character(len=14, kind=c_char):: f_string = "Fortran string"
+
     do i=1, m
         do j=1, k
             A(i,j) = i+j-2
@@ -55,16 +44,23 @@ program main
             R(i,j) = 0.0
         end do
     end do
-    
 
+    print *, "Fortran program"
+    
+    print *, "Call BLAS dgemm"
     call dgemm(TRANSA, TRANSB, m, n, k, alpha, A, LDA, B, LDB, BETA, C, LDC)
     
+    print *, "Call C func: colmajor_to_rowmajor"
     call colmajor_to_rowmajor(C, m, n, R)
+    print *, "Call C func: print_matrix"
     call c_func(R, m, n)
     
+    print *, "Print matrix in fortran."
     do i=1, m
            print "(2F10.5, A)", C(i,:)
     end do
-    
+
+    print *, "Send a fortran string to a C function which print it."
+    call c_print_string(f2c_string("TEXT"))
 
 end program main

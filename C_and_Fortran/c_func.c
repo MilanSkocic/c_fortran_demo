@@ -3,7 +3,6 @@
 
 void c_func(double *C, int *M, int *N){
     // print C
-    printf("In C func\n");
     printf("\n");
     size_t i, j;
     int n = *N;
@@ -16,7 +15,6 @@ void c_func(double *C, int *M, int *N){
         }
         printf("\n");
     }
-    printf("End C func\n");
 }
 
 // transform Column Major to row_major
@@ -45,4 +43,8 @@ void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
             *(farray+i+m*j) =  *(carray+j+n*i);
         }
     }
+}
+
+void c_print_string(char *string){
+    printf("%s\n", string);
 }
