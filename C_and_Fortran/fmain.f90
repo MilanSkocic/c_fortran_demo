@@ -24,7 +24,7 @@ program main
     real(kind=8) :: alpha = 0.1
     real(kind=8) :: BETA = 2.21
 
-    character(len=14, kind=c_char):: f_string = "Fortran string"
+    character(len=*, kind=c_char), parameter:: f_string = "Fortran string sent to C func which prints it"
 
     do i=1, m
         do j=1, k
@@ -60,7 +60,6 @@ program main
            print "(2F10.5, A)", C(i,:)
     end do
 
-    print *, "Send a fortran string to a C function which print it."
-    call c_print_string(f2c_string("TEXT"))
+    call c_print_string(f2c_string(f_string))
 
 end program main
