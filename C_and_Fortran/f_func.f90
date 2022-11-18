@@ -28,10 +28,8 @@ contains
         function f2c_string(f_string)
             use iso_c_binding, only : c_char, c_ptr, c_loc, c_null_char
             character(len=*), intent(in), target :: f_string
-            character(len=len(f_string)+1, kind=c_char), target :: c_string
             type(c_ptr):: f2c_string
-            c_string = f_string // c_null_char
-            f2c_string = c_loc(c_string)
+            f2c_string = c_loc(f_string)
         end function
 
         function c2f_string(char_p, length) 
