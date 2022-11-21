@@ -24,7 +24,8 @@ program main
     real(kind=8) :: alpha = 0.1
     real(kind=8) :: BETA = 2.21
 
-    character(len=*), parameter:: f_string = "Fortran string sent to C func which prints it"
+    character(len=:), allocatable:: f_string 
+    f_string = "Fortran string sent to C func which prints it"
 
     do i=1, m
         do j=1, k
@@ -59,7 +60,7 @@ program main
     do i=1, m
            print "(2F10.5, A)", C(i,:)
     end do
-
+    print *, is_zero_terminated(f_string)
     call c_print_string(f2c_string(f_string//c_null_char))
 
 end program main
