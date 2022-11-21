@@ -24,13 +24,26 @@ program main
     real(kind=8) :: alpha = 0.1
     real(kind=8) :: BETA = 2.21
 
+    ! variables
     character(len=*), parameter :: f_string_param = "Fortran string sent to C func which prints it."
     character(len=:), allocatable, target :: f_string
+    character, dimension(:), allocatable, target :: f_str_array
+    ! pointers
     character(len=:), pointer :: f_string_p
+    character, pointer, dimension(:) :: f_str_array_p
+    
+    ! allocate
     allocate(character(len=len(f_string_param)+1) :: f_string)
+    allocate(f_str_array(len(f_string_param)+1))
+    
+    ! set
     f_string = f_string_param // c_null_char
     f_string_p => null()
     f_string_p => f_string
+
+    f_str_array_p => null()
+    call str2array(f_string, f_str_array)
+    f_str_array_p => f_str_array
 
     do i=1, m
         do j=1, k
@@ -69,5 +82,6 @@ program main
     call c_print_string(f2c_string(f_string_p))
 
     deallocate(f_string)
+    deallocate(f_str_array)
 
 end program main

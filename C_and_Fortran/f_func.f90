@@ -82,4 +82,15 @@ contains
             f_string(n:n) = c_null_char
         end subroutine
 
+        subroutine str2array(f_string, f_string_array)
+            implicit none
+            character(len=:), intent(in), allocatable :: f_string
+            character, intent(out), dimension(len(f_string)) :: f_string_array
+            integer :: n, i
+            n = len(f_string)
+            do i=1, n
+                f_string_array(i) = f_string(i:i)
+            end do
+        end subroutine
+
 end module f_func
