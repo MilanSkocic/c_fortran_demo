@@ -1,6 +1,6 @@
 program main
     use f_func
-    use iso_c_binding, only : c_char, c_null_char
+    use iso_c_binding, only : c_char, c_null_char, c_loc
     implicit none
     external dgemm
 
@@ -43,6 +43,7 @@ program main
 
     f_str_array_p => null()
     call str2array(f_string, f_str_array)
+    f_str_array(size(f_str_array)) = c_null_char
     f_str_array_p => f_str_array
 
     do i=1, m
@@ -78,8 +79,10 @@ program main
     do i=1, m
            print "(2F10.5, A)", C(i,:)
     end do
-    print *, "Is zero terminated = ", is_zero_terminated(f_string_p)
+    print *, "f_string_p is zero terminated = ", is_zero_terminated(f_string_p)
+    print *, "f_str_array is zero terminated = ", f_str_array(size(f_str_array)) == c_null_char
     call c_print_string(f2c_string(f_string_p))
+    call c_print_string(f2c_string_array(f_str_array))
 
     deallocate(f_string)
     deallocate(f_str_array)

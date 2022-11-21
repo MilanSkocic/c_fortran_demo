@@ -31,6 +31,7 @@ contains
         ! it is seem in C as an array of char
         function f2c_string(f_string)
             use iso_c_binding, only : c_char, c_ptr, c_loc, c_null_char
+            implicit none
             character(len=:), intent(in), pointer  :: f_string
             type(c_ptr):: f2c_string
             integer :: n
@@ -39,9 +40,18 @@ contains
             f2c_string = c_loc(f_string)
         end function
 
+        function f2c_string_array(f_str_array)
+            use iso_c_binding, only : c_ptr, c_loc
+            implicit none
+            character, dimension(:), allocatable, intent(in), target :: f_str_array
+            type(c_ptr) :: f2c_string_array
+            f2c_string_array = c_loc(f_str_array)
+        end function
+
         ! C sends a char pointer which is a fortran pointer to an array of char not a scalar
         function c2f_string(char_p, length) 
             use iso_c_binding, only : c_int, c_ptr, c_f_pointer
+            implicit none
             integer(c_int), intent(in), value :: length
             type(c_ptr), intent(in), value :: char_p
             character, pointer, dimension(:) :: c2f_string
@@ -50,9 +60,10 @@ contains
 
         pure function is_zero_terminated(f_string)
             use iso_c_binding, only : c_null_char
+            implicit none
             character(len=:), intent(in), pointer :: f_string
             logical :: is_zero_terminated
-            integer :: n
+            integer :: n, i
             n = len(f_string)
             is_zero_terminated = .false.
             do i=1, n
