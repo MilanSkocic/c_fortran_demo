@@ -24,15 +24,22 @@ module f_func
     end interface
 
 contains
-
+        
+        ! nullify the string before sending to C
+        ! by adding a null caracter at the last position.
+        ! pointer to a Fortan scalar char is provided
+        ! it is seem in C as an array of char
         function f2c_string(f_string)
             use iso_c_binding, only : c_char, c_ptr, c_loc, c_null_char
-            character(len=*), intent(in), target :: f_string
+            character(len=:), intent(in), pointer  :: f_string
             type(c_ptr):: f2c_string
-            nullify(f_string)
+            integer :: n
+            n = len(f_string)
+            f_string(n:n) = c_null_char
             f2c_string = c_loc(f_string)
         end function
 
+        ! C sends a char pointer which is a fortran pointer to an array of char not a scalar
         function c2f_string(char_p, length) 
             use iso_c_binding, only : c_int, c_ptr, c_f_pointer
             integer(c_int), intent(in), value :: length
@@ -43,15 +50,16 @@ contains
 
         pure function is_zero_terminated(f_string)
             use iso_c_binding, only : c_null_char
-            character(len=*), intent(in) :: f_string
-            integer :: is_zero_terminated, n
+            character(len=:), intent(in), pointer :: f_string
+            logical :: is_zero_terminated
+            integer :: n
             n = len(f_string)
-            is_zero_terminated = 0
+            is_zero_terminated = .false.
             do i=1, n
                 if(f_string(i:i) == c_null_char)then
-                    is_zero_terminated = 1
+                    is_zero_terminated = .true.
                 else
-                    is_zero_terminated = 0
+                    is_zero_terminated = .false.
                 end if
             end do
 
@@ -68,7 +76,7 @@ contains
         subroutine nullify(f_string)
             use iso_c_binding, only : c_null_char
             implicit none
-            character, pointer, intent(inout) :: f_string(:)
+            character(len=:), pointer, intent(in) :: f_string
             integer :: n
             n = len(f_string)
             f_string(n:n) = c_null_char

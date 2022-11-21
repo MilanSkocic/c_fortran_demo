@@ -24,8 +24,13 @@ program main
     real(kind=8) :: alpha = 0.1
     real(kind=8) :: BETA = 2.21
 
-    character(len=:), allocatable:: f_string 
-    f_string = "Fortran string sent to C func which prints it"
+    character(len=*), parameter :: f_string_param = "Fortran string sent to C func which prints it."
+    character(len=:), allocatable, target :: f_string
+    character(len=:), pointer :: f_string_p
+    allocate(character(len=len(f_string_param)+1) :: f_string)
+    f_string = f_string_param // c_null_char
+    f_string_p => null()
+    f_string_p => f_string
 
     do i=1, m
         do j=1, k
@@ -60,7 +65,9 @@ program main
     do i=1, m
            print "(2F10.5, A)", C(i,:)
     end do
-    print *, is_zero_terminated(f_string)
-    call c_print_string(f2c_string(f_string//c_null_char))
+    print *, "Is zero terminated = ", is_zero_terminated(f_string_p)
+    call c_print_string(f2c_string(f_string_p))
+
+    deallocate(f_string)
 
 end program main
