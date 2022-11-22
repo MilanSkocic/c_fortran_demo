@@ -14,18 +14,22 @@
 .idea
 .vscode
 
-/example_library/docs/doxygen/html
-/example_library/docs/doxygen/xml/
-/example_library/docs/doxygen/latex/
-/ast/CMakeFiles/
-/ast/CMakeCache.txt
-/ast/Makefile
+C/example_library/docs/doxygen/html
+C/example_library/docs/doxygen/xml/
+C/example_library/docs/doxygen/latex/
+C/ast/CMakeFiles/
+C/ast/CMakeCache.txt
+C/ast/Makefile
 
-/tk_gui_C/doc/html/
-/tk_gui_C/doc/latex/
+C/tk_gui_C/doc/html/
+C/tk_gui_C/doc/latex/
 
-/gsl/doc/html
-/gsl/doc/latex
+C/gsl/doc/html
+C/gsl/doc/latex
+
+C_and_Fortran/doxygen/html
+C_and_Fortran/doxygen/xml
+C_and_Fortran/doxygen/latex
 
 
 [hH][tT][Ll][mM]
