@@ -1,3 +1,10 @@
+!>
+!! @file
+!! @author Milan Skocic
+!! @brief Program which calls C functions from Fortran.
+
+!>
+!! @brief Fortran program
 program main
     use f_func
     use iso_c_binding, only : c_char, c_null_char, c_loc

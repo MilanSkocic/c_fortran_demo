@@ -1,6 +1,18 @@
+/**
+ * @file
+ * @author Milan Skocic
+ * @brief C functions that can be called from Fortran
+ * 
+ */
 #include <stdio.h>
 
-
+/**
+ * @brief Print a rank-2 array
+ * 
+ * @param C rank-2 array
+ * @param M integer number of rows
+ * @param N integer number of cols
+ */
 void c_func(double *C, int *M, int *N){
     // print C
     printf("\n");
@@ -17,7 +29,14 @@ void c_func(double *C, int *M, int *N){
     }
 }
 
-// transform Column Major to row_major
+/**
+ * @brief Transform a Fortran array to a C array
+ * 
+ * @param farray rank-2 array stored as column major layout
+ * @param row number of rows
+ * @param col number of columns
+ * @param carray rank-2 array stored as row major layout.
+ */
 void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
     size_t i, j;
     int m = *row;
@@ -31,7 +50,14 @@ void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
     }
 }
 
-// transform Row Major to Column major
+/**
+ * @brief Transform a C array into a Fortran array
+ * 
+ * @param carray rank-2 array stored as row major layout
+ * @param row number of rows
+ * @param col number of columns
+ * @param farray rank-2 array stored as column major layout.
+ */
 void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
     size_t i, j;
     int m = *row;
@@ -44,7 +70,11 @@ void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
         }
     }
 }
-
+/**
+ * @brief Print a Fortran string
+ * 
+ * @param string null-terminated String
+ */
 void c_print_string(char *string){
     printf("%s\n", string);
 }
