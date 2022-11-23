@@ -4,7 +4,7 @@ project(mix_c_f LANGUAGES "C" "Fortran")
 
 set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -std=f2003 -Wall")
 
-add_executable(fmain fmain.f90 c_func.c f_func.f90)
+add_executable(fmain fmain.f90 c_func.c f_func.f90 precisions.f90)
 target_link_libraries(fmain openblas)
 
-add_executable(cmain cmain.c c_func.c f_func.f90)
+add_executable(cmain cmain.c c_func.c f_func.f90 precisions.f90)

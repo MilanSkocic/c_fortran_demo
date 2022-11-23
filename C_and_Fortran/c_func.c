@@ -7,11 +7,20 @@
 #include <stdio.h>
 
 /**
+ * @brief Point type
+ * 
+ */
+struct Point{
+    float x; /**< x coordinate*/
+    float y; /**< y coordinates*/
+};
+
+/**
  * @brief Print a rank-2 array
  * 
- * @param C rank-2 array
- * @param M integer number of rows
- * @param N integer number of cols
+ * @param[in] C rank-2 array
+ * @param[in] M integer number of rows
+ * @param[in] N integer number of cols
  */
 void c_func(double *C, int *M, int *N){
     // print C
@@ -32,10 +41,10 @@ void c_func(double *C, int *M, int *N){
 /**
  * @brief Transform a Fortran array to a C array
  * 
- * @param farray rank-2 array stored as column major layout
- * @param row number of rows
- * @param col number of columns
- * @param carray rank-2 array stored as row major layout.
+ * @param[in] farray rank-2 array stored as column major layout
+ * @param[in] row number of rows
+ * @param[in] col number of columns
+ * @param[out] carray rank-2 array stored as row major layout.
  */
 void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
     size_t i, j;
@@ -53,10 +62,10 @@ void colmajor_to_rowmajor(double *farray, int *row, int *col, double *carray){
 /**
  * @brief Transform a C array into a Fortran array
  * 
- * @param carray rank-2 array stored as row major layout
- * @param row number of rows
- * @param col number of columns
- * @param farray rank-2 array stored as column major layout.
+ * @param[in] carray rank-2 array stored as row major layout
+ * @param[in] row number of rows
+ * @param[in] col number of columns
+ * @param[out] farray rank-2 array stored as column major layout.
  */
 void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
     size_t i, j;
@@ -73,7 +82,7 @@ void rowmajor_to_colmajor(double *carray, int *row, int *col, double *farray){
 /**
  * @brief Print a Fortran string
  * 
- * @param string null-terminated String
+ * @param[in] string null-terminated String
  */
 void c_print_string(char *string){
     printf("%s\n", string);

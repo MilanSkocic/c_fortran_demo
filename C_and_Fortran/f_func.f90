@@ -7,10 +7,12 @@
 !! @brief Fortran functions and interfaces to C code. 
 module f_func
     use precision
+    implicit none
 
+    !> @brief C Interfaces
     interface
         
-        !>
+        !> @fn f_func::c_func::c_func(C, m, n)  
         !! @brief C function which prints a rank-2 array
         !! @param[in] C rank-2 array
         !! @param[in] m number of rows
@@ -23,13 +25,12 @@ module f_func
         end subroutine
 
 
-        !>
+        !> @fn f_func::colmajor_to_rowmajor::colmajor_to_rowmajor(C, m, n, R)
         !! @brief Transform a Fortran array to a C array
-        !! 
-        !! @param[in] farray rank-2 array stored as column major layout
-        !! @param[in] row number of rows
-        !! @param[in] col number of columns
-        !! @param[out] carray rank-2 array stored as row major layout.
+        !! @param[in] C rank-2 array stored as column major layout
+        !! @param[in] m row number of rows
+        !! @param[in] n col number of columns
+        !! @param[out] R rank-2 array stored as row major layout.
         subroutine colmajor_to_rowmajor(C, m, n, R) bind(C)
             use iso_c_binding
             integer(c_int), intent(in) :: m
@@ -38,10 +39,9 @@ module f_func
             real(c_double), intent(out), dimension(m, n) :: R
         end subroutine
 
-        !>
+        !> @fn f_func::c_print_string::c_print_string(char_p)
         !! @brief Print a string
-        !! @param[in] String to be printed
-        !!
+        !! @param[in] char_p String to be printed
         subroutine c_print_string(char_p) bind(c)
             use iso_c_binding, only : c_ptr
             type(c_ptr), intent(in), value :: char_p
@@ -51,11 +51,10 @@ module f_func
 
 contains
         
-        !>
-        !! @brief Return a C pointer of a Fortran string pointer
+        !> @brief Return a C pointer of a Fortran string pointer
         !! @details The Fortran string is ensured to be null-terminated by
         !! adding a \0 character at the last position.
-        !! @param[in] Pointer to a Fortran string
+        !! @param[in] f_string Pointer to a Fortran string
         !! @return C pointer.
         !!
         function f2c_string(f_string)
@@ -69,11 +68,10 @@ contains
             f2c_string = c_loc(f_string)
         end function
 
-        !>
-        !! @brief Return a C pointer of a Fortran array of char
+        !> @brief Return a C pointer of a Fortran array of char
         !! @details The Fortran string is ensured to be null-terminated by
         !! adding a \0 character at the last position.
-        !! @param[in] Fortran rank-1 array of char.
+        !! @param[in] f_str_array Fortran rank-1 array of char.
         !! @return C pointer.
         !!
         function f2c_string_array(f_str_array)
@@ -84,10 +82,9 @@ contains
             f2c_string_array = c_loc(f_str_array)
         end function
 
-        !>
-        !! @brief Transform a C pointer to an Fortran pointer of char(:)
-        !! @param[in] C pointer to a string.
-        !! @param[in] Length of the string
+        !> @brief Transform a C pointer to an Fortran pointer of char(:)
+        !! @param[in] char_p C pointer to a string.
+        !! @param[in] length Length of the string
         !! @return Fortran pointer to a string.
         !! 
         function c2f_string(char_p, length) 
@@ -99,9 +96,8 @@ contains
             call c_f_pointer(char_p, c2f_string, shape=[length+1])
         end function
 
-        !>
-        !! @brief Check is a Fortran string is null-terminated
-        !! @param[in] Pointer to Fortran string.
+        !> @brief Check is a Fortran string is null-terminated
+        !! @param[in] f_string Pointer to Fortran string.
         !! @return True or False
         pure function is_zero_terminated(f_string)
             use iso_c_binding, only : c_null_char
@@ -121,10 +117,9 @@ contains
 
         end function
 
-        !>
-        !! @brief Print a C string
-        !! @param[in] C pointer to char
-        !! @param[in] Length of the C string.
+        !> @brief Print a C string
+        !! @param[in] char_p C pointer to char
+        !! @param[in] length Length of the C string.
         subroutine f_print(char_p, length)bind(c)
             use iso_c_binding, only : c_int, c_ptr
             implicit none
@@ -133,10 +128,9 @@ contains
             print *, c2f_string(char_p, length)
         end subroutine
 
-        !>
-        !! @brief Copy a scalar string into an array string. 
-        !! @param[in] Pointer to a scalar string.
-        !! @param[in] rank-1 array string.
+        !> @brief Copy a scalar string into an array string. 
+        !! @param[in] f_string Pointer to a scalar string.
+        !! @param[out] f_string_array rank-1 array string.
         subroutine str2array(f_string, f_string_array)
             implicit none
             character(len=:), intent(in), allocatable :: f_string

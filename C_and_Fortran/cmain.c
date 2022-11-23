@@ -11,11 +11,16 @@
 /**
  * @brief Fortran subroutine which prints an C string.
  * 
- * @param string C string
- * @param length Length of the string
+ * @param[in] string C string
+ * @param[in] length Length of the string
  */
 extern void f_print(char *string, int length);
 
+/**
+ * @brief C program
+ * 
+ * @return int 
+ */
 int main(){
 
     char string[] = "Send a C string to a Fortran function which print it.";
