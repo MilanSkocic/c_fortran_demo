@@ -60,3 +60,6 @@ target_link_libraries(array PRIVATE openblas)
 add_executable(test_blas)
 target_sources(test_blas PRIVATE test_blas.c)
 target_link_libraries(test_blas PRIVATE openblas)
+
+add_executable(test_restrict)
+target_sources(test_restrict PRIVATE test_restrict.c)
