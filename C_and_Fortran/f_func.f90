@@ -7,6 +7,7 @@
 !! @brief Fortran functions and interfaces to C code. 
 module f_func
     use precision
+    use, intrinsic :: ieee_arithmetic
     implicit none
 
     !> @brief C Interfaces
@@ -141,5 +142,10 @@ contains
                 f_string_array(i) = f_string(i:i)
             end do
         end subroutine
+
+        function get_nan() bind(C)
+            real(c_double) :: get_nan
+            get_nan = ieee_value(1.0d0, ieee_quiet_nan)
+        end function
 
 end module f_func
