@@ -14,9 +14,9 @@ module precision
     real(kind=dp), protected :: pi = 4*atan(1.0_dp)
 
     !> @brief Point type
-    type :: point
-        real :: x !< x coordinates
-        real :: y !< y coordinates
+    type, bind(c) :: t_point
+        real(c_double) :: x !< x coordinates
+        real(c_double) :: y !< y coordinates
     end type
 
 end module precision

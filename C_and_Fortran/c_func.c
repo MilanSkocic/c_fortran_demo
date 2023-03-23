@@ -10,9 +10,9 @@
  * @brief Point type
  * 
  */
-struct Point{
-    float x; /**< x coordinate*/
-    float y; /**< y coordinates*/
+struct t_point{
+    double x; /**< x coordinate*/
+    double y; /**< y coordinates*/
 };
 
 /**
