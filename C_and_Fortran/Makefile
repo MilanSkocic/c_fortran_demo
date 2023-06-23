@@ -1,24 +1,28 @@
 CC=gcc
 FC=gfortran
+LINKER=gfortran
 CFLAGS=-std=c11
 FFLAGS=-std=f2008
-LDFLAGS=-ltk -ltcl
+LDFLAGS=-lopenblas
 C_SOURCES=$(wildcard *.c)
 F_SOURCES=$(wildcard *.f90)
 C_OBJECTS=$(patsubst %.c, %.o, $(C_SOURCES))
 F_OBJECTS=$(patsubst %.f90, %.o, $(F_SOURCES))
-EXE=app
+EXE=capp fapp
 
 all: $(EXE)
 
-$(EXE): $(C_OBJECTS) $(F_OBJECTS)
-	$(CC) $^ $(LDFLAGS) -o $@
+capp: cmain.o c_func.o precisions.o f_func.o
+	$(LINKER) $^ $(LDFLAGS) -o $@
+
+fapp: fmain.o c_func.o precisions.o f_func.o
+	$(LINKER) $^ $(LDFLAGS) -o $@
 
 $(C_OBJECTS): $(C_SOURCES)
-	$(CC) -c $(CFLAGS) $^ -o $@
+	$(CC) -c $(CFLAGS) $^
 
 $(F_OBJECTS): $(F_SOURCES)
-	$(FC) -c $(FFLAGS) $^ -o $@
+	$(FC) -c $(FFLAGS) $^
 
 clean:
 	rm -f *.o
