@@ -7,6 +7,7 @@
  * commands in C.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <tk.h>
 #include <tcl.h>
@@ -77,7 +78,6 @@ int func(ClientData data, Tcl_Interp *interp, int argc, const char **argv){
         print_tcl_eval_msg(interp);
         return TCL_ERROR;
     }
-
     return TCL_OK;
 }
 
@@ -190,12 +190,21 @@ int main(int argc, char **argv){
     Tcl_CreateCommand(interp, "draw_tk_cb", draw_tk_cb, NULL, NULL);
     Tcl_CreateCommand(interp, "draw_line_tk_cb", draw_line_tk_cb, NULL, NULL);
 
+    char *buffer = 0;
+    int length;
+    FILE *f = fopen("gui.tcl", "rb");
+    fseek(f, 0, SEEK_END);
+    length = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    buffer = malloc(length);
+    fread(buffer, 1, length, f);
     // Start GUI and check if any errors
-    if (Tcl_Eval(interp, pchFile) == TCL_OK){
+    if (Tcl_Eval(interp, (char *)buffer) == TCL_OK){
         printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
         Tk_MainLoop();
     }
     else{
         printf("Tcl_Eval msg: %s\n", Tcl_GetStringResult(interp));
     };
+    free(buffer);
 }
