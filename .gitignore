@@ -23,6 +23,7 @@ C/ast/Makefile
 
 C/tk_gui_C/doc/html/
 C/tk_gui_C/doc/latex/
+C/tk_gui_C/lib
 
 C/gsl/doc/html
 C/gsl/doc/latex
