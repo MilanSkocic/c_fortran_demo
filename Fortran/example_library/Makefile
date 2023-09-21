@@ -23,4 +23,5 @@ $(F_OBJECTS): $(F_SOURCES)
 
 clean:
 	rm -f *.o
-	rm -f gui.*
+	rm -f app*
+	rm -f library.so
