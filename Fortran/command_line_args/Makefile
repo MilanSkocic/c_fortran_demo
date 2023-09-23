@@ -2,7 +2,8 @@ CC=gcc
 FC=gfortran
 LINKER=gfortran
 CFLAGS=-std=c11
-FFLAGS=-std=f2008
+BUILD_DIR=build
+FFLAGS=-std=f2008 -J$(BUILD_DIR)
 LDFLAGS=
 C_SOURCES=$(wildcard *.c)
 F_SOURCES=$(wildcard *.f90)
@@ -13,14 +14,13 @@ EXE=app
 all: $(EXE)
 
 $(EXE): $(C_OBJECTS) $(F_OBJECTS)
-	$(LINKER) $^ $(LDFLAGS) -o $@
+	$(LINKER) $(BUILD_DIR)/$^ $(LDFLAGS) -o $(BUILD_DIR)/$@
 
 $(C_OBJECTS): $(C_SOURCES)
-	$(CC) -c $(CFLAGS) $^ -o $@
+	$(CC) -c $(CFLAGS) $^ -o $(BUILD_DIR)/$@
 
 $(F_OBJECTS): $(F_SOURCES)
-	$(FC) -c $(FFLAGS) $^ -o $@
+	$(FC) -c $(FFLAGS) $^ -o $(BUILD_DIR)/$@
 
 clean:
-	rm -f *.o
-	rm -f app*
+	rm -rf $(BUILD_DIR)/*
