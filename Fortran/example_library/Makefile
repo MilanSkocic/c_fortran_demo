@@ -1,14 +1,16 @@
 CC=gcc
 FC=gfortran
+BUILD_DIR=build
+SRC_DIR=src
 LINKER=gfortran
 CFLAGS=-std=c11
-FFLAGS=-std=f2008
+FFLAGS=-std=f2008 -J$(BUILD_DIR)
 LDFLAGS=
-C_SOURCES=$(wildcard src/*.c)
-F_SOURCES=$(wildcard src/*.f90)
-C_OBJECTS=$(patsubst src/%.c, src/%.o, $(C_SOURCES))
-F_OBJECTS=$(patsubst src/%.f90, src/%.o, $(F_SOURCES))
-LIB=library.so
+C_SOURCES=$(wildcard $(SRC_DIR)/*.c)
+F_SOURCES=$(wildcard $(SRC_DIR)/*.f90)
+C_OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES))
+F_OBJECTS=$(patsubst $(SRC_DIR)/%.f90, $(BUILD_DIR)/%.o, $(F_SOURCES))
+LIB=$(BUILD_DIR)/library.so
 
 all: $(LIB)
 
@@ -22,6 +24,4 @@ $(F_OBJECTS): $(F_SOURCES)
 	$(FC) -c -fPIC $(FFLAGS) $^ -o $@
 
 clean:
-	rm -f *.o
-	rm -f app*
-	rm -f library.so
+	rm -rf $(BUILD_DIR)/*
