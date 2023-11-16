@@ -1,0 +1,217 @@
+% !TEX program = pdflatex
+% !TEX encoding = UTF-8
+% !TEX spellcheck = en_US
+
+
+
+\documentclass[11pt, a4paper, notitlepage]{article}
+
+%-------------------------------------------------------------------------------------------------
+%				LANGUAGE SETTINGS
+%--------------------------------------------------------------------------------------------------
+\usepackage[english]{babel}
+
+%--------------------------------------------------------------------------------------------------
+%				PAGE DIMENSIONS
+%--------------------------------------------------------------------------------------------------
+\usepackage[margin=1in]{geometry}
+
+
+%--------------------------------------------------------------------------------------------------
+%				MATHS TOOLS
+%--------------------------------------------------------------------------------------------------
+%amsmath and amsfont have to be loaded before the xunicode package when XeTeX is used. The experimental package unicode-math will subsitute those packages when XeTeX is used. It is available in TeX Live 2012.
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsthm}% The amsthm package provides an enhanced version of LATEX's \newtheorem commandfor defining theorem-like environments.
+\usepackage{mathtools} % The mathtools package fixes some amsmath quirks and adds some useful settings, symbols, and environments to amsmath. The mathtools package loads the amsmath package and hence there is no need to \usepackage{amsmath} in the preamble if mathtools is used.
+
+%-------------------------------------------------------------------------------------------------
+%				FONT SETTINGS
+%-----------------------------------------------------------------------------------------------
+\usepackage{microtype}% better space management
+\usepackage[utf8]{inputenc}%utf encoding
+%\usepackage{stix} %load the default police pack
+%available packs: default, bookman, charter, newcent, lmodern, mathpazo, mathptmx
+%\usepackage[exscale, amsfonts, amssymb]{concmath}
+%\renewcommand*{\bfseries}{\mdseries}
+%\renewcommand{\familydefault}{\sfdefault}
+
+%--------------------------------------------------------------------------------------------------
+%					GRAPHICS
+%--------------------------------------------------------------------------------------------------
+% Packages for pictures adding
+\usepackage{float}
+\usepackage{graphicx} %insert images
+\usepackage{caption}
+\usepackage{subcaption}
+
+\graphicspath{}
+
+
+%--------------------------------------------------------------------------------------------------
+%		HEADERS AND FOOTERS 
+%--------------------------------------------------------------------------------------------------
+
+% Custom headers and footers
+\usepackage{fancyhdr} %custom headers and footers layout
+\usepackage{lastpage} %package to print the last page
+\pagestyle{fancy} %fancy page style
+%\fancyhead{} %clear header info
+%\fancyfoot{} %clear footer info
+%\lhead{left header}
+%\chead{center header}
+%\rhead{right header}
+%\lfoot{left footer}
+%\cfoot{\thepage\ / \pageref{LastPage}}
+%\rfoot{right footer}
+%\renewcommand{\headrulewidth}{0.2pt} % change the width the header rule
+%\renewcommand{\footrulewidth}{0.2pt} % change the width the footer rule
+%\headheight=2.0cm % change head height
+
+
+%--------------------------------------------------------------------------------------------------
+%			ADDITIONAL PACKAGES 
+%--------------------------------------------------------------------------------------------------
+% diverse package
+\usepackage{textcomp} %use specific symbols for text (example "°")
+\usepackage{multicol} %create multi column environment
+\usepackage{multirow}
+
+% use colors
+\usepackage[table]{xcolor}
+
+\usepackage{booktabs}% add top, middle, bottom rule for professional tables
+
+\usepackage{siunitx} %Use SI units
+%\usepackage[Lenny]{fncychap}% change the chapter aspect
+% Lenny, Sonny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+%\usepackage{minitoc}% add TOC in each chapter
+%\usepackage{setspace}% interspacing management
+%\usepackage{listings} %add programmation code p.199 in latex tutorial
+
+%--------------------------------------------------------------------------------------------------
+%			INDEX AND NOMENCLATURE 
+%--------------------------------------------------------------------------------------------------
+\usepackage{nomencl}
+\makenomenclature
+%\usepackage{makeidx}
+%\makeindex
+
+%--------------------------------------------------------------------------------------------------
+%					REFERENCES 
+%--------------------------------------------------------------------------------------------------
+\usepackage[backend=biber,
+bibstyle=ieee, 
+citestyle=numeric-comp,
+natbib=true,
+doi=false, 
+url=false,
+isbn=false,
+mincitenames=1,
+maxcitenames=1,
+minbibnames=1,
+maxbibnames=99,
+backref=false,]
+{biblatex}
+\addbibresource[label=main]{./Examples.bib}
+
+
+
+%------------------------------------------------------------------------------
+%	CUSTOM COLORS
+%------------------------------------------------------------------------------ 
+%\definecolor{lightgray}{gray}{0.9}
+
+
+%--------------------------------------------------------------------------------------------------
+%			PDF PROPERTIES AND HYPERLINKS 
+%--------------------------------------------------------------------------------------------------
+
+% url links in document
+\usepackage{url}
+\usepackage{hyperref}
+
+%edit the properties of your PDF documents which will be displayed
+\hypersetup{
+    bookmarks=true, 		% show bookmarks bar?
+    unicode=true,  		% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,      % page fit to window when opened
+    pdftitle={Report Title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Report Subtitle},   % subject of the document
+    pdfnewwindow=true,      % links in new window
+    pdfkeywords={}, % list of keywords
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+\usepackage{lipsum}
+
+%---------------------------------------------------------------------------------------------------------------------------------------------
+%				DOCUMENT
+%---------------------------------------------------------------------------------------------------------------------------------------------
+\begin{document}
+
+	\title{Simple article template}
+	
+	\author{Author Name}
+	
+	\maketitle
+	
+	\begin{abstract}
+		\lipsum[1]
+	\end{abstract}
+	
+	%TOC + LOF + LOT
+	%\tableofcontents
+	
+
+	\section{Introduction}%\begin{refsection}
+	\lipsum[2] 
+	
+	Example of a citation without referring to the author(s) \citep{Author2017, Author2017-1} 
+	
+	Example of a citation with reference to the author(s) \citet{Author2017-2} 
+	
+	
+	%\end{refsection}
+	\section{Experimental setup}
+	
+	\subsection{Samples}
+	\lipsum[3-5] 
+	
+	\subsection{Caracterization Methods}
+	\lipsum[6-9] 
+	
+	
+	\subsection{Observations}
+	\lipsum[10-12] 
+	
+	\section{Results and Discussions}
+	\lipsum[13-20]
+	
+	\section{Conclusion}
+	\lipsum[21-23]
+
+	%bibliography is not in the backmatter
+	%each chapter has its own reference section
+	
+	
+	% simplest command for printing out the references
+	\printbibliography[heading=bibintoc]
+	% the following commands are useful when the references need to grouped by types for example
+	%\printbibheading[heading=bibintoc]
+	%\printbibliography[type=article, title=Articles]
+	%\printbibliography[type=book, title=Books]
+	% the same sorting can be obtained by adding refsections in the body text
+	%\printbibliography[heading=subbibintoc, title=Introduction, section=1]
+	%\printindex
+
+\end{document}

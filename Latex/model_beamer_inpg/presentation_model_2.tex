@@ -1,0 +1,269 @@
+% !TEX program = pdflatex
+% !TEX encoding = UTF-8
+% !TEX spellcheck = en_US
+
+\documentclass[compress,10pt, handout,sans,red]{beamer}%class présentation also available [xcolor=dvipsnames]
+
+%############################################
+%#########  Packages and their use  #########
+%############################################
+
+\usetheme{Frankfurt}%slide theme
+%available themes are: default, boxes, Bergen, Boadilla, Madrid, AnnArbor, CambridgeUS,
+%Pittsburgh, Rochester, Antibes, JuanLesPins, Montpellier, Berkeley, PaloAlto, Goettingen,
+%Marburg, Hannover, Berlin, Ilmenau, Dresden, Darmstadt, Frankfurt, Singapore, Szeged, 
+%Copenhagen, Luebeck, Malmoe, Warsaw. 
+
+\useinnertheme{rectangles}%An inner theme installs templates that dictate how the following elements are typeset:  
+% -Title and part pages.
+% -Itemize environments.
+% -Enumerate environments.
+% -Description environments.
+% -Block environments.
+% -Theorem and proof environments.
+% -Figures and tables.
+% -Footnotes.
+% -Bibliography entries.
+%themes: default, circles, rectangles, rounded, inmargin
+
+%\setbeamersize{sidebar left width=1cm height=\paperheight}%size of sidebar
+%\setbeamercolor{sidebar left}{bg=gray, fg=white}%color of sidebar
+%\useoutertheme[subsection=true]{smoothbars}%Typically,an outer theme specifies how the following elements are rendered:
+% -The head- and footline.
+% -The sidebars.
+% -The logo.
+% -The frame title.
+%themes: default, infolines, miniframes, smoothbars, sidebar, split, shadow, tree, %smoothtree
+
+\usecolortheme{default}
+%\usecolortheme{rose}
+%special-purpose colors: default, structure, sidebartab
+%complete color themes: albatross, beetle, crane, dove, fly, seagull, wolverine, beaver
+%innercolors themes: lily, orchid, rose
+%outercolors themes:  whale, seahorse, dolphin
+
+
+
+
+
+%####### Packages ########
+%\usepackage[utf8x]{inputenc}
+%\usepackage[T2A]{fontenc}%cyrillic support
+\usepackage{multicol}%create multi columns text
+%\usepackage{textcomp}%use specific symbols for text (example "°")
+
+\usepackage{amsmath} %équations mathématique
+\usepackage{amssymb} %symboles mathématique
+%\usepackage{mathptmx}
+\usepackage{float}
+\usepackage{graphicx}%insert images
+
+
+\graphicspath{}
+
+\usepackage{hyperref}%url links in document
+\hypersetup{
+    bookmarks=true, 		% show bookmarks bar?
+    unicode=true,  		% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,      % page fit to window when opened
+    pdftitle={title},    % title
+    pdfauthor={M. Skocic},     % author
+    pdfsubject={},   % subject of the document
+    pdfnewwindow=true,      % links in new window
+    pdfkeywords={}, % list of keywords
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+\usepackage{ifxetex}
+\ifxetex
+	\usepackage{fontspec}
+	\usepackage{xunicode}
+	\defaultfontfeatures{Mapping=tex-text} % To support LaTeX quoting style
+	\setmainfont{Ubuntu}
+	\setsansfont{Ubuntu}
+\else
+	\usepackage[utf8x]{inputenc}
+	%\usepackage[T1]{fontenc}
+	\usepackage{stix}
+	%\usepackage[exscale, amsfonts, amssymb]{concmath}
+	%\renewcommand*{\bfseries}{\mdseries}
+	
+\fi
+
+%\renewcommand{\familydefault}{cmss}%change font
+%\renewcommand{\customtextcolor}{DarkBlue}%change text and title color
+%\definecolor{mcgray}{RGB}{91,95,97}
+%\definecolor{mcred}{RGB}{128,33,73}
+\setcounter{tocdepth}{1}
+
+%these packages are useful if you want to redefine header and footer %templates
+%\usepackage{fancyhdr}%custom headers and footers layout
+%\usepackage{lastpage}%package to print the last page
+%\pagestyle{fancy}%fancy page style
+%\fancyhead{}%clear header info
+%\fancyfoot{}%clear footer info
+%\lhead{}
+%\chead{}
+%\rhead{Projet d'électronique}
+%\lfoot{Milan SKOCIC\\1er année\\PMP-A\\}
+%\cfoot{\thepage\ / \pageref{LastPage}}
+%\rfoot{Année scolaire 2009-2010}
+
+%add image as slide background
+%\pgfdeclareimage[height=96mm,width=128mm]{nombidon}{ploum}
+%\setbeamertemplate{background}{\pgfuseimage{nombidon}}
+
+
+
+
+%######################################
+%####### USEFUL COMMANDS ##############
+%######################################
+%\begin{definition}
+   %A \alert{prime number} is a number that has exactly two divisors.
+%\end{definition}
+%there are various environments that you can use: block, example, theorem, %lemma, proof, corollary. those environments are predfined but you can %create your own using the command:
+%%\begin{block}{nameOfBlock}
+   %A \alert{prime number} is a number that has exactly two divisors.
+%\end{block}
+%\begin{alertblock}{Alert block}
+%  block text \texttt{alertblock}
+% \end{alertblock}
+
+% \begin{exampleblock}{example block}
+%  block text \texttt{exampleblock}
+% \end{exampleblock}
+
+
+
+
+%\pause creates a simple overlay in other words you have to click to display the next element, it can be an item or definition...
+
+%<x-> commmand indicates when the item must be displayed
+%\item<1-> 
+%\item<2->
+%\item<3-> 
+%\item<1-> 
+
+%\uncover<4-> It only shows its argument on the slides specified in the %overlay specification. On all other slides, the argument is hidden %(though it still occupies space). The command \only is similar
+
+
+%\columns environment creates two columns with defined width to confront two ideas:
+%\begin{frame}
+%  \frametitle{What’s Still To Do?}
+%  \begin{columns}[t]%t option set columns on first line
+%    \column{.4\textwidth}
+%      \begin{block}{Answered Questions}
+%        How many primes are there?
+%      \end{block}
+%    \column{.4\textwidth}
+%      \begin{block}{Open Questions}
+%        Is every even number the sum of two primes?
+%      \end{block}
+%  \end{columns}
+%\end{frame}
+%
+%\begin{frame}[t or c or b] those options set vertical alignement of body in slide: top, center, bottom
+%	
+%\end{frame}
+
+\usepackage{multirow}
+\usepackage{mathtools}
+
+
+
+
+%##########################################################
+%############ PRESENTATION CODE SOURCE ####################
+%##########################################################
+%\logo{LOGO}
+\title{Presentation title}
+\subtitle{Subtitle}%subtitle to precise the subject
+\author{\textsc{Author}}%presentation author(s)
+\institute{Institut}%institute
+
+
+
+%\AtBeginPart{\frame{\partpage}}
+\begin{document}
+
+%########## SLIDE ###########
+%first slide with the title and author information
+\frame{
+	\titlepage % add information about the author and title precised in header
+}
+%########## SLIDE ###########
+\frame{
+	\frametitle{Contents}
+	\tableofcontents[pausesections]
+}	
+
+\section{Introduction}
+\subsection{Context}
+\begin{frame}
+	\frametitle{Context}
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Context}
+	
+	
+\end{frame}
+
+
+\subsection{Objectives}
+\begin{frame}
+	\frametitle{Objectives}
+	
+	
+\end{frame}
+
+
+\section{Results}
+\subsection{Results 1}
+\begin{frame}
+	\frametitle{Results 1}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Results 1}
+
+\end{frame}
+
+
+\subsection{Results 2}
+\begin{frame}
+	\frametitle{Results 2}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Results 2}
+
+\end{frame}
+
+\section{Conclusion}
+\subsection{Main Results}
+\begin{frame}
+	\frametitle{Main Results}
+
+\end{frame}
+
+\subsection{Opening}
+\begin{frame}
+	\frametitle{Opening}
+
+\end{frame}
+
+
+\end{document}

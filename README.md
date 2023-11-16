@@ -1,1 +1,1 @@
-C and Fortran related snippets.
+Snippets for demonstration.

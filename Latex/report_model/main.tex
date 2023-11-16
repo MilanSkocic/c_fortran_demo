@@ -1,0 +1,167 @@
+% !TEX program = pdflatex
+% !TEX encoding = UTF-8
+% !TEX spellcheck = en_US
+
+\documentclass[11pt, a4paper, onecolumn, titlepage, twoside, openright]{article}
+
+%------------------------------------------------------------------------------
+%	LANGUAGE AND MARGINS
+%------------------------------------------------------------------------------
+\usepackage[right=2.5cm, left=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lipsum} % Package to generate dummy text throughout this template
+%Encoding packages - langauges for hyphenation
+%\usepackage[T2A]{fontenc}%cyrillic font encoding
+
+%\usepackage{default}%load the default police pack
+%available packs: default, bookman, charter, newcent, lmodern, mathpazo, mathptmx
+%mathptmx is Times-based font which allows to save a lot of space when writing.
+\usepackage{microtype}
+%\usepackage[exscale, amsfonts, amssymb]{concmath}
+\usepackage{mathastext}
+%\renewcommand*{\bfseries}{\mdseries}
+
+
+%------------------------------------------------------------------------------
+%	PACKAGES FOR MATHEMATICS
+%------------------------------------------------------------------------------
+%Maths tools have to be inputed before the xunicode package when XeTeX is used.
+\usepackage{amsmath} %équations mathématique
+\usepackage{amssymb} %symboles mathématique
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+
+%------------------------------------------------------------------------------
+%	PACKAGES FOR PICTURES
+%------------------------------------------------------------------------------
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx} %insert images
+\usepackage{caption}
+\graphicspath{}
+
+
+%------------------------------------------------------------------------------
+%	PACKAGES FOR HEADERS AND FOOTERS
+%------------------------------------------------------------------------------
+\usepackage{fancyhdr}%custom headers and footers layout
+\usepackage{lastpage}%package to print the last page
+\pagestyle{fancy}%fancy page style
+
+
+%------------------------------------------------------------------------------
+%	PACKAGES FOR PDF PROPERTIES
+%------------------------------------------------------------------------------
+\usepackage{url}
+\usepackage{hyperref} %url links in document
+\hypersetup{
+    bookmarks=true, 		% show bookmarks bar?
+    unicode=true,  		% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,      % page fit to window when opened
+    pdftitle={Report title.},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfnewwindow=true,      % links in new window
+    pdfkeywords={keyword 1, keyword 2}, % list of keywords
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+
+%------------------------------------------------------------------------------
+%	PACKAGE FOR NOMENCLATURE
+%------------------------------------------------------------------------------
+\usepackage[intoc]{nomencl}
+\makenomenclature
+
+
+%------------------------------------------------------------------------------
+%	ADDITIONAL PACKAGES
+%------------------------------------------------------------------------------
+%\usepackage{textcomp} % use specific symbols in text as for example the degree symbol 
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage{setspace}
+\usepackage{booktabs}% add top, middle and bottom rules for professional tables
+\usepackage{multirow}
+\usepackage[backend=biber,
+bibstyle=ieee, 
+citestyle=numeric-comp,
+natbib=true,
+doi=false, 
+url=false,
+isbn=false,
+mincitenames=1,
+maxcitenames=1,
+minbibnames=1,
+maxbibnames=99,
+backref=false,]
+{biblatex}
+\addbibresource[label=main]{./references.bib}
+\usepackage[nottoc]{tocbibind} %add list of figures, tables and references in the TOC
+%------------------------------------------------------------------------------
+%	CUSTOM COLORS
+%------------------------------------------------------------------------------ 
+\definecolor{lightgray}{gray}{0.9}
+
+
+%------------------------------------------------------------------------------
+%	BEGINNING OF THE DOCUMENT
+%------------------------------------------------------------------------------
+\begin{document}
+\pagenumbering{roman}
+%Title Page
+\input{title}
+
+%Abstract and acknowledgement
+\begin{abstract}
+	\noindent \lipsum[1]
+\end{abstract}
+
+% Rename the abstract section into acknowledgement
+\renewcommand{\abstractname}{Acknowledgement}
+\begin{abstract}
+	\noindent \lipsum[2]
+\end{abstract}
+
+
+
+%TOC
+\tableofcontents
+\clearpage
+
+%Nomenclature
+\input{nomenclature}
+\clearpage
+
+
+\pagenumbering{arabic}
+%Sections of the report
+\input{section1}
+
+\input{section2}
+
+
+% New page + List of figure + List of tables
+\newpage
+\listoftables
+\newpage
+\listoffigures
+
+
+% New page + Bibliography
+\newpage
+
+\printbibliography
+
+\end{document}

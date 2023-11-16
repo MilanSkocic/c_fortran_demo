@@ -1,0 +1,88 @@
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+
+
+\mode<presentation>
+
+
+%##### CUSTOM  #####
+\newcommand{\customtextcolor}[0]{DarkBlue}
+%HEADLINE/FOOTLINE and NAVIGUATION BAR
+\setbeamertemplate{navigation symbols}{}%hide navigation buttons
+%\useoutertheme{infolines}%add infolines in header and footer
+\setbeamertemplate{headline}[default] %no headline
+\setbeamercolor{footline}{fg=black}%define text color in footline
+\setbeamercolor*{author in head/foot}{fg=black}
+\setbeamercolor*{title in head/foot}{fg=black}
+\setbeamercolor*{date in head/foot}{fg=black}
+\setbeamerfont*{author in head/foot}{series=\bfseries, family=\fontfamily{\familydefault}}
+\setbeamerfont*{title in head/foot}{series=\bfseries, family=\fontfamily{\familydefault}}
+\setbeamerfont*{date in head/foot}{series=\bfseries, family=\fontfamily{\familydefault}}
+\defbeamertemplate*{footline}{infolines theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=5ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~(\insertshortinstitute)
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=5ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=5ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+
+%BACKGROUND
+%\setbeamercolor{background canvas}{bg=red}%change background color of slide
+%\setbeamertemplate{background canvas}[vertical shading][top=red,middle=black,midpoint=0.5,bottom=green]%creates color gradient
+\setbeamertemplate{background canvas}{\includegraphics[width=\paperwidth,height=\paperheight]{inpg.jpg}}%insert an image as slide background
+
+%TOC
+\setbeamertemplate{sections/subsections in toc}[square]%change bullets apsect in table of contents
+
+%FRAME TITLE
+\setbeamertemplate{frametitle}[default][right]%frame title alignment
+\setbeamerfont{frametitle}{series=\bfseries, family=\fontfamily{\familydefault}}
+\setbeamerfont{framesubtitle}{series=\bfseries, size=\normalsize, family=\fontfamily{\familydefault}}
+
+%PRESENTATION TITLE
+%\setbeamerfont{title}{shape=\itshape,family=\rmfamily}%font used for the title
+\setbeamercolor{title}{fg=white,bg=DarkRed}%the color of the title and background color
+\setbeamerfont{title}{family=\fontfamily{\familydefault}}
+
+%BODY TEXT
+\setbeamercolor{normal text}{fg=\customtextcolor,bg=white}%normal text aspect
+\setbeamerfont{normal text}{family=\fontfamily{\familydefault}}
+\setbeamercolor{structure}{fg=\customtextcolor} %section & header aspect
+\setbeamerfont{structure}{family=\fontfamily{\familydefault}}
+%\usefonttheme[onlymath]{serif}
+
+
+%BLOCKS
+\setbeamertemplate{blocks}[default]%[shadow=true]%change block aspect
+\setbeamercolor{block title}{fg=white,bg=DarkRed}%change block title aspect
+\setbeamercolor{block body}{fg=black,bg=WhiteSmoke}%change text color and backgorund in block body
+\setbeamerfont{block title}{series=\bfseries, family=\fontfamily{\familydefault}}
+\setbeamerfont{block body}{series=\bfseries, family=\fontfamily{\familydefault}}
+
+%ITEMS 
+\setbeamertemplate{itemize items}[arrow]
+\setbeamertemplate{itemize subitem}[square]
+
+%ALERTS
+%setbeamercolor{alerted text}{fg=blue}
+\setbeamerfont{alerted text}{series=\bfseries, family=\fontfamily{\familydefault}}
+
+\mode
+<all>

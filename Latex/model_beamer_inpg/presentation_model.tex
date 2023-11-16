@@ -1,0 +1,231 @@
+% !TEX program = pdflatex
+% !TEX encoding = UTF-8
+% !TEX spellcheck = en_US
+
+\documentclass[xcolor=svgnames, 8pt, sans, handout]{beamer}%class présentation also available [xcolor=dvipsnames]
+
+%############################################
+%#########  Packages and their use  #########
+%############################################
+
+\usetheme{inpg}%slide theme
+%available themes are: default, boxes, Bergen, Boadilla, Madrid, AnnArbor, CambridgeUS,
+%Pittsburgh, Rochester, Antibes, JuanLesPins, Montpellier, Berkeley, PaloAlto, Goettingen,
+%Marburg, Hannover, Berlin, Ilmenau, Dresden, Darmstadt, Frankfurt, Singapore, Szeged, 
+%Copenhagen, Luebeck, Malmoe, Warsaw. 
+
+\useinnertheme{rounded}%An inner theme installs templates that dictate how the following elements are typeset:  
+% -Title and part pages.
+% -Itemize environments.
+% -Enumerate environments.
+% -Description environments.
+% -Block environments.
+% -Theorem and proof environments.
+% -Figures and tables.
+% -Footnotes.
+% -Bibliography entries.
+%themes: default, circles, rectangles, rounded, inmargin
+
+%\setbeamersize{sidebar left width=1cm height=\paperheight}%size of sidebar
+%\setbeamercolor{sidebar left}{bg=gray, fg=white}%color of sidebar
+%\useoutertheme[left]{sidebar}%Typically,an outer theme specifies how the following elements are rendered:
+% -The head- and footline.
+% -The sidebars.
+% -The logo.
+% -The frame title.
+%themes: default, infolines, miniframes, smoothbars, sidebar, split, shadow, tree, %smoothtree
+
+%\usecolortheme{seahorse}
+%\usecolortheme{rose}
+%special-purpose colors: default, structure, sidebartab
+%complete color themes: albatross, beetle, crane, dove, fly, seagull, wolverine, beaver
+%innercolors themes: lily, orchid, rose
+%outercolors themes:  whale, seahorse, dolphin
+
+
+
+
+
+%####### Packages ########
+\usepackage[utf8x]{inputenc}
+%\usepackage[T2A]{fontenc}%cyrillic support
+\usepackage{multicol}%create multi columns text
+%\usepackage{textcomp}%use specific symbols for text (example "°")
+
+\usepackage{amsmath} %équations mathématique
+\usepackage{amssymb} %symboles mathématique
+%\usepackage{mathptmx}
+\usepackage{float}
+\usepackage{graphicx}%insert images
+\usepackage{epsfig}
+%\usepackage{pst-grad} % For gradients
+%\usepackage{pst-plot} % For axes
+%\usepackage{pgf,pgfarrows,pgfautomata,pgfheaps,pgfnodes,pgfshade}
+
+%\graphicspath{}
+
+\usepackage{hyperref}%url links in document
+\hypersetup{
+    bookmarks=true, 		% show bookmarks bar?
+    unicode=true,  		% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=true,      % page fit to window when opened
+    pdftitle={},    % title
+    pdfauthor={},     % author
+    pdfsubject={},   % subject of the document
+    pdfnewwindow=true,      % links in new window
+    pdfkeywords={}, % list of keywords
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+%\renewcommand{\familydefault}{pag}%change font
+\usepackage{stix}
+\renewcommand{\customtextcolor}{DarkBlue}%change text and title color
+%\usepackage[exscale, amsfonts, amssymb]{concmath}
+%\renewcommand*{\bfseries}{\mdseries}
+
+%these packages are useful if you want to redefine header and footer %templates
+%\usepackage{fancyhdr}%custom headers and footers layout
+%\usepackage{lastpage}%package to print the last page
+%\pagestyle{fancy}%fancy page style
+%\fancyhead{}%clear header info
+%\fancyfoot{}%clear footer info
+%\lhead{}
+%\chead{}
+%\rhead{Projet d'électronique}
+%\lfoot{Milan SKOCIC\\1er année\\PMP-A\\}
+%\cfoot{\thepage\ / \pageref{LastPage}}
+%\rfoot{Année scolaire 2009-2010}
+
+%add image as slide background
+%\pgfdeclareimage[height=96mm,width=128mm]{nombidon}{ploum}
+%\setbeamertemplate{background}{\pgfuseimage{nombidon}}
+
+
+
+
+%######################################
+%####### USEFUL COMMANDS ##############
+%######################################
+%\begin{definition}
+   %A \alert{prime number} is a number that has exactly two divisors.
+%\end{definition}
+%there are various environments that you can use: block, example, theorem, %lemma, proof, corollary. those environments are predfined but you can %create your own using the command:
+%%\begin{block}{nameOfBlock}
+   %A \alert{prime number} is a number that has exactly two divisors.
+%\end{block}
+%\begin{alertblock}{Alert block}
+%  block text \texttt{alertblock}
+% \end{alertblock}
+
+% \begin{exampleblock}{example block}
+%  block text \texttt{exampleblock}
+% \end{exampleblock}
+
+
+
+
+%\pause creates a simple overlay in other words you have to click to display the next element, it can be an item or definition...
+
+%<x-> commmand indicates when the item must be displayed
+%\item<1-> 
+%\item<2->
+%\item<3-> 
+%\item<1-> 
+
+%\uncover<4-> It only shows its argument on the slides specified in the %overlay specification. On all other slides, the argument is hidden %(though it still occupies space). The command \only is similar
+
+
+%\columns environment creates two columns with defined width to confront two ideas:
+%\begin{frame}
+%  \frametitle{What’s Still To Do?}
+%  \begin{columns}[t]%t option set columns on first line
+%    \column{.4\textwidth}
+%      \begin{block}{Answered Questions}
+%        How many primes are there?
+%      \end{block}
+%    \column{.4\textwidth}
+%      \begin{block}{Open Questions}
+%        Is every even number the sum of two primes?
+%      \end{block}
+%  \end{columns}
+%\end{frame}
+%
+%\begin{frame}[t or c or b] those options set vertical alignement of body in slide: top, center, bottom
+%	
+%\end{frame}
+
+
+%##########################################################
+%############ PRESENTATION CODE SOURCE ####################
+%##########################################################
+%\logo{LOGO}
+\title{Presentation title}%TITLE
+\subtitle{\textbf{Presentation subtitle}}%subtitle to precise the subject
+\author{Name \& Lastname}%presentation author(s)
+\institute{Insitut name}%institute
+\date{date}
+
+
+\begin{document}
+
+
+%########## SLIDE ###########
+%first slide with the title and author information
+\begin{frame}
+	\titlepage % add information about the author and title precised in header
+\end{frame}
+
+%########## SLIDE ###########
+\begin{frame}
+	\frametitle{Sommaire}
+	\tableofcontents[pausesections]
+\end{frame}
+
+\section{Section1}
+%########## SLIDE ###########
+\begin{frame}
+\frametitle{Section 1}
+\alert{prime number} is a number that has exactly two divisors.
+\begin{block}{TEST}
+This is the text of the section 1.
+\end{block}
+\begin{itemize}
+\item test
+\begin{itemize}
+\item test2
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Section 2}
+%########## SLIDE ###########
+\begin{frame}
+\frametitle{Section 2}
+\begin{columns}[t]%t option set columns on first line
+    \column{.5\textwidth}
+      \begin{block}{Answered Questions}
+        How many primes are there?
+      \end{block}
+    \column{.5\textwidth}
+      \begin{block}{Open Questions}
+       Is every even number the sum of two primes?
+      \end{block}
+  \end{columns}
+\end{frame}
+
+
+\section{Section3}
+%########## SLIDE ###########
+\begin{frame}
+\frametitle{Section3}
+
+\end{frame}
+
+
+\end{document}
