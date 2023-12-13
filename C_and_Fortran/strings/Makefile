@@ -15,7 +15,7 @@ all: $(EXE)
 capp: cmain.o c_func.o precisions.o f_func.o
 	$(LINKER) $^ $(LDFLAGS) -o $@
 
-fapp: fmain.o c_func.o precisions.o f_func.o
+fapp: precisions.o f_func.o c_func.o fmain.o
 	$(LINKER) $^ $(LDFLAGS) -o $@
 
 $(C_OBJECTS): $(C_SOURCES)
