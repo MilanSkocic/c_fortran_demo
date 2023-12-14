@@ -12,10 +12,10 @@ EXE=capp fapp
 
 all: $(EXE)
 
-capp: fobject_simple.o cmain.o
+capp: fobject_simple.o fobject_cmpl.o cmain.o
 	$(LINKER) $^ $(LDFLAGS) -o $@
 
-fapp: fobject_simple.o fmain.o
+fapp: fobject_simple.o fobject_cmpl.o fmain.o
 	$(LINKER) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
@@ -26,5 +26,6 @@ fapp: fobject_simple.o fmain.o
 
 clean:
 	rm -f *.o
+	rm -f *.mod
 	rm -f fapp*
 	rm -f capp*

@@ -14,7 +14,9 @@ int main(void){
     }
     printf("%s\n", obj_simple_capi.name);
 
-    
+    void *obj = fobj_cmpl_capi_init(3, 4.5);
+    fobj_cmpl_capi_print(obj);
+    fobj_cmpl_capi_del(obj);
 
     return EXIT_SUCCESS;
 }

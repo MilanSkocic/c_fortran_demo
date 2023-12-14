@@ -11,7 +11,11 @@ struct fobj_simple_capi{
 
 extern struct fobj_simple_capi obj_simple_capi;
 
+/* COMPLEX DERIVED TYPE*/
 
+extern void * fobj_cmpl_capi_init(int n, float value);
+extern void fobj_cmpl_capi_del(void *o);
+extern void fobj_cmpl_capi_print(void *o);
 
 
 #endif
