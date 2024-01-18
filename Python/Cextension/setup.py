@@ -1,20 +1,7 @@
-import platform
 from setuptools import setup, find_packages, Extension
-from setuptools.command.build_ext import build_ext
 import configparser
 from Cython.Build import cythonize
 import numpy
-
-
-class CustomBuildExt( build_ext ):
-    r"""Custom class for building extension."""
-    def build_extensions(self):
-        r"""Custom building function for mingw32 on windows"""
-        c = self.compiler.compiler_type
-        if (c == "mingw32") and (platform.system() == "Windows"):
-           for e in self.extensions:
-               e.extra_link_args += ["-static"]
-        build_ext.build_extensions(self)
 
 cfg = configparser.ConfigParser()
 cfg.read("site.cfg")
@@ -60,7 +47,6 @@ setup(
     version="1.0",
     packages=find_packages(),
     include_package_data=True,
-    cmdclass = {'build_ext': CustomBuildExt},
     ext_modules=[capi_example, fastiter,
                  numpy_ufuncs_ext, capi_buffer_protocol_example, capi_callback_example] + cythonize(cython_ext, annotate=True)
 )
