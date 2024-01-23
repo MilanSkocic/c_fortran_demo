@@ -1,6 +1,6 @@
 from setuptools import find_packages
 import numpy
-from numpy.distutils.core import Extension, setup
+from setuptools import Extension, setup
 
 fib_c_ext = Extension(name="example.fib_c",
                       sources=["./example/_fib.c", "./example/fib.c"],
@@ -17,5 +17,5 @@ setup(
     version="1.0",
     packages=find_packages(),
     include_package_data=True,
-    ext_modules=[fib_fortran_ext, fib_c_ext]
+    ext_modules=[fib_c_ext]
 )
